@@ -1,0 +1,29 @@
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.brand-img {
+    height: 100%;
+    margin-top: 5px;
+    border-radius: 16px;
+}
+
+.user-profile {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    /* background-image: url(img/profile-pic.png); */
+    background-size: cover;
+    border-color: #dfdfdf;
+    border-width: 2px;
+}
+
+.brand-img{
+    border-radius: 12px;
+    height:50px;
+}

@@ -1,0 +1,41 @@
+<!-- <nav class="navbar">
+  <div class="nav-wrapper">
+      <img src="../../../assets/icon.png" class="brand-img" alt="">
+      <input type="text" class="search-box" placeholder="search">
+      <div class="nav-items" [ngClass]="{'active': isMenuOpen}">
+          <i class="icon fa fa-home" style="color: grey"></i>
+          <i class="icon fa fa-plus" style="color: grey"></i>
+          <i class="icon fa fa-compass" style="color: grey"></i>
+          <i class="icon fa fa-comment" style="color: grey"></i>
+          <i class="icon fa fa-bell" style="color: grey"></i>
+          <img class="icon user-profile" src="https://res.cloudinary.com/practicaldev/image/fetch/s--BnBLPveI--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/654tlh0e3qd5y19fe12o.png"/>
+      </div>
+      <div id="mobile-menu-toggle" class="mobile-menu-toggle" (click)="toggleMenu()">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+      </div>
+  </div>
+</nav> -->
+
+<div class="navbar">
+  <nav class="bg-white py-2 md:py-4">
+    <div class="container px-4 mx-auto md:flex md:items-center">
+
+      <div class="flex justify-between items-center">
+        <a href="#" class="font-bold text-xl text-indigo-600"><img src="../../../assets/icon.png" class="brand-img" alt=""></a>
+        <button class="border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden" (click)="toggleNavbar()">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div [ngClass]="{'hidden': isNavbarCollapsed, 'flex': !isNavbarCollapsed}" class="md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0">
+        <a href="#" class="p-2 lg:px-4 md:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"><i class="icon fa fa-home" style="color: grey;font-size:22px"></i></a>
+        <a href="#" class="p-2 lg:px-4 md:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"><i class="icon fa fa-plus" style="color: grey;font-size:22px"></i></a>
+        <a href="#" class="p-2 lg:px-4 md:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"> <i class="icon fa fa-comment" style="color: grey;font-size:22px"></i></a>
+        <a href="#" class="p-2 lg:px-4 md:mx-2 text-gray-600 rounded hover:bg-gray-200 hover:text-gray-700 transition-colors duration-300"><i class="icon fa fa-bell" style="color: grey;font-size:22px"></i></a>
+        <img class="icon user-profile" src="https://res.cloudinary.com/practicaldev/image/fetch/s--BnBLPveI--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/654tlh0e3qd5y19fe12o.png"/>
+      </div>
+    </div>
+  </nav>
+</div>

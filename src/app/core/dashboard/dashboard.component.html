@@ -1,0 +1,46 @@
+<div class="main-container">
+    <app-app-header></app-app-header>
+
+    <app-story-container></app-story-container>
+    <!-- <app-post-item></app-post-item>
+    <app-recommendations></app-recommendations> -->
+    <!-- <app-modal></app-modal> -->
+    <div class="search-container-center">
+        <div class="get-started">
+            <h1
+                class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+                Get started with <span class="text-blue-600 dark:text-blue-500">Mela</span> Chat.</h1>
+            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Browse friends and posts below to
+                get started
+            </p>
+        </div>
+        <div class="get-started">
+
+<h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px">Recommendations</h5>
+
+            <app-new-friend-card></app-new-friend-card>
+        </div>
+        <app-search></app-search>
+    </div>
+    <div class="container-center justify-center items-center">
+        <div>
+            <app-tabs></app-tabs>
+        </div>
+    </div>
+    <div class="tab-content">
+        <!-- if chats selected -->
+        <div>
+            <app-chat-list></app-chat-list>
+        </div>
+
+        <!-- if posts selected -->
+        <div>
+            <app-post-list></app-post-list>
+        </div>
+        <!-- if news selected -->
+        <div>
+            <app-news-card></app-news-card>
+        </div>
+    </div>
+    <app-floating-button></app-floating-button>
+</div>

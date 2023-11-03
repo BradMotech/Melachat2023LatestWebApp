@@ -1,0 +1,20 @@
+.search-padding {
+    padding: 22px;
+    width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+    /* Apply these styles on screens larger than or equal to 768px wide (tablets and desktops) */
+    .search-padding {
+        padding-left: 170px;
+        padding-right: 170px;
+    }
+}
+
+
+.bg-blue-600{
+    background-color: #16afec !important;
+}
+.bg-blue-700{
+    background-color: #16afec !important;
+}
