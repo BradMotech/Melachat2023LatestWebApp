@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IUsersInterface } from '../Interfaces/IUsersInterface';
 
 @Component({
   selector: 'app-new-friend-card',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./new-friend-card.component.scss']
 })
 export class NewFriendCardComponent {
+  @Input() users!:IUsersInterface;
+  @Output() moreDetailsEmitter = new EventEmitter<IUsersInterface>();
 
+  moreDetails(details: IUsersInterface) {
+  this.moreDetailsEmitter.emit(details)
+  }
 }

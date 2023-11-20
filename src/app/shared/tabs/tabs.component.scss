@@ -3,5 +3,24 @@
 }
 
 .text-blue-600 {
-    color: #16afec !important;
+    color: grey !important;
+    border-color: grey;
 }
+
+/* Add styles for the active tab */
+.active {
+    color: #16afec!important; /* You can change the color to your preference */
+    border-color: #16afec; /* You can change the border color to your preference */
+
+    .text-blue-600{
+        color: #16afec !important;
+        border-color: #16afec!important;
+    }
+  }
+  
+  /* Add styles for grayed-out tabs */
+  /* For example, make the text color gray */
+  .grayed-out {
+    color: gray; /* You can change the color to your preference */
+    border-color: gray; /* You can change the border color to your preference */
+  }

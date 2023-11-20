@@ -7,40 +7,102 @@
     <!-- <app-modal></app-modal> -->
     <div class="search-container-center">
         <div class="get-started">
-            <h1
-                class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
+            <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+                style="color:white">
                 Get started with <span class="text-blue-600 dark:text-blue-500">Mela</span> Chat.</h1>
-            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">Browse friends and posts below to
+            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 browse-friends-p">Browse friends
+                and posts below to
                 get started
             </p>
+
+            <span (click)="browseFriends()"
+                class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Browse
+                Friends</span>
+            <span
+                class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Trending
+                <span
+                    class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-white-800 bg-red-200 rounded-full"
+                    style="color:orangered">
+                    {{hashtags?.length}}
+                </span></span>
+            <span
+                class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">Most
+                Popular</span>
         </div>
         <div class="get-started">
 
-<h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px">Recommendations</h5>
+            <h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px;color:white">Recommendations</h5>
 
-            <app-new-friend-card></app-new-friend-card>
+            <div class="recommendations-row" *ngIf="recommedations">
+                <ng-container *ngFor="let item of recommedations">
+                    <app-new-friend-card class="app-new-friend-card" [users]="item"
+                        (moreDetailsEmitter)="openModal($event)">{{item.name}}</app-new-friend-card>
+                </ng-container>
+            </div>
+            <div class="recommendations-row" *ngIf="!recommedations">
+                <div role="status" class="space-y-2.5 animate-pulse max-w-lg" style="width:100%">
+                    <div class="flex items-center w-full">
+                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                    </div>
+                    <div class="flex items-center w-full max-w-[480px]">
+                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                    </div>
+                    <div class="flex items-center w-full max-w-[400px]">
+                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                    </div>
+                    <div class="flex items-center w-full max-w-[480px]">
+                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                    </div>
+                    <div class="flex items-center w-full max-w-[440px]">
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-32"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                    </div>
+                    <div class="flex items-center w-full max-w-[360px]">
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                    </div>
+                    <span class="sr-only">Loading...</span>
+                </div>
+
+            </div>
         </div>
         <app-search></app-search>
     </div>
     <div class="container-center justify-center items-center">
         <div>
-            <app-tabs></app-tabs>
+            <app-tabs (tabSelected)="onTabSelected($event)"></app-tabs>
         </div>
     </div>
     <div class="tab-content">
         <!-- if chats selected -->
-        <div>
+        <div *ngIf="selectedTabTitle == CHATS">
             <app-chat-list></app-chat-list>
         </div>
 
         <!-- if posts selected -->
-        <div>
-            <app-post-list></app-post-list>
+        <div *ngIf="selectedTabTitle == POSTS">
+            <app-post-list [AllPosts]="AllPosts"></app-post-list>
         </div>
         <!-- if news selected -->
-        <div>
-            <app-news-card></app-news-card>
+        <div *ngIf="selectedTabTitle == NEWS">
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <ng-container *ngFor="let item of NewsArticles">
+                    <app-news-card [News]="item"></app-news-card>
+                </ng-container>
+            </div>
         </div>
     </div>
-    <app-floating-button></app-floating-button>
+    <app-floating-button (AddPostEmitter)="AddPost()"></app-floating-button>
+    <app-dialog #dialog *ngIf="openModalFlag" (onCancel)="closeModal($event)"></app-dialog>
 </div>

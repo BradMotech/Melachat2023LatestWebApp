@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { IPosts } from '../Interfaces/IPosts';
 
 @Component({
   selector: 'app-post-item',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./post-item.component.scss']
 })
 export class PostItemComponent {
-
+@Input() Post!:IPosts
 }

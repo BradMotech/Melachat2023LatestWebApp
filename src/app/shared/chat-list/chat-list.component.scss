@@ -4,11 +4,17 @@
     padding-right:5px
 }
 
-
 @media screen and (min-width: 768px) {
     /* Apply these styles on screens larger than or equal to 768px wide (tablets and desktops) */
     .max-w-md  {
-        padding-left: 50px;
-        padding-right: 50px;
+        padding-left: 156px;
+        padding-right: 156px;
     }
+}
+
+li{
+    background-color: white;
+    margin-bottom:3px;
+    border-radius:6px;
+    padding:16px;
 }

@@ -5,6 +5,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 99999999999;
 }
 
 .brand-img {
@@ -27,3 +28,19 @@
     border-radius: 12px;
     height:50px;
 }
+
+@media (min-width: 1024px) {
+    .lg-px-4 {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  ::ng-deep .lg-px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    align-items: center;
+    display: flex;
+  }

@@ -13,6 +13,7 @@ import { CommentBoxComponent } from './comment-box/comment-box.component';
 import { NewsCardComponent } from './news-card/news-card.component';
 import { NewFriendCardComponent } from './new-friend-card/new-friend-card.component';
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FloatingButtonComponent } from './floating-button/floating-button.compo
     NewsCardComponent,
     NewFriendCardComponent,
     FloatingButtonComponent,
+    DialogComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -43,7 +45,8 @@ import { FloatingButtonComponent } from './floating-button/floating-button.compo
     PostListComponent,
     NewsCardComponent,
     NewFriendCardComponent,
-    FloatingButtonComponent
+    FloatingButtonComponent,
+    DialogComponent
   ],
 })
 export class SharedModule {}

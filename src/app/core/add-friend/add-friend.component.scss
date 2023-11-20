@@ -1,0 +1,72 @@
+.main-container {
+    background-color: rgb(243, 243, 243) !important;
+    height: 100% !important;
+    min-height: 100vh;
+    width: 100% !important;
+    background-image: url("../../../assets//melachatbackground.png");
+}
+
+.container-center {
+    width: 100% !important;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    display: flex;
+}
+
+.search-container-center {
+    width: 100% !important;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    // display: flex;
+}
+
+.tab-content {
+    padding: 12px;
+    width: 100%
+}
+
+.get-started {
+    padding: 22px
+}
+
+@media screen and (min-width: 768px) {
+
+    /* Apply these styles on screens larger than or equal to 768px wide (tablets and desktops) */
+    .get-started {
+        padding-left: 170px;
+        padding-right: 170px;
+    }
+}
+
+.text-blue-600 {
+    color: #16afec !important;
+}
+
+.recommendations-row {
+    display: flex;
+    //   flex-wrap: no-wrap;   
+    overflow-x: auto;
+
+}
+
+.app-new-friend-card {
+    /* Add any styling you want for each child component here */
+    margin-right: 10px;
+    /* Optional margin between child components */
+}
+
+::ng-deep .max-w-sm {
+    max-width: 16rem;
+    width: 16rem !important;
+    height: 100% !important //   min-width: 16rem!important;
+}
+
+span{
+    cursor:pointer
+}
+
+.browse-friends-p{
+    margin-bottom:18px!important
+}

@@ -1,0 +1,16 @@
+.child-max-w-sm {
+    // max-width: 100%!important;
+    /* width: 16rem !important; */
+    height: 100% !important;
+}
+
+.limit-lines {
+    display: -webkit-box;
+  -webkit-line-clamp: 4; /* Adjust the value to control the number of lines displayed */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  }
+
+  .button-group{
+    margin:12px
+  }
