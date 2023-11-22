@@ -4,12 +4,13 @@
     margin-left: 148px;
 }
 
+
 @media (min-width: 768px) {
-    .md\:grid-cols-4 {
+    .md\:grid-cols-3 {
         background-color: white;
         padding: 54px;
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         margin-right: 148px;
         margin-left: 148px;
         border-radius: 12px

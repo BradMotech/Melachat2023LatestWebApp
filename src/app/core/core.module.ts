@@ -6,12 +6,14 @@ import { SharedModule } from '../shared/shared.module';
 import { AddFriendComponent } from './add-friend/add-friend.component';
 import { TrendingComponent } from './trending/trending.component';
 import { AddPostComponent } from './add-post/add-post.component';
+import { PostDetailsComponent } from './post-details/post-details.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'home', component: DashboardComponent },
   { path: 'browse-friends', component: AddFriendComponent },
   { path: 'add-post', component: AddPostComponent },
+  { path: 'post-details', component: PostDetailsComponent },
 ];
 
 
@@ -20,7 +22,8 @@ const routes: Routes = [
     DashboardComponent,
     AddFriendComponent,
     TrendingComponent,
-    AddPostComponent
+    AddPostComponent,
+    PostDetailsComponent
   ],
   imports: [
     CommonModule,RouterModule.forChild(routes), SharedModule

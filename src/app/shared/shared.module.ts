@@ -14,6 +14,8 @@ import { NewsCardComponent } from './news-card/news-card.component';
 import { NewFriendCardComponent } from './new-friend-card/new-friend-card.component';
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { ImagesGridComponent } from './images-grid/images-grid.component';
+import { StoryCubeComponent } from './story-cube/story-cube.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { DialogComponent } from './dialog/dialog.component';
     NewFriendCardComponent,
     FloatingButtonComponent,
     DialogComponent,
+    ImagesGridComponent,
+    StoryCubeComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -46,7 +50,9 @@ import { DialogComponent } from './dialog/dialog.component';
     NewsCardComponent,
     NewFriendCardComponent,
     FloatingButtonComponent,
-    DialogComponent
+    DialogComponent,
+    ImagesGridComponent,
+    StoryCubeComponent
   ],
 })
 export class SharedModule {}

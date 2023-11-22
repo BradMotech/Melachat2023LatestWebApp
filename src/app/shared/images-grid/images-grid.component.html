@@ -1,0 +1,12 @@
+
+<div *ngIf="images.length > 1">
+    <div class="grid grid-cols-2 gap-2" style="padding:10px">
+        <div  *ngFor="let item of images">
+            <img class="h-auto max-w-full rounded-lg"  style="height:220px;width:100%;object-fit:cover;" src="{{item}}" alt="">
+        </div>
+    </div>
+</div>
+
+<div *ngIf="images.length == 1">
+    <img class="rounded-t-lg" src="{{images[0]}}" alt="" style="height:220px;width:100%;object-fit: fill;"/>
+</div>

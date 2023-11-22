@@ -34,7 +34,10 @@ export class DashboardComponent implements OnInit {
       return (this.recommedations = users);
     });
     this.fireStoreCollectionsService.getAllHashtags().subscribe(hashtags => this.hashtags = hashtags);
-    this.fireStoreCollectionsService.getAllPoststags().subscribe(posts => this.AllPosts = posts);
+
+    this.fireStoreCollectionsService.getAllPoststags().subscribe(posts => {
+      console.warn(posts)
+      return this.AllPosts = posts});
 
     fetch(
       "https://newsapi.org/v2/top-headlines?country=za&apiKey=32054b2282e440a2bf45da9fcacb2040"

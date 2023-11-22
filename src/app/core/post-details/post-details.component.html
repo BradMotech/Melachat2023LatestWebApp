@@ -1,0 +1,58 @@
+<div class="main-container">
+    <app-app-header></app-app-header>
+    <div style="margin-top: 100px;">
+
+        <div class="grid gap-4" style="padding:12px">
+            <div
+                class="child-max-w-sm  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <ng-container *ngIf="Post.postImage">
+                    <app-images-grid [images]="Post.postImage"></app-images-grid>
+                </ng-container>
+                <div class="p-5">
+                    <div>
+                        <img class="w-10 h-10 rounded-full" src="{{Post.userImage}}" alt="Default avatar">
+                        <p>@{{Post.username}}</p>
+                        <p>{{Post.datePosted}}</p>
+                        <a href="#">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{Post.title}}
+                            </h5>
+                        </a>
+                    </div>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">{{Post.post}}</p>
+    
+                    <div class="inline-flex rounded-md shadow-sm button-group" role="group">
+                        <button type="button"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+    
+                            <svg class="h-6 w-6 mr-2 text-red-500" width="24" height="24" viewBox="0 0 24 24"
+                                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" />
+                                <path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" />
+                            </svg>
+                            {{Post.likes}} likes
+                        </button>
+                        <button type="button"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                            <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 2H3v16h5v4l4-4h5l4-4V2zM11 11V7M16 11V7" />
+                            </svg>
+                            comments
+                        </button>
+                        <button type="button"
+                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
+                            <svg class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            {{Post.viewedBy.length}} Views
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

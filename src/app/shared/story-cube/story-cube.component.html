@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="screen" (click)="toggleScreen()">
+      <div class="stories">
+        <div class="cuboid" [ngClass]="{'screen--showing-front': isShowingFront, 'screen--showing-right': !isShowingFront}">
+          <div class="face face--front"></div>
+          <div class="face face--right"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
