@@ -2,18 +2,34 @@
     <div class="wrapper">
         <div class="left-col">
             <div class="status-wrapper">
-                <div class="status-card">
-                    <div class="profile-pic"><img src="https://firebasestorage.googleapis.com/v0/b/the-thetaapp.appspot.com/o/UserImages%2FVxX3M7vxv6QDUlCWKXONlFBJ10C3?alt=media&token=bb930439-55b1-42a9-88fd-1c1b7782837b" alt=""></div>
-                    <p class="username">user_name_1</p>
-                </div>
-                <div class="status-card">
-                    <div class="profile-pic"><img src="img/cover 2.png" alt=""></div>
-                    <p class="username">user_name_2</p>
-                </div>
-                <div class="status-card">
-                    <div class="profile-pic"><img src="img/cover 3.png" alt=""></div>
-                    <p class="username">user_name_3</p>
-                </div>
+                <ng-container *ngIf="addStory">
+                    <div class="status-card">
+                        <div class="profile-pic"><img
+                                src="https://firebasestorage.googleapis.com/v0/b/the-thetaapp.appspot.com/o/UserImages%2FVxX3M7vxv6QDUlCWKXONlFBJ10C3?alt=media&token=bb930439-55b1-42a9-88fd-1c1b7782837b"
+                                alt=""></div>
+                        <p class="username">Your story</p>
+                        <div style="position: relative;
+                        top: -94px;
+                        right: -28px;"
+                            class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-blue-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
+                            <svg  (click)="addStoryFunction()" class="h-4 w-4 text-white addStory-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" />
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                        </div>
+
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="stories">
+                    <ng-container *ngFor="let item of stories">
+                        <div class="status-card">
+                            <div class="profile-pic"><img src="img/cover 2.png" alt=""></div>
+                            <p class="username">user_name_2</p>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
         </div>
     </div>
-</div>

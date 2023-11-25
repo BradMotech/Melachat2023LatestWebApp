@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { IUsersInterface } from '../Interfaces/IUsersInterface';
 
 @Component({
   selector: 'app-chat-list',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./chat-list.component.scss']
 })
 export class ChatListComponent {
+@Input() friends:IUsersInterface[] | undefined;
+@Output() chatEmitter = new EventEmitter<IUsersInterface>();
 
+startChatting(friend:IUsersInterface){
+  this.chatEmitter.emit(friend);
+}
 }

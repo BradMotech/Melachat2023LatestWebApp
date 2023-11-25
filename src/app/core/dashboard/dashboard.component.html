@@ -1,7 +1,7 @@
-<div class="main-container">
+<div class="main-container" style="background-image: url('../../../assets//melachatbackground.png');">
     <app-app-header></app-app-header>
 
-    <app-story-container></app-story-container>
+    <app-story-container (addStoryEmiiter)="addStoryNavigation()"></app-story-container>
 
     <!-- <app-post-item></app-post-item>
     <app-recommendations></app-recommendations> -->
@@ -26,55 +26,68 @@
                     style="color:orangered">
                     {{hashtags?.length}}
                 </span></span>
-            <span
-                class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">Most
-                Popular</span>
+         
         </div>
         <div class="get-started">
+            <div style="display: flex;flex-direction: row;">
+                <h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px;color:white">Recommendations
+                </h5>
+                <svg *ngIf="hide" (click)="toggleVisibility('hide')" style="margin-left:12px;cursor:pointer" class="h-8 w-8 text-gray-500" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                </svg>
+            
+                <svg *ngIf="!hide" (click)="toggleVisibility('show')" style="margin-left:12px;cursor:pointer" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg>
+            </div>
 
-            <h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px;color:white">Recommendations</h5>
-
-            <div class="recommendations-row" *ngIf="recommedations">
+            <div class="recommendations-row" *ngIf="recommedations && showRecommendations">
                 <ng-container *ngFor="let item of recommedations">
                     <app-new-friend-card class="app-new-friend-card" [users]="item"
                         (moreDetailsEmitter)="openModal($event)">{{item.name}}</app-new-friend-card>
                 </ng-container>
             </div>
-            <div class="recommendations-row" *ngIf="!recommedations">
-                <div role="status" class="space-y-2.5 animate-pulse max-w-lg" style="width:100%">
-                    <div class="flex items-center w-full">
-                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+            <div class="get-started" *ngIf="!recommedations">
+                <div class="recommendations-row" *ngIf="!recommedations">
+                    <div role="status" class="space-y-2.5 animate-pulse max-w-lg" style="width:100%">
+                        <div class="flex items-center w-full">
+                            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                        </div>
+                        <div class="flex items-center w-full max-w-[480px]">
+                            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                        </div>
+                        <div class="flex items-center w-full max-w-[400px]">
+                            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                        </div>
+                        <div class="flex items-center w-full max-w-[480px]">
+                            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                        </div>
+                        <div class="flex items-center w-full max-w-[440px]">
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-32"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                        </div>
+                        <div class="flex items-center w-full max-w-[360px]">
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                            <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+                            <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                        </div>
+                        <span class="sr-only">Loading...</span>
                     </div>
-                    <div class="flex items-center w-full max-w-[480px]">
-                        <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
-                    </div>
-                    <div class="flex items-center w-full max-w-[400px]">
-                        <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                    </div>
-                    <div class="flex items-center w-full max-w-[480px]">
-                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
-                    </div>
-                    <div class="flex items-center w-full max-w-[440px]">
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-32"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
-                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-                    </div>
-                    <div class="flex items-center w-full max-w-[360px]">
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                        <div class="h-2.5 ms-2 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
-                        <div class="h-2.5 ms-2 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                    </div>
-                    <span class="sr-only">Loading...</span>
+    
                 </div>
-
             </div>
         </div>
         <app-search></app-search>
@@ -87,7 +100,7 @@
     <div class="tab-content">
         <!-- if chats selected -->
         <div *ngIf="selectedTabTitle == CHATS">
-            <app-chat-list></app-chat-list>
+            <app-chat-list (chatEmitter)="messagingNavigation($event)" [friends]="friends"></app-chat-list>
         </div>
 
         <!-- if posts selected -->

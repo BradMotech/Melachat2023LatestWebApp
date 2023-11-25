@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-app-header',
@@ -6,9 +7,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app-header.component.scss']
 })
 export class AppHeaderComponent {
-  isNavbarCollapsed: boolean = true;
+  isNavbarCollapsed: boolean = false;
+constructor( private router: Router){
 
+}
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  navigate(url:string){
+this.router.navigate([`${url}`])
   }
 }

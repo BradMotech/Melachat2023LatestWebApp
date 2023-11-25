@@ -7,6 +7,9 @@ import { AddFriendComponent } from './add-friend/add-friend.component';
 import { TrendingComponent } from './trending/trending.component';
 import { AddPostComponent } from './add-post/add-post.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AddStoryComponent } from './add-story/add-story.component';
+import { ChatScreenComponent } from './chat-screen/chat-screen.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -14,6 +17,9 @@ const routes: Routes = [
   { path: 'browse-friends', component: AddFriendComponent },
   { path: 'add-post', component: AddPostComponent },
   { path: 'post-details', component: PostDetailsComponent },
+  { path: 'add-story', component: AddStoryComponent },
+  { path: 'trending', component: TrendingComponent },
+  { path: 'messaging', component: ChatScreenComponent },
 ];
 
 
@@ -23,10 +29,12 @@ const routes: Routes = [
     AddFriendComponent,
     TrendingComponent,
     AddPostComponent,
-    PostDetailsComponent
+    PostDetailsComponent,
+    AddStoryComponent,
+    ChatScreenComponent
   ],
   imports: [
-    CommonModule,RouterModule.forChild(routes), SharedModule
+    CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule
   ]
 })
 export class CoreModule { }

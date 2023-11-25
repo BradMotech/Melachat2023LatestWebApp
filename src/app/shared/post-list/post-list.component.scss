@@ -16,3 +16,14 @@
         border-radius: 12px
     }
 }
+@media (max-width: 760px) {
+    .md\:grid-cols-3 {
+        background-color: white;
+        padding: 54px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-right: 148px;
+        margin-left: 148px;
+        border-radius: 12px
+    }
+}

@@ -7,9 +7,11 @@ import { SharedModule } from './shared/shared.module';
 import { AppHeaderComponent } from './shared/app-header/app-header.component';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 import { CoreModule } from './core/core.module';
 import { environment } from 'src/environments/environment.prod';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
     CoreModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore()),
+    provideFirestore(() => getFirestore()), 
+    provideStorage(() => getStorage()), 
+    FormsModule,ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

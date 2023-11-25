@@ -6,5 +6,6 @@ import { Component, Input, Output } from '@angular/core';
   styleUrls: ['./images-grid.component.scss']
 })
 export class ImagesGridComponent {
-@Input() images!:unknown[];
+@Input() images!:any[];
+@Input() addPost:boolean = false;
 }

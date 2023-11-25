@@ -20,7 +20,7 @@ export class AddFriendComponent {
   ngOnInit(): void {
     this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
       console.log('users here', users);
-      return (this.recommedations = users);
+      return (this.recommedations = users.filter(userValue => userValue.username && userValue.name));
     });
   }
   

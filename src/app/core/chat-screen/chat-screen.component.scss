@@ -1,0 +1,42 @@
+.main-container {
+    background-color: rgb(243, 243, 243) !important;
+    height: 100% !important;
+    min-height: 100vh;
+    width: 100% !important;
+    background-image: url("../../../assets//melachatbackground.png");
+    overflow: hidden;
+}
+
+
+.header-section{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding:18px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+.footer-chat-input{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding:18px
+}
+
+.user-details{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.user-name{
+    color:white;
+    padding-right:12px
+}

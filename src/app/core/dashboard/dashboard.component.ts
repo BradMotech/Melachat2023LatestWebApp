@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { NavigationExtras, Route, Router } from '@angular/router';
 import { IHashTags } from 'src/app/shared/Interfaces/IHashTags';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
@@ -22,7 +22,10 @@ export class DashboardComponent implements OnInit {
   ModalData!: IUsersInterface;
   openModalFlag!: boolean;
   AllPosts!: IPosts[];
+  friends!: IUsersInterface[] | undefined;
   NewsArticles!:any[]
+  showRecommendations: boolean = false;
+  hide: boolean = false;
   
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -37,7 +40,7 @@ export class DashboardComponent implements OnInit {
 
     this.fireStoreCollectionsService.getAllPoststags().subscribe(posts => {
       console.warn(posts)
-      return this.AllPosts = posts});
+      return this.AllPosts = posts.filter(v => v.post !== "" && v.username !== "")});
 
     fetch(
       "https://newsapi.org/v2/top-headlines?country=za&apiKey=32054b2282e440a2bf45da9fcacb2040"
@@ -48,6 +51,11 @@ export class DashboardComponent implements OnInit {
       })
       .catch((error) => {
         console.error(error);
+      });
+
+      this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+        console.log('users here', users);
+        return (this.friends = users);
       });
   }
 
@@ -75,5 +83,25 @@ export class DashboardComponent implements OnInit {
 
       AddPost(){
         this.router.navigate(['/', 'add-post'])
+      }
+      addStoryNavigation(){
+        this.router.navigate(['/', 'add-story'])
+      }
+      messagingNavigation(friend:IUsersInterface){
+        this.router.navigate(['/', 'messaging'], {
+          queryParams: {
+            friendData: JSON.stringify(friend)
+          }
+        });
+      }
+
+      toggleVisibility(visibility:string){
+        if(visibility == 'show'){
+          this.showRecommendations = true;
+          this.hide = true
+        }else{
+          this.showRecommendations = false;
+          this.hide = false
+        }
       }
 }

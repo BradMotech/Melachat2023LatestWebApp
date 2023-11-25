@@ -1,41 +1,35 @@
-
-<ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700" style="width:100%">
-    <li class="pb-3 sm:pb-4">
-       <div class="flex items-center space-x-4">
-          <div class="flex-shrink-0">
-             <img class="w-8 h-8 rounded-full" src="https://firebasestorage.googleapis.com/v0/b/the-thetaapp.appspot.com/o/UserImages%2FVxX3M7vxv6QDUlCWKXONlFBJ10C3?alt=media&token=bb930439-55b1-42a9-88fd-1c1b7782837b" alt="Neil image">
-          </div>
-          <div class="flex-1 min-w-0">
-             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                Edna
-             </p>
-             <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                edna@gmail.com
-             </p>
-          </div>
-          <!-- <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-            some icon
-          </div> -->
-       </div>
-    </li>
-    <li class="py-3 sm:py-4" >
-       <div class="flex items-center space-x-4">
-          <div class="flex-shrink-0">
-             <img class="w-8 h-8 rounded-full" src="https://firebasestorage.googleapis.com/v0/b/the-thetaapp.appspot.com/o/UserImages%2FUm4ikVYgf8epmWL7jbF8LEuhdbx1?alt=media&token=a4fa7ce4-3222-4536-8327-939f988694f6" alt="Neil image">
-          </div>
-          <div class="flex-1 min-w-0">
-             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-               Nonceba
-             </p>
-             <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-               Nonceba@gmail.com
-             </p>
-          </div>
-          <!-- <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-            some icon
-          </div> -->
-       </div>
-    </li>
- 
- </ul>
- 
+<div *ngFor="let friend of friends">
+   <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700" style="width:100%"
+      *ngIf="friend.username || friend.name">
+      <li class="pb-3 sm:pb-4" style="cursor: pointer;" (click)="startChatting(friend)">
+         <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+               <img *ngIf="friend.image" class="w-8 h-8 rounded-full" src="{{friend.image}}" alt="Neil image">
+               <div *ngIf="!friend.image" class="w-8 h-8 rounded-full">
+                  <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                     <path
+                        d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+                  </svg>
+               </div>
+            </div>
+            <div class="flex-1 min-w-0">
+               <p class="text-sm font-medium text-gray-900 truncate dark:text-white" style="color: white;">
+                  {{friend.name}}
+               </p>
+               <p *ngIf="friend.username" class="text-sm text-gray-500 truncate dark:text-gray-400">
+                  @{{friend.username}}
+               </p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white" style="display: flex;justify-content: center;align-items: center;flex-direction: column;color: grey;">
+              <p>Yesterday</p>
+               <span
+                  class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-white-800 bg-red-200 rounded-full"
+                  style="background-color:#16afec;margin-right: -48px;color:white;font-size: 7px;">
+                  20
+               </span>
+            </div>
+         </div>
+      </li>
+   </ul>
+</div>

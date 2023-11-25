@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-story-container',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./story-container.component.scss']
 })
 export class StoryContainerComponent {
+@Input() addStory:boolean = true;
+@Input() stories:any[]=[];
+@Output() addStoryEmiiter = new EventEmitter<unknown>()
 
+addStoryFunction(){
+this.addStoryEmiiter.emit()
+}
 }

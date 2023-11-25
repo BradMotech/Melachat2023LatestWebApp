@@ -1,4 +1,4 @@
-<div class="main-container">
+<div class="main-container" style="background-image: url('../../../assets//melachatbackground.png');">
     <app-app-header></app-app-header>
     <div class="search-container-center" style="margin-top:90px;">
         <div class="get-started">
@@ -55,13 +55,18 @@
         <div class="get-started" *ngIf="recommedations">
             <ng-container *ngFor="let item of recommedations">
                 <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700" style="width:100%;min-width: 100%;">
-                    <li class="pb-3 sm:pb-4" style="background-color: white;border-radius:4px;margin-bottom:2px;padding:16px">
+                    <li class="pb-3 sm:pb-4 friend-item" style="background-color: white;border-radius:4px;margin-bottom:2px;padding:16px">
                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
                           <div class="flex-shrink-0">
-                             <img class="w-8 h-8 rounded-full" src="{{item.image}}" alt="Neil image">
+                             <img *ngIf="item.image"  class="w-8 h-8 rounded-full" src="{{item.image}}" alt="Neil image">
+                             <div *ngIf="!item.image" class="w-8 h-8 rounded-full">
+                                <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
+                                </svg>
+                            </div>
                           </div>
                           <div class="flex-1 min-w-0">
-                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                             <p class="text-sm font-medium text-gray-900 truncate dark:text-white" style="color:white">
                                {{item.name}}
                              </p>
                              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
@@ -70,10 +75,7 @@
                           </div>
                           <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button style="background-color:#16afec" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                <svg class="w-3 h-3 text-white me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 16">
-                                    <path d="M10.036 8.278 9.258 0.488A1.979 1.979 0 0 0 8 0C7.018 0 6.177 0.782 5.742 1.894L0.641 14.259A1.987 1.987 0 0 0 2 16h16a1.987 1.987 0 0 0 1.359-0.541l-4.602-12.365Z"/>
-                                    <path d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"/>
-                                </svg>                                
+                                <svg class="h-3 w-3 text-white"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" /></svg>                               
                                 Add friend
                                 </button>
                           </div>

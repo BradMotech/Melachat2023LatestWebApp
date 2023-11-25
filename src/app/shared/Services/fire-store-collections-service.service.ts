@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, finalize, forkJoin } from 'rxjs';
 import { IUsersInterface } from '../Interfaces/IUsersInterface';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
@@ -12,8 +12,9 @@ import {
   where,
   orderBy,
   getDocs,
+  addDoc,
+  serverTimestamp,
 } from '@angular/fire/firestore';
-
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { IHashTags } from '../Interfaces/IHashTags';
 import { IPosts } from '../Interfaces/IPosts';
@@ -24,7 +25,7 @@ export class FireStoreCollectionsServiceService {
 
   constructor(
     private firestore: Firestore,
-    public userAuth: Auth) { }
+    public userAuth: Auth,) { }
 
 
     getAllUsers(): Observable<IUsersInterface[]> {
@@ -96,4 +97,85 @@ export class FireStoreCollectionsServiceService {
       // return this.http.get(url);
     }
 
+    uploadPost(postData: IPosts): Observable<void> {
+      const postsCollection = collection(this.firestore, 'Posts');
+      return new Observable<void>((observer) => {
+        addDoc(postsCollection, {
+          ...postData,
+          datePosted:new Date().toLocaleString('en-GB', { timeZone: 'UTC' }), // You might want to use serverTimestamp for accurate date
+        })
+          .then(() => {
+            observer.next();
+            observer.complete();
+          })
+          .catch((error) => {
+            observer.error(error);
+            observer.complete();
+          });
+      });
+    }
+
+    // private addPostToFirestore(
+    //   postsCollection: any, // You might need to define the correct type
+    //   postData: IPosts,
+    //   observer: any // You might need to define the correct type
+    // ): void {
+    //   addDoc(postsCollection, {
+    //     ...postData,
+    //     datePosted: new Date().toLocaleString('en-GB', { timeZone: 'UTC' }),
+    //     // Add other properties as needed
+    //   })
+    //     .then(() => {
+    //       observer.next();
+    //       observer.complete();
+    //     })
+    //     .catch((error) => {
+    //       observer.error(error);
+    //       observer.complete();
+    //     });
+    // }
+  
+    // uploadPost(postData: IPosts, selectedImages?: FileList): Observable<void> {
+    //   const postsCollection = collection(this.firestore, 'Posts');
+    //   const storagePath = 'post-images'; // Update this with your desired storage path
+  
+    //   return new Observable<void>((observer) => {
+    //     // Upload images to Firebase Storage
+    //     if (selectedImages && selectedImages.length > 0) {
+    //       const uploadTasks: Observable<any>[] = [];
+    //       const storageUrls: string[] = []; // Store the Firebase Storage URLs
+  
+    //       Array.from(selectedImages).forEach((image: File, index: number) => {
+    //         const path = `${storagePath}/${postData.user}-${index + 1}-${image.name}`;
+    //         const storageRef = ref(this.storage, path);
+    //         const task = uploadBytes(storageRef, image);
+  
+    //         // Collect upload tasks to wait for all uploads to complete
+    //         const taskObservable = from(task);
+    //         uploadTasks.push(taskObservable);
+  
+    //         // Get the download URL after the upload is complete
+    //         taskObservable.subscribe(() => {
+    //           // Directly get the download URL from the Reference
+    //           storageRef.getDownloadURL().then((downloadURL: string) => {
+    //             storageUrls.push(downloadURL);
+  
+    //             // If all images are uploaded, update the postData with URLs
+    //             if (storageUrls.length === selectedImages.length) {
+    //               postData.postImage = storageUrls;
+  
+    //               // Add post to Firestore
+    //               this.addPostToFirestore(postsCollection, postData, observer);
+    //             }
+    //           });
+    //         });
+    //       });
+    //     } else {
+    //       // If no images to upload, just add post to Firestore
+    //       this.addPostToFirestore(postsCollection, postData, observer);
+    //     }
+    //   });
+    // }
+  
+   
 }
