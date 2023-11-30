@@ -1,5 +1,7 @@
+import { IComment } from "src/app/core/post-details/post-details.component";
+
 export interface IPosts {
-    comments: { [key: string]: any }; 
+    comments: any; 
     datePosted: string;
     likedBy: string[];
     likes: number;
@@ -12,4 +14,5 @@ export interface IPosts {
     userImage: string;
     username: string;
     viewedBy: string[];
+    docId:string
   }

@@ -16,4 +16,7 @@ export interface IUsersInterface {
     requests: string[];
     suspended: boolean;
     username: string;
+    docId:string;
+    unread:string,
+    melachatFor:string,
   }

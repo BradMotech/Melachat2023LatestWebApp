@@ -1,0 +1,35 @@
+.main-app-container{
+    width:100%!important;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:100%!important;
+    align-content:center;
+    min-height: 100vh;
+    background-image: url("../../../assets/melachatbackground.png");
+}
+
+.margin-topclass{
+    margin-top:22px
+}
+
+.sign-up-text{
+    margin-bottom:16px
+}
+
+.dropdown-container {
+    margin-top: 12px;
+    margin-bottom: 16px;
+    /* padding: 2.5rem; */
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  
+  .px-2 {
+    /* padding-left: 0.5rem; */
+    /* padding-right: 0.5rem; */
+    margin-top: 39px!important;
+    margin-bottom: 40px!important;
+}

@@ -42,7 +42,7 @@
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M21 2H3v16h5v4l4-4h5l4-4V2zM11 11V7M16 11V7" />
                             </svg>
-                            comments
+                            {{postComments.length}} comments
                         </button>
                         <button type="button"
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-md hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
@@ -68,13 +68,13 @@
                                     placeholder="Write a comment..." required></textarea>
                             </div>
                             <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
-                                <button type="submit"
+                                <button (click)="AddComment()"
                                     class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                                     Post comment
                                 </button>
                                 <div style="visibility: hidden;"
                                     class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
-                                    <button (click)="postComment(Post)" type="button"
+                                    <button (click)="AddComment()" type="button"
                                         class="inline-flex justify-center items-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
                                         <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                             fill="none" viewBox="0 0 12 20">
@@ -105,30 +105,45 @@
                             </div>
                         </div>
                     </form>
-                    <p class="ms-auto text-xs text-gray-500 dark:text-gray-400">Remember, contributions to this topic
+                    <p style="margin-bottom:32px" class="ms-auto text-xs text-gray-500 dark:text-gray-400">Remember, contributions to this topic
                         should follow our <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">Community
                             Guidelines</a>.</p>
 
                     <!-- comment here -->
-                    <ng-container *ngFor="let comment of Post.comments | keyvalue">
-                        <p>dig</p>
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <img class="w-8 h-8 rounded-full" [src]="comment.value.userImage"
-                                    alt="{{ comment.value.username }} image">
+                    <ng-container *ngFor="let comment of postComments">
+                        <article class="article">
+                            <div class="flex items-center mb-4">
+                                <img class="w-10 h-10 me-4 rounded-full" src="{{comment.username['userImage']}}" alt="">
+                                <div class="font-medium dark:text-white">
+                                    <p>{{comment.username['username'] }} <span 
+                                            class="block text-sm text-gray-500 dark:text-gray-400">@{{comment.username['username']
+                                            }}</span></p>
+                                </div>
                             </div>
-                            <div class="flex-1 min-w-0 ms-4">
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
-                                    {{ comment.value.username }}
-                                </p>
-                                <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                    {{ comment.value.postedAt }}
-                                </p>
-                            </div>
-                            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
 
-                            </div>
-                        </div>
+                            <footer class="mb-5 text-sm text-gray-500 dark:text-gray-400">
+                                <p>Commented on <time datetime="2017-03-03 19:00">{{comment.username['postedAt']
+                                }}</time></p>
+                            </footer>
+                            <p class="mb-2 text-gray-500 dark:text-gray-400">{{comment.username['comment']}}.</p>
+                            <!-- <a href="#" class="block mb-5 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Read more</a> -->
+                            <aside>
+                                <!-- <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">19 people found this helpful</p> -->
+                                <div class="flex items-center mt-3">
+                                    <svg class="h-6 w-6 mr-2 text-red-500" width="24" height="24" viewBox="0 0 24 24"
+                                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" />
+                                    </svg>
+                                    <a href="#"
+                                        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-xs px-2 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Helpful</a>
+                                    <a href="#"
+                                        class="ps-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 border-gray-200 ms-4 border-s md:mb-0 dark:border-gray-600">Report</a>
+                                </div>
+                            </aside>
+                        </article>
+                        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
                     </ng-container>
                     <!-- Comments -->
                 </div>

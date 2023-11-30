@@ -61,3 +61,39 @@ width:100%
     word-wrap: break-word;
     // width:60vw;
   }
+
+  .header-section{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding:18px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+.user-details{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.user-name{
+    color:white;
+    padding-right:12px
+}
+
+.cursor-blink {
+    border-left: 2px solid white;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    50% {
+      border-color: transparent;
+    }
+  }

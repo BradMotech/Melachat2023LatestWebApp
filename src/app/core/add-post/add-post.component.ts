@@ -1,7 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
+import { UserState } from 'src/app/shared/State/user.reducer';
+import { selectDocId } from 'src/app/shared/State/user.selectors';
 
 interface CustomFile extends File {
   url?: string;
@@ -28,30 +31,38 @@ export class AddPostComponent implements OnInit {
     userImage: '',
     username: '',
     viewedBy: [],
+    docId:''
     // ... any other properties you might have in your IPosts interface
   };
-  PostContentFormControl: FormControl = new FormControl(); 
-  PostContent: string = ''; 
+  PostContentFormControl: FormControl = new FormControl();
+  PostContent: string = '';
   postText: string = '';
-  selectedImages: any[] = []
+  selectedImages: any[] = [];
+  currentUserId!: string | null;
+
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
-    private fb: FormBuilder
+    private store: Store<UserState>
   ) {}
 
   ngOnInit(): void {
     // Subscribe to changes in PostContent
     this.PostContentFormControl.valueChanges.subscribe((value) => {
       console.log('PostContent value changed:', value);
-      this.postText = value
+      this.postText = value;
+    });
+
+    this.store.select(selectDocId).subscribe((id) => {
+      this.currentUserId = id;
+      console.log('Current user id:', this.currentUserId);
     });
   }
   onSubmit(postData: IPosts): void {
     // Assuming you have a form or some way to collect post data
     this.postData.post = this.postText;
     this.postData.title = this.extractAndReturnTitle();
-    alert(this.extractAndReturnTitle())
-    
+    // alert(this.extractAndReturnTitle());
+
     this.fireStoreCollectionsService.uploadPost(postData).subscribe(
       () => {
         console.log('Post uploaded successfully');
@@ -75,7 +86,6 @@ export class AddPostComponent implements OnInit {
     }
   }
 
-
   // Function to trigger the file input when the "Upload image" button is clicked
   triggerImageInput(): void {
     // Access the native element using this.imageInput.nativeElement
@@ -88,7 +98,7 @@ export class AddPostComponent implements OnInit {
       const selectedImages: FileList = inputElement.files;
       // You can now handle the selected images, for example, upload them to a server
       console.log('Selected images:', selectedImages);
-  
+
       // Read the contents of each image and create a data URL
       const fileArray: CustomFile[] = Array.from(selectedImages);
       fileArray.forEach((file) => {
@@ -99,8 +109,9 @@ export class AddPostComponent implements OnInit {
         };
         reader.readAsDataURL(file);
       });
-  
+
       // Set the updated array to selectedImages
       this.selectedImages = fileArray;
-    }}
+    }
+  }
 }

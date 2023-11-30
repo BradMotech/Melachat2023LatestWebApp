@@ -14,3 +14,12 @@
   .button-group{
     margin:12px
   }
+
+  .limit-text{
+    display: -webkit-box;
+overflow : hidden;
+text-overflow: ellipsis;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;  /* Adjust the value to control the number of lines displayed */
+    // -webkit-box-orient: vertical;
+  }

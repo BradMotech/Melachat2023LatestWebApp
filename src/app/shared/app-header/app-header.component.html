@@ -5,6 +5,7 @@
       <div class="flex justify-between items-center">
         <a href="#" class="font-bold text-xl text-indigo-600"><img src="../../../assets/icon.png" class="brand-img"
             alt=""></a>
+            <p style="margin-left:12px"> @{{currentUser?.username}}</p>
         <!-- <button class="border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden" (click)="toggleNavbar()">
           <i class="fas fa-bars"></i>
         </button> -->
@@ -12,7 +13,8 @@
       
       <div (click)="navigate('home')" [ngClass]="{'hidden': isNavbarCollapsed, 'flex': !isNavbarCollapsed}"
       class="md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" style=" flex-direction: row;">
-      <h1 style="margin-top: 12px;margin-right:20px">For Business</h1>
+      <h1 *ngIf="currentUser?.melachatFor" style="margin-top: 12px;margin-right:20px">For Business</h1>
+      <h1 *ngIf="!currentUser?.melachatFor" style="margin-top: 12px;margin-right:20px">For Individual</h1>
         <div style="margin-top: 12px;width:50px">
           <svg class="h-7 w-7 text-black-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -32,8 +34,8 @@
           </svg>
         </div>
         <div>
-          <img class="icon user-profile"
-            src="data:image/jpeg;base64,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" />
+          <img (click)="navigate('user-profile')" class="icon user-profile"
+          src="{{currentUser?.image}}" />
           <span
             class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-white-800 bg-white-200 rounded-full"
             style="

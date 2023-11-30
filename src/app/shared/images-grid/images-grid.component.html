@@ -8,9 +8,9 @@
         </div>
     </div>
     
-    <div *ngIf="!images.length">
+    <!-- <div *ngIf="!images.length">
         <img class="h-auto w-full object-fit-contain rounded-lg"src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ0CEr4I-GsXfHWXW880eSpiq9Q2ovkXKBvSSRocbQa4s8EogSz" alt="" style="height:200px;object-fit: contain;"/>
-     </div>
+     </div> -->
     <div *ngIf="images.length == 1">
         <img *ngIf="images[0]" class="h-auto w-full object-fit-contain rounded-lg"src="{{images[0]}}" alt="" style="height:200px;object-fit: contain;"/>
     </div>

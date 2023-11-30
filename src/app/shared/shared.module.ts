@@ -16,6 +16,12 @@ import { FloatingButtonComponent } from './floating-button/floating-button.compo
 import { DialogComponent } from './dialog/dialog.component';
 import { ImagesGridComponent } from './images-grid/images-grid.component';
 import { StoryCubeComponent } from './story-cube/story-cube.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from './State/user.reducer';
+import { NoPostsFoundComponent } from './no-posts-found/no-posts-found.component';
+import { TimestampToDatePipe } from './timestamp-to-date.pipe';
+import { StorageModule } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [
@@ -35,8 +41,10 @@ import { StoryCubeComponent } from './story-cube/story-cube.component';
     DialogComponent,
     ImagesGridComponent,
     StoryCubeComponent,
+    NoPostsFoundComponent,
+    TimestampToDatePipe,
   ],
-  imports: [CommonModule],
+  imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule],
   exports: [
     AppHeaderComponent,
     StoryContainerComponent,
@@ -52,7 +60,7 @@ import { StoryCubeComponent } from './story-cube/story-cube.component';
     FloatingButtonComponent,
     DialogComponent,
     ImagesGridComponent,
-    StoryCubeComponent
+    StoryCubeComponent,NoPostsFoundComponent,TimestampToDatePipe
   ],
 })
 export class SharedModule {}

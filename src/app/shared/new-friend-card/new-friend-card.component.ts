@@ -9,8 +9,14 @@ import { IUsersInterface } from '../Interfaces/IUsersInterface';
 export class NewFriendCardComponent {
   @Input() users!:IUsersInterface;
   @Output() moreDetailsEmitter = new EventEmitter<IUsersInterface>();
+  @Output() MessageUserEmitter = new EventEmitter<IUsersInterface>();
+
 
   moreDetails(details: IUsersInterface) {
   this.moreDetailsEmitter.emit(details)
+  }
+
+  message(user: IUsersInterface) {
+  this.MessageUserEmitter.emit(user)
   }
 }

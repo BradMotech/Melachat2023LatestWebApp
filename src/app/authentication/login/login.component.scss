@@ -8,3 +8,29 @@
     min-height: 100vh;
     background-image: url("../../../assets/melachatbackground.png");
 }
+
+.melachat-icon-container{
+    width:100%;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.melachat-icon{
+    height: 60px;
+    width: 60px;
+}
+
+.brand-img{
+    border-radius: 13px!important;
+}
+
+input.ng-invalid {
+    // border-color: red;
+}
+
+/* Style for the validation message */
+.text-red-500 {
+    // color: #e53e3e; /* Red color code, you can adjust this as needed */
+}

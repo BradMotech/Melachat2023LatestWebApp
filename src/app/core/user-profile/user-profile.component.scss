@@ -1,0 +1,51 @@
+.pb-full {
+    padding-bottom: 100%;
+  }
+  
+  /* hide search icon on search focus */
+  .search-bar:focus + .fa-search {
+    display: none;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .post:hover {
+      .overlay {
+        display: block;
+      }
+    }
+  }
+  
+
+  .get-started {
+    padding: 22px;
+    margin-top:120px
+}
+
+@media screen and (min-width: 768px) {
+
+    /* Apply these styles on screens larger than or equal to 768px wide (tablets and desktops) */
+    .get-started {
+        padding-left: 170px;
+        padding-right: 170px;
+    }
+}
+
+.text-white{
+    color:white
+}
+
+.melachat-background-color{
+    background-color: #16afec;
+}
+
+.get-started-wrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.padding-top-text{
+  padding-top:22px;
+  padding-bottom:22px;
+}

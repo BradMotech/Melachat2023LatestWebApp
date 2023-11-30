@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
@@ -10,6 +10,9 @@ import { PostDetailsComponent } from './post-details/post-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddStoryComponent } from './add-story/add-story.component';
 import { ChatScreenComponent } from './chat-screen/chat-screen.component';
+import { NotificationComponent } from './notification/notification.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { FriendRequestsComponent } from './friend-requests/friend-requests.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -20,6 +23,9 @@ const routes: Routes = [
   { path: 'add-story', component: AddStoryComponent },
   { path: 'trending', component: TrendingComponent },
   { path: 'messaging', component: ChatScreenComponent },
+  { path: 'notifications', component: NotificationComponent },
+  { path: 'user-profile', component: UserProfileComponent },
+  { path: 'friend-requests', component: FriendRequestsComponent },
 ];
 
 
@@ -31,10 +37,14 @@ const routes: Routes = [
     AddPostComponent,
     PostDetailsComponent,
     AddStoryComponent,
-    ChatScreenComponent
+    ChatScreenComponent,
+    NotificationComponent,
+    UserProfileComponent,
+    FriendRequestsComponent
   ],
   imports: [
     CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule
-  ]
+  ],
+  providers:[DatePipe]
 })
 export class CoreModule { }

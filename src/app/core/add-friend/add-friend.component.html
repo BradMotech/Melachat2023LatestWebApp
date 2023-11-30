@@ -46,7 +46,7 @@
             </ul>
 
         </div>
-        <app-search></app-search>
+        <app-search [placeholder]="'Search users...'"></app-search>
         <div class="get-started">
             <h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px;color:white">Friends on Melachat
             </h5>
@@ -70,11 +70,11 @@
                                {{item.name}}
                              </p>
                              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                                email@flowbite.com
+                               {{item.phone}}
                              </p>
                           </div>
                           <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                            <button style="background-color:#16afec" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <button (click)="addNewFriend(item.docId,item.phone)" style="background-color:#16afec" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg class="h-3 w-3 text-white"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" /></svg>                               
                                 Add friend
                                 </button>

@@ -6,6 +6,6 @@
 <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
     
     <ng-container *ngFor="let item of AllPosts">
-        <app-post-item (ViewPost)="ViewPosts(item)" [Post]="item"></app-post-item>
+        <app-post-item (likePostEmitter)="likePost(item);" (ViewPost)="ViewPosts(item)" [Post]="item"></app-post-item>
     </ng-container>
 </div>
