@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { IHashTags } from 'src/app/shared/Interfaces/IHashTags';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
-import { FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
+import { FireStoreCollectionsServiceService, UserStories } from 'src/app/shared/Services/fire-store-collections-service.service';
 import { UserState } from 'src/app/shared/State/user.reducer';
 import {
   selectCurrentUser,
@@ -29,6 +29,7 @@ export class DashboardComponent implements OnInit {
   openModalFlag!: boolean;
   AllPosts!: IPosts[];
   friends!: IUsersInterface[] | undefined;
+  ListOfStories!: UserStories[];
   NewsArticles!: any[];
   showRecommendations: boolean = false;
   hide: boolean = false;
@@ -58,6 +59,7 @@ export class DashboardComponent implements OnInit {
     private store: Store<UserState>
   ) {}
   ngOnInit(): void {
+    this.fetchAllStories()
     this.store.select(selectCurrentUser).subscribe((user) => {
       this.currentUser = user;
       console.log('Current user:', this.currentUser);
@@ -78,11 +80,21 @@ export class DashboardComponent implements OnInit {
       .getAllHashtags()
       .subscribe((hashtags) => (this.hashtags = hashtags));
 
+    // this.fireStoreCollectionsService.getAllPoststags().subscribe((posts) => {
+    //   // console.warn(posts);
+    //   return (this.AllPosts = posts.filter(
+    //     (v) => v.post !== '' && v.username !== ''
+    //   ));
+    // });
     this.fireStoreCollectionsService.getAllPoststags().subscribe((posts) => {
-      // console.warn(posts);
-      return (this.AllPosts = posts.filter(
-        (v) => v.post !== '' && v.username !== ''
-      ));
+      // Sort the posts by dateAdded in descending order (most recent first)
+      this.AllPosts = posts
+        .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
+        .sort((a, b) => {
+          const dateA = new Date(a.datePosted).getTime();
+          const dateB = new Date(b.datePosted).getTime();
+          return dateB - dateA;
+        });
     });
 
     fetch(
@@ -101,6 +113,20 @@ export class DashboardComponent implements OnInit {
       return (this.friends = users);
     });
     this.fetchCurrentUserFriends();
+  }
+  fetchAllStories() {
+
+ this.fireStoreCollectionsService.getAllStories().subscribe(
+      (stories: UserStories[]) => {
+        // Update your component property with the fetched stories
+        console.warn("this is all the stories",stories)
+        this.ListOfStories = stories
+      },
+      (error) => {
+        // Handle errors here, e.g., display an error message to the user or log the error
+        console.error('Error fetching stories:', error);
+      }
+    );
   }
 
   fetchCurrentUserFriends(): IUsersInterface[] {

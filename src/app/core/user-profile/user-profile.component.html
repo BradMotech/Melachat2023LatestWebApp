@@ -10,23 +10,38 @@
 
                     <div class="md:w-3/12 md:ml-16">
                         <!-- profile image -->
-                        <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
+                        <img *ngIf="!editUser" class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
                        border-2 border-pink-600 p-1" src="{{currentUser?.image}}" alt="profile">
+                        <img *ngIf="editUser" class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
+                       border-2 border-pink-600 p-1" src="{{selectedImageString}}" alt="profile">
+                        <input  #imageInput type="file" accept="image/*" multiple style="display: none"
+                            (change)="onImageSelected($event)">
+                        <svg  *ngIf="editUser" (click)="triggerImageInput()" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                            <circle cx="12" cy="13" r="4" />
+                        </svg>
                     </div>
 
                     <!-- profile meta -->
                     <div class="w-8/12 md:w-7/12 ml-4">
                         <div class="md:flex md:flex-wrap md:items-center mb-4">
-                            <h2 class="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0 text-white">
+                            <h2 *ngIf="!editUser"
+                                class="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0 text-white">
                                 {{currentUser?.name}}
                             </h2>
+                            <input [formControl]="UserNameFormControl" style="margin:6px;color:black" *ngIf="editUser" placeholder="Enter your name here" />
 
                             <!-- badge -->
 
                             <!-- follow button -->
-                            <a href="#" class="bg-blue-500 px-2 py-1 
+                            <a *ngIf="!editUser" (click)="EditUser()" class="bg-blue-500 px-2 py-1 
                           text-white font-semibold text-sm rounded block text-center 
                           sm:inline-block block text-white melachat-background-color">Edit Profile</a>
+                            <a *ngIf="editUser" (click)="saveUserDetails()" class="bg-blue-500 px-2 py-1 
+                          text-white font-semibold text-sm rounded block text-center 
+                          sm:inline-block block text-white melachat-background-color">Save Profile</a>
                         </div>
 
                         <!-- post, following, followers list for medium screens -->
@@ -48,7 +63,9 @@
 
                         <!-- user meta form medium screens -->
                         <div class="hidden md:block">
-                            <span class="text-white">{{currentUser?.bio}}</span>
+                            <span class="text-white" *ngIf="!editUser">{{currentUser?.bio}}</span>
+                            <input [formControl]="UserBioFormControl" class="text-white" style="margin:6px;color:black" *ngIf="editUser"
+                                placeholder="Enter your bio here" />
                             <p class="text-white">Joined on {{currentUser?.created}}</p>
                         </div>
 
@@ -57,7 +74,10 @@
                     <!-- user meta form small screens -->
                     <div class="md:hidden text-sm my-2">
                         <!-- <h1 class="font-semibold">Mr Travlerrr...</h1> -->
-                        <span class="text-white">{{currentUser?.bio}}</span>
+                        <span *ngIf="!editUser" class="text-white">{{currentUser?.bio}}</span>
+
+                        <input [formControl]="UserBioFormControl" style="margin:6px" *ngIf="editUser" placeholder="Enter your bio here" />
+
                     </div>
 
                 </header>
@@ -113,7 +133,7 @@
                     </ul>
                     <!-- flexbox grid -->
                     <div class="get-started-wrapper">
-                        <h1 class="text-white padding-top-text" > You have no Posts currently</h1>
+                        <h1 class="text-white padding-top-text"> You have no Posts currently</h1>
                         <!-- <app-no-posts-found></app-no-posts-found> -->
                     </div>
                 </div>

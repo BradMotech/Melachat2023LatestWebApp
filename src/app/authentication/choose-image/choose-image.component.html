@@ -1,0 +1,32 @@
+
+<div class="main-app-container">
+    <div class="get-started">
+        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+            style="color:white;text-align: center;">
+            Choose your <span class="text-blue-600 dark:text-blue-500 melachat-text-color">Profile</span> picture</h1>
+        <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 browse-friends-p" style="text-align: center;">Click the camera icon below to select your profile picture
+        </p>
+        <input #imageInput type="file" accept="image/*" multiple style="display: none"
+        (change)="onImageSelected($event)">
+    <button *ngIf="!selectedImage" type="button" (click)="triggerImageInput()" style="margin-top:22px">
+        <figure class="max-w-lg">
+            <svg type="image" class="h-16 w-16 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />  <circle cx="12" cy="13" r="4" /></svg>
+        </figure>
+    </button>
+
+
+<div class="flex items-center gap-4" *ngIf="selectedImage" style="margin-top:22px">
+    <img class="w-10 h-10 rounded-full" src="{{selectedImage}}" alt="" style="width:120px;height:120px;border-radius:50%">
+    <div class="font-medium dark:text-white">
+        <div style="color:white;font-weight: 900;">{{User.name}}</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400">{{User.bio}}</div>
+    </div>
+</div>
+<button (click)="navigateBack()" *ngIf="selectedImage" disabled="{{!selectedImage}}" 
+class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
+ focus:outline-none focus:ring-blue-300 font-medium rounded-lg 
+ text-sm px-5 py-2.5 text-center dark:bg-blue-600 
+ dark:hover:bg-blue-700 dark:focus:ring-blue-800 melachat-button-color" style="margin-top:22px;width:40%">Continue</button>
+        </div>
+
+</div>

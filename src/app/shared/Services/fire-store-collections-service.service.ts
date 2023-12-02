@@ -24,6 +24,7 @@ import {
   onSnapshot,
   runTransaction,
 } from '@angular/fire/firestore';
+
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { IHashTags } from '../Interfaces/IHashTags';
 import { IPosts } from '../Interfaces/IPosts';
@@ -31,9 +32,9 @@ import * as CryptoJS from 'crypto-js';
 import { UserState } from '../State/user.reducer';
 import { Store } from '@ngrx/store';
 import { setDocId } from '../State/user.actions';
-import { StorageModule } from '@angular/fire/storage';
+import { StorageModule, getDownloadURL, ref, uploadString } from '@angular/fire/storage';
 import * as moment from 'moment';
-
+import { Storage } from '@angular/fire/storage';
 
 export interface Story {
   id: number;
@@ -78,6 +79,7 @@ export interface ChatMessage {
   sentTo: string;
   replyMsg: string;
   read: string[];
+  images:string[]
 }
 @Injectable({
   providedIn: 'root',
@@ -87,6 +89,7 @@ export class FireStoreCollectionsServiceService {
     private firestore: Firestore,
     public userAuth: Auth,
     private store: Store<UserState>,
+    private readonly storage: Storage
   ) {}
 
   private currentUserSubject = new BehaviorSubject<IUsersInterface | null>(
@@ -677,6 +680,95 @@ console.log('friend found',userDoc)
           observer.error(error);
           observer.complete();
         });
+    });
+  }
+
+  getAllStories(): Observable<UserStories[]> {
+    const storiesCollection = collection(this.firestore, 'Stories');
+    const storiesQuery = query(storiesCollection);
+
+    return new Observable((observer) => {
+      const unsubscribe = onSnapshot(storiesQuery, (querySnapshot) => {
+        const userStoriesList: UserStories[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const userStories: UserStories = {
+            username: data['username'],
+            profile: data['profile'],
+            user: data['user'],
+            count: data['count'],
+            stories: data['stories'],
+          };
+          userStoriesList.push(userStories);
+        });
+
+        observer.next(userStoriesList);
+      }, (error) => {
+        observer.error(error);
+      });
+
+      // Return an unsubscribe function to clean up the subscription
+      return () => unsubscribe();
+    });
+  }
+
+  generateGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
+  
+  async uploadPicture(imageString:string):Promise<string> {
+    const timestamp = new Date().getTime();
+    const randomString = Math.random().toString(36).substring(2);
+    const filename = `/guestProfile/profilePicture_${timestamp}_${randomString}.png`;
+  
+    const storageRef = ref(this.storage, filename);
+  
+    const uploadedPicture = await uploadString(storageRef, imageString, 'base64');
+  
+    const downloadUrl = getDownloadURL(storageRef);
+    return downloadUrl;
+  }
+
+  updateduserprofile(currentUserNumber:string,image:string) {
+    const usersCollection = 'Users';
+    const queryRef = query(collection(this.firestore, usersCollection), where('phone', '==', currentUserNumber));
+    
+    return new Observable<void>((observer: Observer<void>) => {
+      from(getDocs(queryRef)).pipe(
+        switchMap((querySnapshot) => {
+          if (querySnapshot.empty) {
+            console.log('current user does not exist')
+            // Friend not found
+            // You can handle this case differently, like showing an error message.
+            observer.complete(); // No error, just complete the observer
+            return throwError('current user not found');
+          } else {
+            // Friend found
+            console.warn("called")
+            const userDoc: DocumentReference<DocumentData> = querySnapshot.docs[0].ref;
+            console.log('current user found',userDoc)
+            // Update the friend's requests array
+            return from(updateDoc(userDoc, {
+              image: image,
+            }));
+          }
+        }),
+        catchError((error) => {
+          console.error('Error adding friend:', error);
+          observer.error(error);
+          return throwError(error);
+        })
+      ).subscribe(
+        () => {
+          observer.next();
+          observer.complete();
+        }
+      );
     });
   }
 }

@@ -1,10 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { NotifierService } from 'angular-notifier';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
+import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
+import { AlertService } from 'src/app/shared/Services/alert.service';
 import { FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
 import { UserState } from 'src/app/shared/State/user.reducer';
-import { selectDocId } from 'src/app/shared/State/user.selectors';
+import { selectCurrentUser, selectDocId } from 'src/app/shared/State/user.selectors';
 
 interface CustomFile extends File {
   url?: string;
@@ -39,12 +43,15 @@ export class AddPostComponent implements OnInit {
   postText: string = '';
   selectedImages: any[] = [];
   currentUserId!: string | null;
-
+  imagesConvertedToFirebaseUrl: any;
+  currentUser!: IUsersInterface | null
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
-    private store: Store<UserState>
-  ) {}
+    private store: Store<UserState>,  private router: Router,private alertService: AlertService
+  ) {
 
+  }
+  
   ngOnInit(): void {
     // Subscribe to changes in PostContent
     this.PostContentFormControl.valueChanges.subscribe((value) => {
@@ -56,20 +63,44 @@ export class AddPostComponent implements OnInit {
       this.currentUserId = id;
       console.log('Current user id:', this.currentUserId);
     });
+    this.store.select(selectCurrentUser).subscribe((user) => {
+      this.currentUser = user;
+      console.log('Current user:', this.currentUser);
+      console.log('Current user friends:', this.currentUser?.requests);
+      
+    });
   }
+
+  generateGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0,
+        v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
+
   onSubmit(postData: IPosts): void {
     // Assuming you have a form or some way to collect post data
     this.postData.post = this.postText;
     this.postData.title = this.extractAndReturnTitle();
+    if(this.imagesConvertedToFirebaseUrl){
+
+      this.postData.postImage = this.imagesConvertedToFirebaseUrl
+    };
+    this.postData.username = this.currentUser?.username as string 
+    // this.postData.docId = this.generateGuid() as string
     // alert(this.extractAndReturnTitle());
 
     this.fireStoreCollectionsService.uploadPost(postData).subscribe(
       () => {
-        console.log('Post uploaded successfully');
+        console.log('Post uploaded successfully',postData);
+        this.alertService.success('Post uploaded successfully!');
+        this.router.navigate(['home'])
         // Additional logic or redirection after successful upload
       },
       (error) => {
         console.error('Error uploading post:', error);
+        this.alertService.error('Post upload failed!',error);
         // Handle error accordingly
       }
     );
@@ -92,26 +123,94 @@ export class AddPostComponent implements OnInit {
     this.imageInput.nativeElement.click();
   }
 
+  // onImageSelected(event: Event): void {
+  //   const inputElement = event.target as HTMLInputElement;
+  //   if (inputElement.files) {
+  //     const selectedImages: FileList = inputElement.files;
+  //     const fileArray: CustomFile[] = Array.from(selectedImages);
+  
+  //     // Reset the array
+  //     this.imagesConvertedToFirebaseUrl = [];
+  
+  //     // Create a function to upload an image and return a Promise
+  //     const uploadImage = (file: CustomFile): Promise<string> => {
+  //       return new Promise((resolve, reject) => {
+  //         const reader = new FileReader();
+  //         reader.onload = (e) => {
+  //           const base64String = (e.target?.result as string).split(',')[1];
+  
+  //           this.fireStoreCollectionsService
+  //             .uploadPicture(base64String)
+  //             .then((firebaseUrl) => {
+  //               resolve(firebaseUrl);
+  //             })
+  //             .catch((error) => {
+  //               reject(error);
+  //             });
+  //         };
+  //         reader.readAsDataURL(file);
+  //       });
+  //     };
+  
+  //     // Use Promise.all to handle multiple asynchronous uploads
+  //     Promise.all(fileArray.map(file => uploadImage(file)))
+  //       .then((urls) => {
+  //         // URLs are now in the correct order
+  //         console.warn("Stored image URLs:", urls,fileArray);
+  //         this.imagesConvertedToFirebaseUrl = urls;
+  //         this.selectedImages = urls
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }
+  // }
+  
   onImageSelected(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement.files) {
       const selectedImages: FileList = inputElement.files;
-      // You can now handle the selected images, for example, upload them to a server
-      console.log('Selected images:', selectedImages);
-
-      // Read the contents of each image and create a data URL
       const fileArray: CustomFile[] = Array.from(selectedImages);
-      fileArray.forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          // Add the data URL to the CustomFile object
-          file.url = e.target?.result as string;
-        };
-        reader.readAsDataURL(file);
-      });
-
-      // Set the updated array to selectedImages
-      this.selectedImages = fileArray;
+  
+      // Reset the array
+      this.imagesConvertedToFirebaseUrl = [];
+  
+      // Create a function to upload an image and return a Promise
+      const uploadImage = (file: CustomFile): Promise<string> => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const base64String = (e.target?.result as string).split(',')[1];
+  
+            this.fireStoreCollectionsService
+              .uploadPicture(base64String)
+              .then((firebaseUrl) => {
+                resolve(firebaseUrl);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          };
+          reader.readAsDataURL(file);
+        });
+      };
+  
+      // Process each file sequentially
+      const processFiles = async () => {
+        for (const file of fileArray) {
+          try {
+            const url = await uploadImage(file);
+            this.imagesConvertedToFirebaseUrl.push(url);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      };
+  
+      // Start processing files
+      processFiles();
+      this.selectedImages = this.imagesConvertedToFirebaseUrl
     }
   }
+  
 }

@@ -1,55 +1,52 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { CustomFile } from 'src/app/authentication/choose-image/choose-image.component';
+import { Router } from '@angular/router';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
+import { AlertService } from 'src/app/shared/Services/alert.service';
 import { FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
-import { UserState } from 'src/app/shared/State/user.reducer';
-import { selectCurrentUser, selectDocId } from 'src/app/shared/State/user.selectors';
 
+export interface CustomFile extends File {
+  url?: string;
+}
 @Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  selector: 'app-choose-image',
+  templateUrl: './choose-image.component.html',
+  styleUrls: ['./choose-image.component.scss'],
 })
-export class UserProfileComponent implements OnInit{
+export class ChooseImageComponent implements OnInit {
   @ViewChild('imageInput') imageInput!: ElementRef;
-  currentUser!: IUsersInterface | null;
-  currentUserId!: string | null;
-  editUser:boolean = false;
   selectedImages: any[] = [];
   selectedImage!: string;
   User!: IUsersInterface;
-  selectedImageString: string = '';
-  UserNameFormControl = new FormControl();
-  UserBioFormControl = new FormControl();
-  userName: string = '';
-  userBio: string = '';
-  constructor( private fireStoreCollectionsService: FireStoreCollectionsServiceService,
-    private store: Store<UserState>){
-
-  }
+  constructor(
+    private router: Router,
+    private firebaseService: FireStoreCollectionsServiceService,
+    private alertService: AlertService
+  ) {}
   ngOnInit(): void {
-    this.store.select(selectCurrentUser).subscribe((user) => {
-      this.currentUser = user;
-      console.log('Current user:', this.currentUser);
+    this.router.routerState.root.queryParams.subscribe((params: any) => {
+      // console.warn(params.comments);
+      if (params) {
+        this.User = <IUsersInterface>{
+          InterestedIn: params.InterestedIn,
+          availability: params.availability,
+          bio: params.bio,
+          blocked: params.blocked,
+          created: params.created,
+          dob: params.dob,
+          friends: params.friends,
+          image: params.image,
+          language: params.language,
+          location: params.location,
+          name: params.name,
+          notificationToken: params.notificationToken,
+          password: params.password,
+          phone: params.phone,
+          requests: params.requests,
+          suspended: params.suspended,
+          username: params.username,
+        };
+      }
     });
-
-    this.store.select(selectDocId).subscribe((id) => {
-      this.currentUserId = id;
-      console.log('Current user id:', this.currentUserId);
-    });
-
-    this.UserNameFormControl.valueChanges.subscribe((val:string)=>{
-      this.userName = val
-    })
-    this.UserBioFormControl.valueChanges.subscribe((val:string)=>{
-      this.userBio = val
-    })
-  }
-
-  EditUser(){
-    this.editUser = true;
   }
 
   triggerImageInput(): void {
@@ -76,12 +73,11 @@ export class UserProfileComponent implements OnInit{
           this.selectedImage = base64String;
 
           // Upload the base64 string to Firebase Storage
-          var firebaseUrl = this.fireStoreCollectionsService
+          var firebaseUrl = this.firebaseService
             .uploadPicture(base64String)
             .then((firebaseUrl) => {
               console.warn('download url here : ', firebaseUrl);
-              this.selectedImageString  = firebaseUrl
-              // this.uploadUserImage(firebaseUrl);
+              this.uploadUserImage(firebaseUrl);
             })
             .catch((error) => {
               console.error(error);
@@ -96,13 +92,14 @@ export class UserProfileComponent implements OnInit{
     }
   }
   uploadUserImage(firebaseUrl: string) {
-    this.fireStoreCollectionsService
-      .updateduserprofile(this.currentUser?.phone as string, firebaseUrl)
-      .subscribe((x) => {});
+    this.firebaseService
+      .updateduserprofile(this.User.phone, firebaseUrl)
+      .subscribe((x) => {
+        this.alertService.success("Uploaded profile picture successully")
+      });
   }
 
-  saveUserDetails(){
-    console.warn("this is it"+this.selectedImageString,this.currentUser?.phone)
-    this.uploadUserImage(this.selectedImageString)
+  navigateBack() {
+    this.router.navigate(['/authentication', 'login']);
   }
 }

@@ -1,0 +1,16 @@
+.main-app-container{
+    width:100%!important;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:100%!important;
+    align-content:center;
+    min-height: 100vh;
+    background-image: url("../../../assets/melachatbackground.png");
+}
+
+.get-started{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

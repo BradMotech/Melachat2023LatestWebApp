@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { Observable, map } from 'rxjs';
+import { CustomFile } from 'src/app/authentication/choose-image/choose-image.component';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
 import { ChatMessage, FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
 import { selectCurrentUser, selectDocId } from 'src/app/shared/State/user.selectors';
@@ -16,6 +17,7 @@ import { selectCurrentUser, selectDocId } from 'src/app/shared/State/user.select
 })
 export class ChatScreenComponent implements OnInit {
   @ViewChild('endOfChat') endOfChat!: ElementRef;
+  @ViewChild('imageInput') imageInput!: ElementRef;
   friendData: IUsersInterface | undefined;
   messages: any[] = [];
   currentUser!: IUsersInterface | null;
@@ -25,6 +27,8 @@ export class ChatScreenComponent implements OnInit {
   MessageTextFormControl: FormControl = new FormControl();
   messageText: string = '';
   messages$!: Observable<ChatMessage[]>;
+  selectedImages: any[] = [];
+  imagesConvertedToFirebaseUrl: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -146,11 +150,12 @@ export class ChatScreenComponent implements OnInit {
       sentTo: this.friendData?.docId,
       replyMsg: "",
       read: [],
+      images:this.selectedImages.length ? this.selectedImages : []
     };
 
     this.firebaseService.sendMessage(messageData)
       .then(() => {
-        console.log('Message sent successfully');
+        console.log('Message sent successfully',messageData);
         this.scrollToBottom()
         // this.messages.push(messageData);
         // this.fetchMessages()
@@ -159,5 +164,57 @@ export class ChatScreenComponent implements OnInit {
       .catch((error) => {
         console.error('Error sending message:', error);
       });
+  }
+
+  triggerImageInput(): void {
+    // Access the native element using this.imageInput.nativeElement
+    this.imageInput.nativeElement.click();
+  }
+
+  onImageSelected(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement.files) {
+      const selectedImages: FileList = inputElement.files;
+      const fileArray: CustomFile[] = Array.from(selectedImages);
+  
+      // Reset the array
+      this.imagesConvertedToFirebaseUrl = [];
+  
+      // Create a function to upload an image and return a Promise
+      const uploadImage = (file: CustomFile): Promise<string> => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const base64String = (e.target?.result as string).split(',')[1];
+  
+            this.firebaseService
+              .uploadPicture(base64String)
+              .then((firebaseUrl) => {
+                resolve(firebaseUrl);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          };
+          reader.readAsDataURL(file);
+        });
+      };
+  
+      // Process each file sequentially
+      const processFiles = async () => {
+        for (const file of fileArray) {
+          try {
+            const url = await uploadImage(file);
+            this.imagesConvertedToFirebaseUrl.push(url);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      };
+  
+      // Start processing files
+      processFiles();
+      this.selectedImages = this.imagesConvertedToFirebaseUrl
+    }
   }
 }

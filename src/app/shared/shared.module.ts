@@ -15,13 +15,15 @@ import { NewFriendCardComponent } from './new-friend-card/new-friend-card.compon
 import { FloatingButtonComponent } from './floating-button/floating-button.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { ImagesGridComponent } from './images-grid/images-grid.component';
-import { StoryCubeComponent } from './story-cube/story-cube.component';
+// import { StoryCubeComponent } from './story-cube/story-cube.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { userReducer } from './State/user.reducer';
 import { NoPostsFoundComponent } from './no-posts-found/no-posts-found.component';
 import { TimestampToDatePipe } from './timestamp-to-date.pipe';
 import { StorageModule } from '@angular/fire/storage';
+import { ToastrModule } from 'ngx-toastr';
+import { AlertService } from './Services/alert.service';
 
 @NgModule({
   declarations: [
@@ -40,11 +42,11 @@ import { StorageModule } from '@angular/fire/storage';
     FloatingButtonComponent,
     DialogComponent,
     ImagesGridComponent,
-    StoryCubeComponent,
+    // StoryCubeComponent,
     NoPostsFoundComponent,
     TimestampToDatePipe,
   ],
-  imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule],
+  imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule, ToastrModule.forRoot()],
   exports: [
     AppHeaderComponent,
     StoryContainerComponent,
@@ -60,7 +62,8 @@ import { StorageModule } from '@angular/fire/storage';
     FloatingButtonComponent,
     DialogComponent,
     ImagesGridComponent,
-    StoryCubeComponent,NoPostsFoundComponent,TimestampToDatePipe
+   NoPostsFoundComponent,TimestampToDatePipe
   ],
+  providers:[AlertService]
 })
 export class SharedModule {}

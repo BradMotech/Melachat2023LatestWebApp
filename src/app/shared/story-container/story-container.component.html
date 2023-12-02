@@ -24,9 +24,9 @@
                 </ng-container>
                 <ng-container *ngIf="stories">
                     <ng-container *ngFor="let item of stories">
-                        <div class="status-card">
-                            <div class="profile-pic"><img src="img/cover 2.png" alt=""></div>
-                            <p class="username">user_name_2</p>
+                        <div class="status-card" style="margin-top:11px">
+                            <div class="profile-pic"><img src="{{item.profile}}" alt=""></div>
+                            <p class="username">{{item.username}}</p>
                         </div>
                     </ng-container>
                 </ng-container>

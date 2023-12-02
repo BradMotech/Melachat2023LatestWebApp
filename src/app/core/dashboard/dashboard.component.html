@@ -1,7 +1,7 @@
 <div class="main-container" style="background-image: url('../../../assets//melachatbackground.png');">
     <app-app-header [image]="currentUser!.username"></app-app-header>
 
-    <app-story-container [userImage]="image" (addStoryEmiiter)="addStoryNavigation()"></app-story-container>
+    <app-story-container [stories]="ListOfStories" [userImage]="image" (addStoryEmiiter)="addStoryNavigation()"></app-story-container>
 
     <!-- <app-post-item></app-post-item>
     <app-recommendations></app-recommendations> -->

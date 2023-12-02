@@ -80,7 +80,11 @@
     text-align: center;
     font-size: 12px;
     margin-top:5px;
-    color: rgba(255, 255, 255, 0.5)
+    color: rgba(255, 255, 255, 0.5);
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* Adjust the value to control the number of lines displayed */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .addStory-svg{

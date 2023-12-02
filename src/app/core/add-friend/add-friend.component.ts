@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
+import { AlertService } from 'src/app/shared/Services/alert.service';
 import { FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
 import { UserState } from 'src/app/shared/State/user.reducer';
 import { selectDocId } from 'src/app/shared/State/user.selectors';
@@ -20,7 +21,8 @@ export class AddFriendComponent {
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private router: Router,
-    private store: Store<UserState>
+    private store: Store<UserState>,
+    private alertService: AlertService
   ) {}
   ngOnInit(): void {
     this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
@@ -41,7 +43,7 @@ export class AddFriendComponent {
     this.ModalData = $event;
   }
 
-  addNewFriend(userId:string,userNumber: string) {
+  addNewFriend(userId: string, userNumber: string) {
     this.fireStoreCollectionsService
       .addFriend(this.currentUserId as string, userNumber)
       .subscribe((val) => {
@@ -52,5 +54,8 @@ export class AddFriendComponent {
       .subscribe((val) => {
         // alert(val);
       });
+    this.alertService.success(
+      'Friend requested successully sent to ' + userNumber
+    );
   }
 }
