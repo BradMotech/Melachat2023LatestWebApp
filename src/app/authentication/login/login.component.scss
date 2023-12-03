@@ -34,3 +34,14 @@ input.ng-invalid {
 .text-red-500 {
     // color: #e53e3e; /* Red color code, you can adjust this as needed */
 }
+
+@media (min-width: 200px) {
+.main-app-container{
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 22px;
+    padding-right: 22px;
+}
+}

@@ -53,3 +53,19 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
+@media (min-width: 200px) {
+  .user-profile {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    /* background-image: url(img/profile-pic.png); */
+    background-size: cover;
+    border-color: #dfdfdf;
+    border-width: 2px;
+}
+
+.for-business{
+  display:none
+}
+}
