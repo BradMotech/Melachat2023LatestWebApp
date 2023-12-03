@@ -6,7 +6,9 @@
     background-image: url("../../../assets//melachatbackground.png");
     overflow: hidden;
 }
-
+.news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .container-center {
     width: 100% !important;
     align-items: center;
@@ -104,3 +106,9 @@ span{
   .hashtag {
     color: #16afec;
   }
+
+    @media (min-width: 200px) and (max-width:450px) {
+        .news-grid {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+      }

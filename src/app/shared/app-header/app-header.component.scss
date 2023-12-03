@@ -54,7 +54,7 @@
     justify-content: space-between;
 }
 
-@media (min-width: 200px) {
+@media (min-width: 200px) and (max-width:450px){
   .user-profile {
     width: 52px;
     height: 52px;

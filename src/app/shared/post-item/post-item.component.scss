@@ -30,3 +30,12 @@
 .promote-post{
   display: flex;
 }
+
+@media (min-width: 200px) {
+  .child-max-w-sm {
+    // max-width: 100%!important;
+    /* width: 16rem !important; */
+    height: 100% !important;
+    width: 93%;
+}
+}

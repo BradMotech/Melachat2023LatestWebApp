@@ -157,7 +157,7 @@
         </div>
         <!-- if news selected -->
         <div *ngIf="selectedTabTitle == NEWS">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 news-grid">
                 <ng-container *ngFor="let item of NewsArticles">
                     <app-news-card [News]="item"></app-news-card>
                 </ng-container>

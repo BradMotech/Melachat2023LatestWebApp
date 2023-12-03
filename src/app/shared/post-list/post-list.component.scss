@@ -85,3 +85,27 @@
     align-items: center;
     display: flex;
 }
+
+@media (min-width: 200px) {
+.md\:grid-cols-3 {
+  padding: 0px;
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  margin-right: 2px;
+  margin-left: 2px;
+  border-radius: 12px;
+}
+.promoted-posts {
+  margin-bottom: 22px;
+  /* margin-left: 24px; */
+  justify-content: space-between;
+  display: flex;
+  padding-right: 25px;
+  width: 100%;
+  padding-left: 0px;
+  align-items: center;
+  align-content: center;
+}
+
+
+}

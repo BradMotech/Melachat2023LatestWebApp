@@ -123,3 +123,43 @@ p.user-name-friend {
 .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr))!important;
 }
+
+@media (min-width: 200px) and (max-width:450px){
+    .footer-chat-input {
+        position: absolute;
+        bottom: -35px;
+        right: 0;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+    }
+
+  .chat-area {
+    height: calc(100vh - 66px);
+    margin-top: 0px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    padding-left: 22px;
+    padding-right: 22px;
+    overflow-y: auto;
+}
+
+.header-section {
+    position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    padding: 18px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    z-index: 99999999;
+}
+
+.community-rules{
+    display: none;
+}
+  }
