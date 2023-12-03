@@ -13,7 +13,8 @@ import { selectDocId } from 'src/app/shared/State/user.selectors';
   styleUrls: ['./add-friend.component.scss'],
 })
 export class AddFriendComponent {
-  recommedations: IUsersInterface[] | undefined;
+  recommedations: IUsersInterface[] = [];
+  originalRecommendations: IUsersInterface[] = [];
   ModalData!: IUsersInterface;
   openModalFlag!: boolean;
   currentUserId!: string | null;
@@ -27,9 +28,10 @@ export class AddFriendComponent {
   ngOnInit(): void {
     this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
       console.log('users here', users);
-      return (this.recommedations = users.filter(
+      this.originalRecommendations = users.filter(
         (userValue) => userValue.username && userValue.name
-      ));
+      )
+      return (this.recommedations = this.originalRecommendations);
     });
 
     this.store.select(selectDocId).subscribe((id) => {
@@ -57,5 +59,25 @@ export class AddFriendComponent {
     this.alertService.success(
       'Friend requested successully sent to ' + userNumber
     );
+  }
+
+  searchFriends(value: string) {
+    const searchTerm = value.toLowerCase();
+  
+    // If the search term is empty, restore the original list
+    if (!searchTerm) {
+      this.recommedations = this.originalRecommendations;
+      return;
+    }
+  
+    // Filter recommendations based on the search term
+    const filteredRecommendations = this.originalRecommendations?.filter((recommendation) => {
+      return (
+        recommendation.username.toLowerCase().includes(searchTerm) ||
+        recommendation.name.toLowerCase().includes(searchTerm)
+      );
+    });
+  
+    this.recommedations = filteredRecommendations;
   }
 }

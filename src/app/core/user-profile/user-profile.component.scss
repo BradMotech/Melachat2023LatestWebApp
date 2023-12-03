@@ -1,3 +1,13 @@
+.main-container {
+  background-color: rgb(243, 243, 243) !important;
+  height: 100% !important;
+  min-height: 100vh;
+  width: 100% !important;
+  background-image: url("../../../assets//melachatbackground.png");
+  overflow: hidden;
+}
+
+
 .pb-full {
     padding-bottom: 100%;
   }
@@ -6,14 +16,33 @@
   .search-bar:focus + .fa-search {
     display: none;
   }
-  
+
   @media screen and (min-width: 768px) {
-    .post:hover {
-      .overlay {
-        display: block;
-      }
+
+    /* Apply these styles on screens larger than or equal to 768px wide (tablets and desktops) */
+    .get-started {
+        padding-left: 10px;
+        padding-right: 10px;
     }
+    .get-started-input {
+        padding-left: 148px;
+        padding-right: 148px;
+    }
+    .md\:grid-cols-4 {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .md\:grid-cols-3 {
+      background-color: rgba(105, 105, 105, 0.0705882353);
+      padding: 54px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr))!important;
+      /* margin-right: 148px; */
+      /* margin-left: 148px; */
+      border-radius: 12px;
   }
+}
+
   
 
   .get-started {
@@ -24,20 +53,29 @@
 @media screen and (min-width: 768px) {
 
     /* Apply these styles on screens larger than or equal to 768px wide (tablets and desktops) */
-    .get-started {
-        padding-left: 170px;
-        padding-right: 170px;
-    }
+    // .get-started {
+    //     padding-left: 170px;
+    //     padding-right: 170px;
+    // }
 }
 
 .text-white{
     color:white
 }
 
+.border-pink-600{
+  color:white!important;
+  border-color: white!important;
+}
+
 .melachat-background-color{
     background-color: #16afec;
 }
 
+.md\:border-gray-700 {
+  color: #16afec!important;
+  border-top: 1px solid #16afec; /* Replace with the desired color code for gray-700 */
+}
 .get-started-wrapper{
   display: flex;
   align-items: center;
@@ -48,4 +86,28 @@
 .padding-top-text{
   padding-top:22px;
   padding-bottom:22px;
+}
+
+
+:host ::ng-deep {
+  .md\:grid-cols-3 {
+    background-color: rgba(105, 105, 105, 0.0705882353);
+    padding: 54px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-right: 8px;
+    margin-left: 8px;
+    border-radius: 12px;
+}
+  @media screen and (min-width: 768px) {
+  .md\:grid-cols-3 {
+    background-color: rgba(105, 105, 105, 0.0705882353);
+    padding: 54px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-right: 8px;
+    margin-left: 8px;
+    border-radius: 12px;
+}
+  }
 }

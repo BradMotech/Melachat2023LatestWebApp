@@ -24,6 +24,7 @@ import { TimestampToDatePipe } from './timestamp-to-date.pipe';
 import { StorageModule } from '@angular/fire/storage';
 import { ToastrModule } from 'ngx-toastr';
 import { AlertService } from './Services/alert.service';
+import { GalleryItemComponent } from './gallery-item/gallery-item.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AlertService } from './Services/alert.service';
     // StoryCubeComponent,
     NoPostsFoundComponent,
     TimestampToDatePipe,
+    GalleryItemComponent,
   ],
   imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule, ToastrModule.forRoot()],
   exports: [
@@ -62,7 +64,7 @@ import { AlertService } from './Services/alert.service';
     FloatingButtonComponent,
     DialogComponent,
     ImagesGridComponent,
-   NoPostsFoundComponent,TimestampToDatePipe
+   NoPostsFoundComponent,TimestampToDatePipe,GalleryItemComponent
   ],
   providers:[AlertService]
 })

@@ -2,9 +2,9 @@
     <app-app-header></app-app-header>
     <div class="search-container-center" style="margin-top:90px;">
         <div class="get-started">
-            <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+            <h1  *ngIf="hashtags"class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
                 style="color:white">
-                <span class="text-blue-600 dark:text-blue-500">{{trendCount}}</span> currently trending.
+                <span class="text-blue-600 dark:text-blue-500">{{hashtags?.length}}</span> trends.
             </h1>
             <!-- <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 browse-friends-p">Filter friends
                 by category below to
@@ -13,23 +13,13 @@
         </div>
 
         <app-search [placeholder]="'Search trending topics...'"></app-search>
-        <div class="get-started" *ngIf="trending">
-            <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                <div class="flex flex-col pb-3">
-                    <dd class="text-lg font-semibold" style="color:white">#Melachat</dd>
-                    <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">2k posts</dt>
+        <div class="get-started" *ngIf="hashtags">
+            <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700" style="cursor: pointer;" *ngFor="let trend of hashtags | slice:0:10">
+                <div (click)="ViewTrendingDetails(trend.hashtag)" class="flex flex-col pb-3">
+                    <dd class="text-lg font-semibold" style="color:white">{{trend.hashtag}}</dd>
+                    <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">{{trend.count}} posts</dt>
                 </div>
             </dl>
-            <!-- <ng-container *ngFor="let item of trending">
-
-                <dl class="max-w-md text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
-                    <div class="flex flex-col pb-3">
-                        <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">2k posts</dt>
-                        <dd class="text-lg font-semibold">#Melachat</dd>
-                    </div>
-                </dl>
-
-            </ng-container> -->
         </div>
         <div class="get-started" *ngIf="!trending">
             <div role="status" class="space-y-2.5 animate-pulse max-w-lg" style="width:100%">

@@ -59,18 +59,8 @@ export class ChatScreenComponent implements OnInit {
         this.friendData = JSON.parse(friendDataString);
       }
     });
-
-    // this.firebaseService.getAllMessages().subscribe((data:ChatMessage[])=>{
-    //   // console.warn("Messages",data);
-    //   this.AllMessages = data;
-    //   // console.log("this.friendData?.docId as string", this.friendData?.docId as string)
-    //   const filteredMessages = this.filterMessages(data, this.currentUserId as string, this.friendData?.docId as string);
-    //   this.messages = filteredMessages
-    //   console.log("filtereed messages", this.messages = filteredMessages
-    //   )
-    // })
-
    this.fetchMessages()
+   this.scrollToBottom()
   }
 
   fetchMessages() {
@@ -118,8 +108,8 @@ export class ChatScreenComponent implements OnInit {
     setTimeout(() => {
       if (this.endOfChat) {
         console.log('Element found:', this.endOfChat.nativeElement);
-        // this.endOfChat.nativeElement.scrollIntoView({ behavior: 'smooth' });
-        this.endOfChat.nativeElement.scrollIntoView();
+        this.endOfChat.nativeElement.scrollIntoView({ behavior: 'smooth' });
+        // this.endOfChat.nativeElement.scrollIntoView();
       } else {
         console.log('Element not found.');
       }
@@ -159,7 +149,8 @@ export class ChatScreenComponent implements OnInit {
         this.scrollToBottom()
         // this.messages.push(messageData);
         // this.fetchMessages()
-        this.MessageTextFormControl.setValue('')
+        this.MessageTextFormControl.setValue('');
+        this.selectedImages = []
       })
       .catch((error) => {
         console.error('Error sending message:', error);

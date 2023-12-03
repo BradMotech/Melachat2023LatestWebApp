@@ -19,7 +19,7 @@ import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  recommedations: IUsersInterface[] | undefined;
+  recommedations: IUsersInterface[] = [];
   hashtags: IHashTags[] | undefined;
   readonly CHATS = 'Chats';
   readonly POSTS = 'Posts';
@@ -27,10 +27,12 @@ export class DashboardComponent implements OnInit {
   selectedTabTitle: string = this.CHATS;
   ModalData!: IUsersInterface;
   openModalFlag!: boolean;
-  AllPosts!: IPosts[];
+  AllPosts: IPosts[] = [];
+  originalAllPosts: IPosts[] = [];
   friends!: IUsersInterface[] | undefined;
   ListOfStories!: UserStories[];
-  NewsArticles!: any[];
+  NewsArticles: any[] = [];
+  OriginalNewsArticles: any[] = [];
   showRecommendations: boolean = false;
   hide: boolean = false;
   InterestedIn: any;
@@ -53,6 +55,8 @@ export class DashboardComponent implements OnInit {
   currentUser!: IUsersInterface | null;
   currentUserId!: string | null;
   searchPlaceholder:string = "Search users..."
+  OriginalUserFriends: IUsersInterface[] = [];
+  UserFriends: IUsersInterface[] = [];
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -79,23 +83,21 @@ export class DashboardComponent implements OnInit {
     });
     this.fireStoreCollectionsService
       .getAllHashtags()
-      .subscribe((hashtags) => (this.hashtags = hashtags));
+      .subscribe((hashtags) => {
+        console.warn("hastags right heereee",hashtags)
+        this.hashtags = hashtags});
 
-    // this.fireStoreCollectionsService.getAllPoststags().subscribe((posts) => {
-    //   // console.warn(posts);
-    //   return (this.AllPosts = posts.filter(
-    //     (v) => v.post !== '' && v.username !== ''
-    //   ));
-    // });
     this.fireStoreCollectionsService.getAllPoststags().subscribe((posts) => {
       // Sort the posts by dateAdded in descending order (most recent first)
-      this.AllPosts = posts
-        .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
-        .sort((a, b) => {
-          const dateA = new Date(a.datePosted).getTime();
-          const dateB = new Date(b.datePosted).getTime();
-          return dateB - dateA;
-        });
+      console.warn("All posts here",posts)
+      this.originalAllPosts = posts
+      .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
+      .sort((a, b) => {
+        const dateA = new Date(a.datePosted).getTime();
+        const dateB = new Date(b.datePosted).getTime();
+        return dateB - dateA;
+      });
+      this.AllPosts = this.originalAllPosts
     });
 
     fetch(
@@ -103,7 +105,8 @@ export class DashboardComponent implements OnInit {
     )
       .then((response) => response.json())
       .then((json) => {
-        this.NewsArticles = json.articles;
+        this.OriginalNewsArticles = json.articles
+        this.NewsArticles =  this.OriginalNewsArticles;
       })
       .catch((error) => {
         // console.error(error);
@@ -113,7 +116,8 @@ export class DashboardComponent implements OnInit {
       // console.log('users here', users);
       return (this.friends = users);
     });
-    this.fetchCurrentUserFriends();
+    // this.fetchCurrentUserFriends();
+    this.UserFriends = this.fetchCurrentUserFriends("");
   }
   fetchAllStories() {
 
@@ -128,15 +132,43 @@ export class DashboardComponent implements OnInit {
         console.error('Error fetching stories:', error);
       }
     );
+
+    // this.fireStoreCollectionsService.getTrendingHashtags().subscribe((v)=>{
+    //   console.warn(v);
+    //   this.hashtags = v
+    // })
   }
 
-  fetchCurrentUserFriends(): IUsersInterface[] {
+  fetchCurrentUserFriendsDefault(): IUsersInterface[] {
     const friendDocIds = this.currentUser!.friends;
     // console.warn(friendDocIds)
     const filteredUsers = this.recommedations!.filter((user) =>
       friendDocIds.includes(user.docId)
     );
+
     // console.log("friends",filteredUsers);
+    return filteredUsers;
+  }
+  fetchCurrentUserFriends(searchTerm: string = ""): IUsersInterface[] {
+    const friendDocIds = this.currentUser!.friends;
+    let filteredUsers = this.recommedations!.filter((user) =>
+      friendDocIds.includes(user.docId)
+    );
+  
+    // Apply additional filtering based on the search term
+    if (searchTerm.trim() !== "") {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+      filteredUsers = filteredUsers.filter(
+        (user) =>
+          user.username.toLowerCase().includes(lowerCaseSearchTerm) ||
+          user.name.toLowerCase().includes(lowerCaseSearchTerm)
+      );
+    }else{
+     filteredUsers = this.recommedations!.filter((user) =>
+      friendDocIds.includes(user.docId)
+    );
+    }
+  
     return filteredUsers;
   }
 
@@ -207,88 +239,54 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  oldsearch(val: string): void {
-    var originalPost = this.AllPosts;
-    switch (this.selectedTabTitle) {
-      case this.POSTS:
-        if (val != '') {
-          const filteredPosts = this.AllPosts.filter(
-            (value) => value.title.includes(val) || value.title == val
-          );
-          this.AllPosts = filteredPosts;
-        } else {
-          this.fireStoreCollectionsService
-            .getAllPoststags()
-            .subscribe((posts) => {
-              console.warn(posts);
-              return (this.AllPosts = posts.filter(
-                (v) => v.post !== '' && v.username !== ''
-              ));
-            });
-        }
-        break;
-      case this.CHATS:
-        if (val != '') {
-          const filteredFriends = this.recommedations?.filter((value) =>
-            value.name.includes(val)
-          );
-          this.recommedations = filteredFriends;
-        } else {
-          this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
-            console.log('users here', users);
-            return (this.recommedations = users);
-          });
-        }
-        break;
-      case this.NEWS:
-        break;
-
-      default:
-        break;
-    }
-  }
 
   search(val: string) {
     const searchText = val.toLowerCase();
-
+    
     switch (this.selectedTabTitle) {
       case this.CHATS:
         // Filter currentUser!.friends based on search text
-        // this.filteredFriends = this.currentUser!.friends.filter(
-        //   (friend) => friend.name.toLowerCase().includes(searchText)
-        // );
+        this.UserFriends = this.fetchCurrentUserFriends(searchText);
         break;
       case this.POSTS:
         // Filter AllPosts based on search text
-        if(searchText != ''){
-          const filteredPosts = this.AllPosts.filter((value) => {
-            const trimmedTitle = value.title.toLowerCase().trim();
-            const trimmedVal = val.toLowerCase().trim();
-          
-            // Only filter when there is a non-empty search query
-            return trimmedVal.length > 0 && (trimmedTitle.includes(trimmedVal) || trimmedTitle == trimmedVal);
-          });
-          
-          this.AllPosts = filteredPosts;
-        }else {
-            this.fireStoreCollectionsService
-              .getAllPoststags()
-              .subscribe((posts) => {
-                console.warn(posts);
-                return (this.AllPosts = posts.filter(
-                  (v) => v.post !== '' && v.username !== ''
-                ));
-              });
-        }
+        const trimmedSearchText = searchText.toLowerCase().trim();
 
+        // If the search term is empty, restore the original list
+        if (!trimmedSearchText) {
+          this.AllPosts = this.originalAllPosts;
+          return;
+        }
+      
+        // Filter posts based on the search term
+        const filteredPosts = this.originalAllPosts?.filter((post) => {
+          const trimmedTitle = post.title.toLowerCase().trim();
+      
+          // Only filter when there is a non-empty search query
+          return trimmedSearchText.length > 0 && (trimmedTitle.includes(trimmedSearchText) || trimmedTitle == trimmedSearchText);
+        });
+      
+        this.AllPosts = filteredPosts;
         break;
       case this.NEWS:
         // Filter NewsArticles based on search text
-       
-        const filteredNews =  this.NewsArticles.filter(
-          (article) => article.title.toLowerCase().includes(searchText)
-          );
-          this.NewsArticles = filteredNews
+        const SearchText = searchText.toLowerCase().trim();
+
+        // If the search term is empty, restore the original list
+        if (!SearchText) {
+          this.NewsArticles = this.OriginalNewsArticles;
+          return;
+        }
+      
+        // Filter posts based on the search term
+        const filteredNews = this.originalAllPosts?.filter((article) => {
+          const trimmedNewsTitle = article.title.toLowerCase().trim();
+      
+          // Only filter when there is a non-empty search query
+          return SearchText.length > 0 && (trimmedNewsTitle.includes(SearchText) || trimmedNewsTitle == SearchText);
+        });
+      
+        this.NewsArticles = filteredNews;
         break;
       default:
         break;

@@ -14,6 +14,7 @@ import { selectDocId } from '../State/user.selectors';
 export class PostListComponent implements OnInit{
   @Input() AllPosts!: IPosts[];
   @Input() showPrmotedPostsContainer:boolean = false;
+  @Input() PromotePost:boolean = false;
   currentUserId!: string | null;
 
   constructor(private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -71,8 +72,19 @@ export class PostListComponent implements OnInit{
   })
   
   }
+  deletePost(post: IPosts){
+  this.fireStoreCollectionsService.deletePost(post.docId).subscribe((val)=>{
+    // console.warn( post.docId + this.currentUserId)
+  })
+  
+  }
 
   navigateToFullPosts(){
-    this.router.navigate(['all-posts'])
+    // this.router.navigate(['all-posts']);
+    this.router.navigate(['/', 'all-posts'], {
+      queryParams: {
+        hashtag: ""
+      },
+    });
   }
 }

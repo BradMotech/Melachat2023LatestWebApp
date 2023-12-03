@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { CustomFile } from 'src/app/authentication/choose-image/choose-image.component';
+import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
 import { FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
 import { UserState } from 'src/app/shared/State/user.reducer';
@@ -25,6 +26,8 @@ export class UserProfileComponent implements OnInit{
   UserBioFormControl = new FormControl();
   userName: string = '';
   userBio: string = '';
+  myPosts:IPosts[] = []
+  selectedTabIndex: number = 0;
   constructor( private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private store: Store<UserState>){
 
@@ -46,10 +49,25 @@ export class UserProfileComponent implements OnInit{
     this.UserBioFormControl.valueChanges.subscribe((val:string)=>{
       this.userBio = val
     })
+
+    this.fireStoreCollectionsService.getAllPoststags().subscribe((posts) => {
+      // Sort the posts by dateAdded in descending order (most recent first)
+      console.warn("All my posts here",posts,this.currentUserId)
+      this.myPosts = posts
+        .filter((v) => v.user == this.currentUserId)
+        .sort((a, b) => {
+          const dateA = new Date(a.datePosted).getTime();
+          const dateB = new Date(b.datePosted).getTime();
+          return dateB - dateA;
+        });
+    });
   }
 
   EditUser(){
     this.editUser = true;
+  }
+  close(){
+    this.editUser = false;
   }
 
   triggerImageInput(): void {
@@ -103,6 +121,11 @@ export class UserProfileComponent implements OnInit{
 
   saveUserDetails(){
     console.warn("this is it"+this.selectedImageString,this.currentUser?.phone)
-    this.uploadUserImage(this.selectedImageString)
+    this.uploadUserImage(this.selectedImageString);
+    this.editUser = false;
+  }
+
+  selectTab(index: number): void {
+    this.selectedTabIndex = index;
   }
 }

@@ -23,6 +23,7 @@ import {
   arrayRemove,
   onSnapshot,
   runTransaction,
+  deleteDoc,
 } from '@angular/fire/firestore';
 
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
@@ -238,6 +239,7 @@ export class FireStoreCollectionsServiceService {
           post.docId = doc.id; // Add the docId property
           posts.push(post);
         });
+        this.analyzeAndUploadTrendingHashtags(posts);
         observer.next(posts);
       }, (error) => {
         observer.error(error);
@@ -247,6 +249,77 @@ export class FireStoreCollectionsServiceService {
       return () => unsubscribe();
     });
   }
+
+  private async analyzeAndUploadTrendingHashtags(posts: IPosts[]): Promise<void> {
+    const hashtagCountMap: Map<string, number> = new Map();
+  
+    // Analyze hashtags in posts
+    posts.forEach((post) => {
+      const hashtags = this.extractHashtags(post.post); // Replace with your own logic to extract hashtags
+  
+      // Count hashtags
+      const uniqueHashtags = new Set(hashtags); // Use a Set to ensure uniqueness
+      uniqueHashtags.forEach((hashtag) => {
+        const count = hashtagCountMap.get(hashtag) || 0;
+        hashtagCountMap.set(hashtag, count + 1);
+      });
+    });
+  
+    // Upload trending hashtags to "Trending" collection
+    const trendingCollectionRef = collection(this.firestore, 'Trending');
+  
+    for (const [hashtag, count] of hashtagCountMap.entries()) {
+      // Check if the hashtag already exists in Trending
+      const existingDocQuery = query(
+        trendingCollectionRef,
+        where('hashtag', '==', hashtag)
+      );
+  
+      const existingDocs = await getDocs(existingDocQuery);
+  
+      if (existingDocs.size > 0) {
+        // Hashtag exists, update the count
+        const existingDoc = existingDocs.docs[0];
+        const existingDocRef = doc(trendingCollectionRef, existingDoc.id);
+        await updateDoc(existingDocRef, { count });
+      } else if (count > 2) {
+        // Hashtag doesn't exist, add a new document
+        await addDoc(trendingCollectionRef, { hashtag, count });
+      }
+    }
+  }
+  
+
+  private extractHashtags(content: string): string[] {
+    // Replace this with your own logic to extract hashtags from post content
+    // Here's a simple example using a regular expression
+    const regex = /#(\w+)/g;
+    return (content.match(regex) || []).map((match) => match.toLowerCase());
+  }
+
+  // getTrendingHashtags(): Observable<{ hashtag: string; count: number }[]> {
+  //   const trendingCollection = collection(this.firestore, 'Trending');
+
+  //   return new Observable<{ hashtag: string; count: number }[]>((observer) => {
+  //     const unsubscribe = onSnapshot(trendingCollection, (querySnapshot) => {
+  //       const trendingHashtags: { hashtag: string; count: number }[] = [];
+  //       querySnapshot.forEach((doc) => {
+  //         const trendingData = doc.data();
+  //         trendingHashtags.push({
+  //           hashtag: trendingData['hashtag'],
+  //           count: trendingData['count'],
+  //         });
+  //       });
+
+  //       observer.next(trendingHashtags);
+  //     }, (error) => {
+  //       observer.error(error);
+  //     });
+
+  //     // Return an unsubscribe function to clean up the subscription when it's no longer needed
+  //     return () => unsubscribe();
+  //   });
+  // }
 
   getAllMessages(): Observable<ChatMessage[]> {
     const messagesCollection = collection(this.firestore, 'Messages');
@@ -282,6 +355,22 @@ export class FireStoreCollectionsServiceService {
         ...postData,
         datePosted: new Date().toLocaleString('en-GB', { timeZone: 'UTC' }), // You might want to use serverTimestamp for accurate date
       })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+          observer.complete();
+        });
+    });
+  }
+
+  deletePost(postId: string): Observable<void> {
+    const postDoc = doc(this.firestore, 'Posts', postId);
+
+    return new Observable<void>((observer) => {
+      deleteDoc(postDoc)
         .then(() => {
           observer.next();
           observer.complete();

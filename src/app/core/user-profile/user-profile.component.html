@@ -11,9 +11,9 @@
                     <div class="md:w-3/12 md:ml-16">
                         <!-- profile image -->
                         <img *ngIf="!editUser" class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
-                       border-2 border-pink-600 p-1" src="{{currentUser?.image}}" alt="profile">
+                       border-2 border-pink-600 p-1" src="{{currentUser?.image}}" alt="profile" style="color:white">
                         <img *ngIf="editUser" class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
-                       border-2 border-pink-600 p-1" src="{{selectedImageString}}" alt="profile">
+                       border-2 border-pink-600 p-1" src="{{selectedImageString ? selectedImageString : 'https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg'}}" alt="profile"  style="color:white">
                         <input  #imageInput type="file" accept="image/*" multiple style="display: none"
                             (change)="onImageSelected($event)">
                         <svg  *ngIf="editUser" (click)="triggerImageInput()" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none"
@@ -42,6 +42,9 @@
                             <a *ngIf="editUser" (click)="saveUserDetails()" class="bg-blue-500 px-2 py-1 
                           text-white font-semibold text-sm rounded block text-center 
                           sm:inline-block block text-white melachat-background-color">Save Profile</a>
+                            <a *ngIf="editUser" (click)="close()" class="bg-blue-500 px-2 py-1 
+                          text-white font-semibold text-sm rounded block text-center 
+                          sm:inline-block block text-white" style="background-color: transparent;cursor:pointer"><svg class="h-6 w-6 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <line x1="18" y1="6" x2="6" y2="18" />  <line x1="6" y1="6" x2="18" y2="18" /></svg></a>
                         </div>
 
                         <!-- post, following, followers list for medium screens -->
@@ -108,8 +111,9 @@
                       uppercase tracking-widest font-semibold text-xs text-gray-600
                       border-t">
                         <!-- posts tab is active -->
-                        <li class="md:border-t md:border-gray-700 md:-mt-px md:text-gray-700">
-                            <a class="inline-block p-3" href="#">
+                        <li [class.md:border-t]="selectedTabIndex === 0" [class.md:border-gray-700]="selectedTabIndex === 0"
+                        [class.md:-mt-px]="selectedTabIndex === 0" [class.md:text-white-700]="selectedTabIndex === 0">
+                            <a (click)="selectTab(0)" class="inline-block p-3">
                                 <svg class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
@@ -118,8 +122,9 @@
                                 <span class="hidden md:inline">post</span>
                             </a>
                         </li>
-                        <li>
-                            <a class="inline-block p-3" href="#">
+                        <li [class.md:border-t]="selectedTabIndex === 1" [class.md:border-gray-700]="selectedTabIndex === 1"
+                        [class.md:-mt-px]="selectedTabIndex === 1" [class.md:text-white-700]="selectedTabIndex === 1">
+                            <a (click)="selectTab(1)" class="inline-block p-3" >
                                 <svg class="h-5 w-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
@@ -133,8 +138,18 @@
                     </ul>
                     <!-- flexbox grid -->
                     <div class="get-started-wrapper">
-                        <h1 class="text-white padding-top-text"> You have no Posts currently</h1>
+                        <h1 class="text-white padding-top-text" *ngIf="!myPosts"> You have no Posts currently</h1>
                         <!-- <app-no-posts-found></app-no-posts-found> -->
+                        <div class="grid md:grid-cols-4 gap-4">
+                            <div *ngIf="selectedTabIndex == 0">
+                                <app-post-list [PromotePost]="true" [AllPosts]="myPosts" *ngIf="myPosts"></app-post-list>
+                            </div>
+                            <div *ngIf="selectedTabIndex == 1">
+                                <ng-container *ngFor="let post of myPosts">
+                                    <app-gallery-item [images]="post?.postImage"></app-gallery-item>
+                                </ng-container>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

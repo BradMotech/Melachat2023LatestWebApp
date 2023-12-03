@@ -14,9 +14,11 @@ import { selectDocId } from '../State/user.selectors';
 })
 export class PostItemComponent implements OnInit {
   @Input() Post!: IPosts;
+  @Input() PromotePost: boolean = false;
   @Output() ViewPost = new EventEmitter<IPosts>();
   @Output() HashTagNavigationEmmitter = new EventEmitter<string>();
   @Output() likePostEmitter = new EventEmitter<IPosts>();
+  @Output() deletePostEmitter = new EventEmitter<IPosts>();
   commentLength:any
 
   currentUserId!: string | null;
@@ -48,6 +50,9 @@ export class PostItemComponent implements OnInit {
 
   likePost(post:IPosts){
   this.likePostEmitter.emit(post);
+  }
+  deletePost(post:IPosts){
+  this.deletePostEmitter.emit(post);
   }
 
   likedByCount(postId:string,userId:string|null){

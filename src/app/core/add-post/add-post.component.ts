@@ -82,6 +82,7 @@ export class AddPostComponent implements OnInit {
   onSubmit(postData: IPosts): void {
     // Assuming you have a form or some way to collect post data
     this.postData.post = this.postText;
+    this.postData.user = this.currentUserId as string;
     this.postData.title = this.extractAndReturnTitle();
     if(this.imagesConvertedToFirebaseUrl){
 

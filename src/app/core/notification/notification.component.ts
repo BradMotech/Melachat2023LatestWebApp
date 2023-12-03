@@ -32,6 +32,12 @@ export class NotificationComponent {
       this.currentUserId = id;
       console.log('Current user id:', this.currentUserId);
     });
+
+    this.scrollToTop()
+  }
+
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   
   openModal($event: IUsersInterface) {

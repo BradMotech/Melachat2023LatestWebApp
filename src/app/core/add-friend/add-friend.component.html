@@ -46,7 +46,7 @@
             </ul>
 
         </div>
-        <app-search [placeholder]="'Search users...'"></app-search>
+        <app-search [placeholder]="'Search users...'" (searchEmitter)="searchFriends($event)"></app-search>
         <div class="get-started">
             <h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px;color:white">Friends on Melachat
             </h5>

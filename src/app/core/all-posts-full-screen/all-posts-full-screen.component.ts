@@ -46,6 +46,7 @@ export class AllPostsFullScreenComponent {
   selectedImages: any[] = [];
   imagesConvertedToFirebaseUrl: any;
   currentUser!: IUsersInterface | null
+  filterByTrend: string = "";
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -55,6 +56,12 @@ export class AllPostsFullScreenComponent {
   ) {}
   
   ngOnInit(): void {
+
+    this.router.routerState.root.queryParams.subscribe((params: any) => {
+      if (params) {
+        this.filterByTrend = params.hashtag
+      }})
+
     this.PostContentFormControl.valueChanges.subscribe((value) => {
       console.log('PostContent value changed:', value);
       this.postText = value;
@@ -73,14 +80,25 @@ export class AllPostsFullScreenComponent {
 
     this.fireStoreCollectionsService.getAllPoststags().subscribe((posts) => {
       // Sort the posts by dateAdded in descending order (most recent first)
-      this.AllPosts = posts
-        .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
+      if(this.filterByTrend !== ""){
+        this.AllPosts = posts
+        .filter((v) => v.post !== '' && v.username !== '' && v.title != '' && v.post.includes(this.filterByTrend))
         .sort((a, b) => {
           const dateA = new Date(a.datePosted).getTime();
           const dateB = new Date(b.datePosted).getTime();
 
           return dateB - dateA;
         });
+      }else{
+        this.AllPosts = posts
+          .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
+          .sort((a, b) => {
+            const dateA = new Date(a.datePosted).getTime();
+            const dateB = new Date(b.datePosted).getTime();
+  
+            return dateB - dateA;
+          });
+      }
     });
     // console.log('all posts:', this.AllPosts);
   }
@@ -160,6 +178,7 @@ export class AllPostsFullScreenComponent {
   onSubmit(postData: IPosts): void {
     // Assuming you have a form or some way to collect post data
     this.postData.post = this.postText;
+    this.postData.user = this.currentUserId as string;
     this.postData.title = this.extractAndReturnTitle();
     if(this.imagesConvertedToFirebaseUrl){
 
