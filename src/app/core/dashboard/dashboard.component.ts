@@ -52,6 +52,7 @@ export class DashboardComponent implements OnInit {
   currentUserObject!: IUsersInterface;
   currentUser!: IUsersInterface | null;
   currentUserId!: string | null;
+  searchPlaceholder:string = "Search users..."
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -143,6 +144,20 @@ export class DashboardComponent implements OnInit {
     // Handle the selected tab's title in the parent component
     console.log('Selected Tab:', selectedTabTitle);
     this.selectedTabTitle = selectedTabTitle;
+    switch (selectedTabTitle) {
+      case this.CHATS:
+        this.searchPlaceholder = "Search chats..."
+        break;
+      case this.POSTS:
+        this.searchPlaceholder = "Search posts..."
+        break;
+      case this.NEWS:
+        this.searchPlaceholder = "Search news..."
+        break;
+    
+      default:
+        break;
+    }
     // You can perform any further actions with the selected title here.
   }
 

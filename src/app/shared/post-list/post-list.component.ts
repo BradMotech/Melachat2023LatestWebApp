@@ -13,6 +13,7 @@ import { selectDocId } from '../State/user.selectors';
 })
 export class PostListComponent implements OnInit{
   @Input() AllPosts!: IPosts[];
+  @Input() showPrmotedPostsContainer:boolean = false;
   currentUserId!: string | null;
 
   constructor(private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -23,7 +24,7 @@ export class PostListComponent implements OnInit{
   ngOnInit(): void {
     this.store.select(selectDocId).subscribe((id) => {
       this.currentUserId = id;
-      console.log('Current user id:' +this.currentUserId);
+      // console.log('Current user id:' +this.currentUserId);
     });
   }
 
@@ -36,6 +37,15 @@ export class PostListComponent implements OnInit{
     };
 
     console.log(post)
+    this.fireStoreCollectionsService.addUserIdToViewedByRealTime(post.docId,this.currentUserId as string).subscribe({
+      next: () => {
+        console.log('Transaction successful');
+      },
+      error: (err) => {
+        console.error('Error during transaction:', err);
+      },
+    });
+    
     this.router.navigate(['post-details'],{queryParams:{
       title:post.title,
       comments:post.comments,
@@ -53,12 +63,16 @@ export class PostListComponent implements OnInit{
       docId:post.docId,
     }})
 
-    this.fireStoreCollectionsService.addUserIdToViewedBy(post.docId,this.currentUserId as string)
   }
 
   likePost(post: IPosts){
   this.fireStoreCollectionsService.addUserIdToLikedBy(post.docId,this.currentUserId as string).subscribe((val)=>{
     // console.warn( post.docId + this.currentUserId)
   })
+  
+  }
+
+  navigateToFullPosts(){
+    this.router.navigate(['all-posts'])
   }
 }

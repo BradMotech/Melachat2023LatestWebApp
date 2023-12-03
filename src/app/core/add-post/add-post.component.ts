@@ -87,7 +87,9 @@ export class AddPostComponent implements OnInit {
 
       this.postData.postImage = this.imagesConvertedToFirebaseUrl
     };
-    this.postData.username = this.currentUser?.username as string 
+    this.postData.username = this.currentUser?.username as string;
+    this.postData.comments = [],
+    this.postData.viewedBy = [],
     // this.postData.docId = this.generateGuid() as string
     // alert(this.extractAndReturnTitle());
 
@@ -122,49 +124,6 @@ export class AddPostComponent implements OnInit {
     // Access the native element using this.imageInput.nativeElement
     this.imageInput.nativeElement.click();
   }
-
-  // onImageSelected(event: Event): void {
-  //   const inputElement = event.target as HTMLInputElement;
-  //   if (inputElement.files) {
-  //     const selectedImages: FileList = inputElement.files;
-  //     const fileArray: CustomFile[] = Array.from(selectedImages);
-  
-  //     // Reset the array
-  //     this.imagesConvertedToFirebaseUrl = [];
-  
-  //     // Create a function to upload an image and return a Promise
-  //     const uploadImage = (file: CustomFile): Promise<string> => {
-  //       return new Promise((resolve, reject) => {
-  //         const reader = new FileReader();
-  //         reader.onload = (e) => {
-  //           const base64String = (e.target?.result as string).split(',')[1];
-  
-  //           this.fireStoreCollectionsService
-  //             .uploadPicture(base64String)
-  //             .then((firebaseUrl) => {
-  //               resolve(firebaseUrl);
-  //             })
-  //             .catch((error) => {
-  //               reject(error);
-  //             });
-  //         };
-  //         reader.readAsDataURL(file);
-  //       });
-  //     };
-  
-  //     // Use Promise.all to handle multiple asynchronous uploads
-  //     Promise.all(fileArray.map(file => uploadImage(file)))
-  //       .then((urls) => {
-  //         // URLs are now in the correct order
-  //         console.warn("Stored image URLs:", urls,fileArray);
-  //         this.imagesConvertedToFirebaseUrl = urls;
-  //         this.selectedImages = urls
-  //       })
-  //       .catch((error) => {
-  //         console.error(error);
-  //       });
-  //   }
-  // }
   
   onImageSelected(event: Event): void {
     const inputElement = event.target as HTMLInputElement;

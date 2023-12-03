@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { CustomFile } from 'src/app/authentication/choose-image/choose-image.component';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
 import { FireStoreCollectionsServiceService, UserStories } from 'src/app/shared/Services/fire-store-collections-service.service';
 import { UserState } from 'src/app/shared/State/user.reducer';
@@ -16,6 +17,9 @@ import {
   styleUrls: ['./add-story.component.scss'],
 })
 export class AddStoryComponent implements OnInit {
+  @ViewChild('imageInput') imageInput!: ElementRef;
+  @ViewChild('mainContainer', { static: true }) mainContainer!: ElementRef;
+
   backgroundColorIndex = 0;
   showCursor: boolean = true;
   backgroundImage = '../../../assets//melachatbackground.png';
@@ -77,11 +81,12 @@ export class AddStoryComponent implements OnInit {
   showImageBackground: boolean = false;
   TextStoryFormControl: FormControl = new FormControl();
   storyTextValue: string = '';
-
+  imagesConvertedToFirebaseUrl!: string[];
+  selectedImages: string[] = [];
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private store: Store<UserState>,
-    private router: Router
+    private router: Router,private renderer: Renderer2
   ) {}
   ngOnInit(): void {
     this.store.select(selectCurrentUser).subscribe((user) => {
@@ -180,6 +185,9 @@ export class AddStoryComponent implements OnInit {
         break;
       case 'TextStory':
         this.showImageBackground = false;
+        if(this.backgroundImage){
+          this.setBackgroundColorStyles()
+        }
         break;
     
       default:
@@ -199,4 +207,76 @@ export class AddStoryComponent implements OnInit {
       console.log(val)
     })
   }
+
+    // Function to trigger the file input when the "Upload image" button is clicked
+    triggerImageInput(): void {
+      // Access the native element using this.imageInput.nativeElement
+      this.imageInput.nativeElement.click();
+     
+    }
+    
+    onImageSelected(event: Event): void {
+      const inputElement = event.target as HTMLInputElement;
+      if (inputElement.files) {
+        const selectedImages: FileList = inputElement.files;
+        const fileArray: CustomFile[] = Array.from(selectedImages);
+    
+        // Reset the array
+        this.imagesConvertedToFirebaseUrl = [];
+    
+        // Create a function to upload an image and return a Promise
+        const uploadImage = (file: CustomFile): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const base64String = (e.target?.result as string).split(',')[1];
+    
+              this.fireStoreCollectionsService
+                .uploadPicture(base64String)
+                .then((firebaseUrl) => {
+                  resolve(firebaseUrl);
+                })
+                .catch((error) => {
+                  reject(error);
+                });
+            };
+            reader.readAsDataURL(file);
+          });
+        };
+    
+        // Process each file sequentially
+        const processFiles = async () => {
+          for (const file of fileArray) {
+            try {
+              const url = await uploadImage(file);
+              this.setBackgroundStyles('',url)
+              this.imagesConvertedToFirebaseUrl.push(url);
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        };
+    
+        // Start processing files
+        processFiles();
+        this.selectedImages = this.imagesConvertedToFirebaseUrl;
+      }
+    }
+
+    setBackgroundStyles(backgroundColor: string, backgroundImage: string): void {
+      const nativeElement = this.mainContainer.nativeElement;
+  
+      // Set background-color to transparent
+      this.renderer.setStyle(nativeElement, 'background-color', 'transparent');
+  
+      // Set background-image to the provided URL
+      console.warn("image here",backgroundImage)
+      this.renderer.setStyle(nativeElement, 'background-image', 'url(' + backgroundImage + ')');
+    }
+    setBackgroundColorStyles(): void {
+      const nativeElement = this.mainContainer.nativeElement;
+  
+      // Set background-color to transparent
+      this.renderer.setStyle(nativeElement, 'background-color', this.backgroundColor);
+    }
 }

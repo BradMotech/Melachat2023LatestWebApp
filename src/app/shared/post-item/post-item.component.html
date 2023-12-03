@@ -1,5 +1,5 @@
 
-<div class="grid gap-4">
+<div class="grid gap-4" style="cursor: pointer;">
 <div class="child-max-w-sm  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" (click)="ViewDetails(Post)">
     <app-images-grid [images]="Post.postImage"></app-images-grid>
     <div class="p-5">
@@ -13,10 +13,28 @@
         <p>@{{Post.username}}</p>
         <p>{{Post.datePosted}}</p>
         <a>
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{Post.title}}</h5>
+            <!-- <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{Post.title}}</h5> -->
+            <div *ngIf="Post && Post.post" class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            <div *ngFor="let paragraph of getParagraphs(Post.title, 1300)" class="paragraph">
+              <h5>
+                <span *ngFor="let word of paragraph.split(' ')" [ngClass]="{'hashtag': word.startsWith('#')}">
+                  {{ word + ' ' }}
+                </span>
+              </h5>
+            </div>
+            </div>
         </a>
       </div>
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">{{Post.post}}</p>
+      <!-- <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">{{Post.post}}</p> -->
+      <div *ngIf="Post && Post.post" class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">
+        <div *ngFor="let paragraph of getParagraphs(Post.post, 1300)" class="paragraph">
+          <p>
+            <span *ngFor="let word of paragraph.split(' ')" [ngClass]="{'hashtag': isHashtag(word)}">
+              {{ word + ' ' }}
+            </span>
+          </p>
+        </div>
+      </div>
 
 <div class="inline-flex rounded-md shadow-sm button-group" role="group">
   <button (click)="likePost(Post);$event.stopPropagation()" type="button" class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">

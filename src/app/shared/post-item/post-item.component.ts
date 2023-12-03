@@ -15,6 +15,7 @@ import { selectDocId } from '../State/user.selectors';
 export class PostItemComponent implements OnInit {
   @Input() Post!: IPosts;
   @Output() ViewPost = new EventEmitter<IPosts>();
+  @Output() HashTagNavigationEmmitter = new EventEmitter<string>();
   @Output() likePostEmitter = new EventEmitter<IPosts>();
   commentLength:any
 
@@ -37,6 +38,7 @@ export class PostItemComponent implements OnInit {
       this.currentUserId = id;
       console.log('Current user id:' +this.currentUserId);
     });
+    
   }
 
   
@@ -54,5 +56,36 @@ export class PostItemComponent implements OnInit {
       length = val
     })
     return length
+  }
+
+  getParagraphs(text: string, charLimit: number): string[] {
+    const paragraphs: string[] = [];
+    let currentParagraph = '';
+
+    text.split(' ').forEach((word) => {
+      if ((currentParagraph + ' ' + word).length <= charLimit) {
+        // Add the word to the current paragraph
+        currentParagraph += (currentParagraph.length > 0 ? ' ' : '') + word;
+      } else {
+        // Start a new paragraph
+        paragraphs.push(currentParagraph);
+        currentParagraph = word;
+      }
+    });
+
+    // Add the last paragraph
+    if (currentParagraph.length > 0) {
+      paragraphs.push(currentParagraph);
+    }
+
+    return paragraphs;
+  }
+  isHashtag(word: string): boolean {
+    return word.startsWith('#') && !word.includes('#', 1); // Check if the word starts with '#' and doesn't contain another '#' after the first character
+  }
+
+  navigateToTrending(hashtag:string){
+    // this.router.navigate(['trending'])
+    this.HashTagNavigationEmmitter.emit(hashtag)
   }
 }

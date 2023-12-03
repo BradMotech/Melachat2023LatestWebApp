@@ -13,6 +13,7 @@ import { selectDocId } from 'src/app/shared/State/user.selectors';
 })
 export class TrendingComponent {
   currentUserId!: string | null;
+  trending:any[] = []
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,

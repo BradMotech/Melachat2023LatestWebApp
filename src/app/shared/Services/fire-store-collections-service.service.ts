@@ -294,51 +294,36 @@ export class FireStoreCollectionsServiceService {
   }
 
   addCommentToPost(postId: string, userId: string, comment: string, senderId: string, username: string, userImage: string): Observable<void> {
-
     const postDoc = doc(this.firestore, 'Posts', postId);
   
-    return new Observable<void>((observer) => {
-      getDoc(postDoc)
-        .then((postSnapshot) => {
-          if (postSnapshot.exists()) {
-            const post = postSnapshot.data() as IPosts;
+    return from(getDoc(postDoc)).pipe(
+      switchMap((postSnapshot) => {
+        if (postSnapshot.exists()) {
+          const post = postSnapshot.data() as IPosts;
+          const currentComments = post.comments || [];
+          const newComment = {
+            userId: userId,
+            comment: comment,
+            username: username,
+            userImage: userImage,
+            postedAt: new Date().toLocaleString('en-GB', { timeZone: 'UTC' }),
+          };
+          const updatedComments = [...currentComments, newComment];
   
-            // Retrieve the current comments array or initialize an empty array
-            const currentComments = post.comments || [];
-  
-            const newComment = {
-              userId: userId,
-              comment: comment,
-              username: username,
-              userImage: userImage,
-              postedAt: new Date().toLocaleString('en-GB', { timeZone: 'UTC' }),
-            };
-  
-            // Add the new comment to the current comments array
-            const updatedComments = [...currentComments, newComment];
-  
-            // Update the post with the modified comments array
-            updateDoc(postDoc, {
-              comments: updatedComments,
+          return from(updateDoc(postDoc, { comments: updatedComments })).pipe(
+            map(() => undefined), // Map the result to void
+            catchError((error) => {
+              throw error; // Re-throw the error
             })
-              .then(() => {
-                observer.next();
-                observer.complete();
-              })
-              .catch((error) => {
-                observer.error(error);
-                observer.complete();
-              });
-          } else {
-            observer.error('Post not found');
-            observer.complete();
-          }
-        })
-        .catch((error) => {
-          observer.error(error);
-          observer.complete();
-        });
-    });
+          );
+        } else {
+          throw new Error('Post not found');
+        }
+      }),
+      catchError((error) => {
+        throw error; // Re-throw the error
+      })
+    );
   }
   
   addFriend(userId: string, friendNumber: string): Observable<void> {
@@ -505,51 +490,43 @@ console.log('friend found',userDoc)
       return () => unsubscribe();
     });
   }
-  addUserIdToViewedBy(postId: string, userId: string): Observable<void> {
+
+  addUserIdToViewedByRealTime(postId: string, userId: string): Observable<void> {
     const postDoc = doc(this.firestore, 'Posts', postId);
+    let hasUpdated = false; // Flag to track whether the update has been processed
   
-    return new Observable<void>((observer) => {
+    return new Observable<void>((observer: Observer<void>) => {
       const unsubscribe = onSnapshot(postDoc, (postSnapshot) => {
-        if (postSnapshot.exists()) {
+        if (postSnapshot.exists() && !hasUpdated) {
           runTransaction(this.firestore, async (transaction) => {
             const post = (await transaction.get(postDoc)).data() as IPosts;
+            console.warn("user viewed by: ", post);
   
-            // Retrieve the current likedBy array or initialize an empty array
-            const currentLikedBy = post.likedBy || [];
-  
-            // Check if the userId is already in the array
-            if (currentLikedBy.includes(userId)) {
-              // Remove the userId from the likedBy array (dislike)
               transaction.update(postDoc, {
-                viewedBy: arrayRemove(userId),
+                viewedBy: [...post.viewedBy, userId], // Manually update the viewedBy array
               });
-            } else {
-              // Add the userId to the likedBy array (like)
-              transaction.update(postDoc, {
-                viewedBy: arrayUnion(userId),
-              });
-            }
   
-            return;
+              hasUpdated = true; // Set the flag to true after the update
+    
           })
-            .then(() => {
-              observer.next();
-              observer.complete();
-            })
-            .catch((error) => {
-              observer.error(error);
-              observer.complete();
-            });
+          .then(() => {
+            observer.next();
+            observer.complete();
+            unsubscribe(); // Unsubscribe after the first update
+          })
+          .catch((error) => {
+            observer.error(error);
+            observer.complete();
+          });
         } else {
-          observer.error('Post not found');
+          observer.error('Post not found or already updated');
           observer.complete();
         }
       });
-  
-      // Return an unsubscribe function to clean up the subscription when it's no longer needed
-      return () => unsubscribe();
     });
   }
+  
+  
   
 
   getLikedByCount(postId: string, userId: string): Observable<number> {
@@ -579,6 +556,7 @@ console.log('friend found',userDoc)
       return () => unsubscribe();
     });
   }
+  
 
   DeclineFriend(userId: string, friendNumber: string): Observable<void> {
     console.log('user id ', userId);

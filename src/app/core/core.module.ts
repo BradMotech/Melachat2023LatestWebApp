@@ -13,6 +13,7 @@ import { ChatScreenComponent } from './chat-screen/chat-screen.component';
 import { NotificationComponent } from './notification/notification.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FriendRequestsComponent } from './friend-requests/friend-requests.component';
+import { AllPostsFullScreenComponent } from './all-posts-full-screen/all-posts-full-screen.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'notifications', component: NotificationComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'friend-requests', component: FriendRequestsComponent },
+  { path: 'all-posts', component: AllPostsFullScreenComponent },
 ];
 
 
@@ -40,7 +42,8 @@ const routes: Routes = [
     ChatScreenComponent,
     NotificationComponent,
     UserProfileComponent,
-    FriendRequestsComponent
+    FriendRequestsComponent,
+    AllPostsFullScreenComponent
   ],
   imports: [
     CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule

@@ -2,6 +2,8 @@
     margin-bottom: 22px;
     margin-right: 148px;
     margin-left: 148px;
+    justify-content: space-between;
+      display: flex;
 }
 
 
@@ -10,7 +12,7 @@
         background-color: #69696912;
         padding: 54px;
         display: grid;
-        grid-template-columns: repeat(1, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         margin-right: 148px;
         margin-left: 148px;
         border-radius: 12px
@@ -39,10 +41,12 @@
       border-radius: 12px;
     }
 
-    .promoted-posts[_ngcontent-ng-c470539694] {
+    .promoted-posts {
         margin-bottom: 22px;
         /* margin-right: 148px; */
         margin-left: 24px;
+        justify-content: space-between;
+        display: flex;
     }
   }
 @media (max-width: 500px) {
@@ -56,10 +60,12 @@
       border-radius: 12px;
     }
 
-    .promoted-posts[_ngcontent-ng-c470539694] {
+    .promoted-posts {
         margin-bottom: 22px;
         /* margin-right: 148px; */
         margin-left: 24px;
+        justify-content: space-between;
+        display: flex;
     }
 
     .button-group{

@@ -22,10 +22,18 @@
                             </h5>
                         </a>
                     </div>
-                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">{{Post.post}}</p>
-
+                    <!-- <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">{{Post.post}}</p> -->
+                    <div *ngIf="Post && Post.post" class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">
+                        <div *ngFor="let paragraph of getParagraphs(Post.post, 1300)" class="paragraph">
+                          <p>
+                            <span *ngFor="let word of paragraph.split(' ')" [ngClass]="{'hashtag': word.startsWith('#')}">
+                              {{ word + ' ' }}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
                     <div class="inline-flex rounded-md shadow-sm button-group" role="group">
-                        <button type="button"
+                        <button (click)="likePost(Post)" type="button"
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
 
                             <svg class="h-6 w-6 mr-2 text-red-500" width="24" height="24" viewBox="0 0 24 24"
@@ -34,7 +42,7 @@
                                 <path stroke="none" d="M0 0h24v24H0z" />
                                 <path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" />
                             </svg>
-                            {{Post.likes}} likes
+                            {{likesArray.length}} likes
                         </button>
                         <button type="button"
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
@@ -52,7 +60,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
-                            {{Post.viewedBy.length}} Views
+                            {{viewsArray.length}} Views
                         </button>
                     </div>
 
@@ -125,7 +133,16 @@
                                 <p>Commented on <time datetime="2017-03-03 19:00">{{comment.username['postedAt']
                                 }}</time></p>
                             </footer>
-                            <p class="mb-2 text-gray-500 dark:text-gray-400">{{comment.username['comment']}}.</p>
+                            <!-- <p class="mb-2 text-gray-500 dark:text-gray-400">{{comment.username['comment']}}.</p> -->
+                            <div *ngIf="Post && Post.post" class="mb-2 text-gray-500 dark:text-gray-400">
+                                <div *ngFor="let paragraph of getParagraphs(comment.username['comment'], 1300)" class="paragraph">
+                                  <p>
+                                    <span (click)="navigateToTrending(word)" *ngFor="let word of paragraph.split(' ')" [ngClass]="{'hashtag': word.startsWith('#')}">
+                                      {{ word + ' ' }}
+                                    </span>
+                                </p>
+                                </div>
+                                </div>
                             <!-- <a href="#" class="block mb-5 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Read more</a> -->
                             <aside>
                                 <!-- <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">19 people found this helpful</p> -->

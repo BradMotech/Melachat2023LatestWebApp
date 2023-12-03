@@ -97,7 +97,7 @@
     </div>
 </div>
 </div>
-<app-search [placeholder]="'Search users...'" (searchEmitter)="search($event)"></app-search>
+<app-search [placeholder]="searchPlaceholder" (searchEmitter)="search($event)"></app-search>
 </div>
 <div class="container-center justify-center items-center">
     <div>
@@ -153,7 +153,7 @@
 
         <!-- if posts selected -->
         <div *ngIf="selectedTabTitle == POSTS">
-            <app-post-list [AllPosts]="AllPosts"></app-post-list>
+            <app-post-list [showPrmotedPostsContainer]="true" [AllPosts]="AllPosts"></app-post-list>
         </div>
         <!-- if news selected -->
         <div *ngIf="selectedTabTitle == NEWS">

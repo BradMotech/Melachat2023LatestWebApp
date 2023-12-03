@@ -1,4 +1,4 @@
-<div [ngStyle]="{ 'background-color': backgroundColor, 'background-image': backgroundImage }" class="main-container">
+<div #mainContainer [ngStyle]="{ 'background-color': backgroundColor, 'background-image': backgroundImage }" class="main-container">
     <div class="header-section">
 
         <div class="back" style="cursor: pointer;" (click)="navigateBack()">
@@ -8,13 +8,16 @@
 
         </div>
         <div class="flex-shrink-0 user-details">
-            <h1 (click)="uploadTextStory()" class="text-sm font-medium text-gray-900 truncate dark:text-white user-name">Upload</h1>
+            <svg *ngIf="showImageBackground" style="margin-right:12px;cursor:pointer" (click)="triggerImageInput()" class="h-8 w-8 text-white"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />  <circle cx="12" cy="13" r="3" /></svg>
+            <h1 (click)="uploadTextStory()" class="text-sm font-medium text-gray-900 truncate dark:text-white user-name" style="cursor: pointer;">Upload story</h1>
             <h1 class="text-sm font-medium text-gray-900 truncate dark:text-white user-name">{{currentUser?.name}}</h1>
             <img class="w-16 h-16 rounded-full" src="{{currentUser?.image}}" alt="Neil image">
         </div>
     </div>
 
-    <div class="main-container-wrap">
+    <div class="main-container-wrap" >
+        <input #imageInput type="file" accept="image/*" multiple style="display: none"
+                            (change)="onImageSelected($event)">
         <div class="main-container">
             <div
             *ngIf="!showImageBackground"
@@ -32,13 +35,16 @@
               </div>
 
               <div *ngIf="showImageBackground" class="addImageHere" style="color: #ffffff76; position: absolute; pointer-events: none;align-items: center;display: flex;justify-content: center;flex-direction: column;">
-                <h1>Click image below to add photo</h1>
-                <div style="background-color: transparent!important;" class="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
-                    <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                        <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
-                    </svg>
-                </div>
-              </div>
+                <h1>Click camera on the top right to add photo</h1>
+                <button style="cursor: pointer;z-index: 99999999;" (click)="triggerImageInput()">
+
+                    <div style="background-color: transparent!important;" class="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
+                        <svg class="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                            <path d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
+                        </svg>
+                    </div>
+                </button>
+            </div>
             <div class="contain-icons">
               <!-- Your buttons here -->
             </div>

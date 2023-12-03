@@ -30,6 +30,8 @@ export class PostDetailsComponent implements OnInit {
   currentUserId!: string | null;
   currentUser!: IUsersInterface | null;
   postComments!: { id: string; username: any }[];
+  likesArray!: { id: string; username: string; }[];
+  viewsArray!: { id: string; username: string; }[];
 
   constructor(
     private router: Router,
@@ -50,6 +52,8 @@ export class PostDetailsComponent implements OnInit {
 
     this.router.routerState.root.queryParams.subscribe((params: any) => {
       // console.warn(params.comments);
+      console.warn("here we gooooooo"+params.docId,this.currentUserId as string)
+  
       if (params) {
         this.Post = {
           title: params.title,
@@ -78,9 +82,25 @@ export class PostDetailsComponent implements OnInit {
               // Add other properties as needed...
             })
           );
+          const likesArray = Object.entries(eachPost?.likedBy as string[]).map(
+            ([id, likes]) => ({
+              id,
+              username: likes,
+              // Add other properties as needed...
+            })
+          );
+          const viewsArray = Object.entries(eachPost?.viewedBy as string[]).map(
+            ([id, views]) => ({
+              id,
+              username: views,
+              // Add other properties as needed...
+            })
+          );
 
           this.postComments = commentsArray;
-          console.warn('found post', commentsArray);
+          this.likesArray = likesArray;
+          this.viewsArray = viewsArray;
+          console.warn('found post comments', likesArray);
         });
       }
     });
@@ -94,7 +114,7 @@ export class PostDetailsComponent implements OnInit {
     });
   }
 
-  postComment(post: IPosts) {}
+  // postComment(post: IPosts) {}
 
   getCommentKeys(): string[] {
     return Object.keys(this.Post.comments || {});
@@ -123,7 +143,62 @@ export class PostDetailsComponent implements OnInit {
           comment: this.postText,
         };
 
-        this.postComments.push({id:'',username:post});
+        // this.postComments.push({id:'',username:post});
       });
   }
+
+  // getParagraphs(text: string, charLimit: number): string[] {
+  //   const paragraphs: string[] = [];
+  //   let currentParagraph = '';
+
+  //   text.split(' ').forEach((word) => {
+  //     if ((currentParagraph + ' ' + word).length <= charLimit) {
+  //       // Add the word to the current paragraph
+  //       currentParagraph += (currentParagraph.length > 0 ? ' ' : '') + word;
+  //     } else {
+  //       // Start a new paragraph
+  //       paragraphs.push(currentParagraph);
+  //       currentParagraph = word;
+  //     }
+  //   });
+
+  //   // Add the last paragraph
+  //   if (currentParagraph.length > 0) {
+  //     paragraphs.push(currentParagraph);
+  //   }
+
+  //   return paragraphs;
+  // }
+  getParagraphs(text: string, charLimit: number): string[] {
+    const paragraphs: string[] = [];
+    let currentParagraph = '';
+
+    text.split(' ').forEach((word) => {
+      if ((currentParagraph + ' ' + word).length <= charLimit) {
+        // Add the word to the current paragraph
+        currentParagraph += (currentParagraph.length > 0 ? ' ' : '') + word;
+      } else {
+        // Start a new paragraph
+        paragraphs.push(currentParagraph);
+        currentParagraph = word;
+      }
+    });
+
+    // Add the last paragraph
+    if (currentParagraph.length > 0) {
+      paragraphs.push(currentParagraph);
+    }
+
+    return paragraphs;
+  }
+
+  navigateToTrending(hashtag:string){
+    this.router.navigate(['trending'])
+  }
+
+  likePost(post: IPosts){
+    this.firebaseService.addUserIdToLikedBy(post.docId,this.currentUserId as string).subscribe((val)=>{
+      // console.warn( post.docId + this.currentUserId)
+    })
+    }
 }
