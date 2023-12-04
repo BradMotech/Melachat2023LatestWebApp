@@ -5,16 +5,20 @@
     justify-content: space-between;
       display: flex;
 }
+.md\:grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-right: 140px;
+  margin-left: 140px;
+}
 
-
-@media (min-width: 768px) {
+@media (min-width: 668px) and (max-width:1000px) {
     .md\:grid-cols-3 {
         background-color: #69696912;
         padding: 54px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin-right: 148px;
-        margin-left: 148px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-right: 128px;
+        margin-left: 128px;
         border-radius: 12px
     }
 }
@@ -86,7 +90,7 @@
     display: flex;
 }
 
-@media (min-width: 200px) {
+@media (min-width: 200px) and (max-width:400px){
 .md\:grid-cols-3 {
   padding: 0px;
   display: grid;
