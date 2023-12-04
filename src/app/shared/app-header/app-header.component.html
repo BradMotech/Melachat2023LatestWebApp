@@ -5,7 +5,7 @@
       <div class="flex justify-between items-center">
         <a href="#" class="font-bold text-xl text-indigo-600"><img src="../../../assets/icon.png" class="brand-img"
             alt=""></a>
-            <p style="margin-left:12px;color:#707070"> &#64;{{currentUser?.username}}</p>
+            <p style="margin-left:12px;color:#707070"> &#64;{{currentUserDetails?.username}}</p>
         <!-- <button class="border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden" (click)="toggleNavbar()">
           <i class="fas fa-bars"></i>
         </button> -->
@@ -13,8 +13,8 @@
       
       <div (click)="navigate('home')" [ngClass]="{'hidden': isNavbarCollapsed, 'flex': !isNavbarCollapsed}"
       class="md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0" style=" flex-direction: row;">
-      <h1 *ngIf="currentUser?.melachatFor" style="margin-top: 12px;margin-right:20px" class="for-business">For Business</h1>
-      <h1 *ngIf="!currentUser?.melachatFor" style="margin-top: 12px;margin-right:20px" class="for-business">For Individual</h1>
+      <h1 *ngIf="currentUserDetails?.melachatFor" style="margin-top: 12px;margin-right:20px" class="for-business">For Business</h1>
+      <h1 *ngIf="!currentUserDetails?.melachatFor" style="margin-top: 12px;margin-right:20px" class="for-business">For Individual</h1>
         <div style="margin-top: 12px;width:50px">
           <svg class="h-7 w-7 text-black-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -35,7 +35,7 @@
         </div>
         <div>
           <img (click)="navigate('user-profile')" class="icon user-profile"
-          src="{{currentUser?.image}}" />
+          src="{{currentUserDetails?.image}}" />
           <span
             class="inline-flex items-center justify-center w-4 h-4 ml-2 text-xs font-semibold text-white-800 bg-white-200 rounded-full"
             style="

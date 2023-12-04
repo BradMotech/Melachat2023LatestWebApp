@@ -33,9 +33,15 @@ export class UserProfileComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    this.store.select(selectCurrentUser).subscribe((user) => {
-      this.currentUser = user;
-      console.log('Current user:', this.currentUser);
+    // this.store.select(selectCurrentUser).subscribe((user) => {
+    //   this.currentUser = user;
+    //   console.log('Current user:', this.currentUser);
+    // });
+
+    this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+      // console.log('users here', users);
+      this.currentUser = users.filter(x=> x.docId == this.currentUserId)[0];
+      return (users.filter(x=> x.docId == this.currentUserId));
     });
 
     this.store.select(selectDocId).subscribe((id) => {

@@ -5,7 +5,10 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { IHashTags } from 'src/app/shared/Interfaces/IHashTags';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
-import { FireStoreCollectionsServiceService, UserStories } from 'src/app/shared/Services/fire-store-collections-service.service';
+import {
+  FireStoreCollectionsServiceService,
+  UserStories,
+} from 'src/app/shared/Services/fire-store-collections-service.service';
 import { UserState } from 'src/app/shared/State/user.reducer';
 import {
   selectCurrentUser,
@@ -54,9 +57,10 @@ export class DashboardComponent implements OnInit {
   currentUserObject!: IUsersInterface;
   currentUser!: IUsersInterface | null;
   currentUserId!: string | null;
-  searchPlaceholder:string = "Search users..."
+  searchPlaceholder: string = 'Search users...';
   OriginalUserFriends: IUsersInterface[] = [];
   UserFriends: IUsersInterface[] = [];
+  currentUserProfileDetails$: any;
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -64,12 +68,16 @@ export class DashboardComponent implements OnInit {
     private store: Store<UserState>
   ) {}
   ngOnInit(): void {
-    this.fetchAllStories()
-    this.store.select(selectCurrentUser).subscribe((user) => {
-      this.currentUser = user;
-      console.log('Current user:', this.currentUser);
-      console.log('Current user friends:', this.currentUser?.requests);
-      
+    this.fetchAllStories();
+    // this.store.select(selectCurrentUser).subscribe((user) => {
+    //   this.currentUser = user;
+    //   console.log('Current user:', this.currentUser);
+    //   console.log('Current user friends:', this.currentUser?.requests);
+    // });
+    this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+      // console.log('users here', users);
+      this.currentUser = users.filter(x=> x.docId == this.currentUserId)[0];
+      return (users.filter(x=> x.docId == this.currentUserId));
     });
 
     this.store.select(selectDocId).subscribe((id) => {
@@ -81,23 +89,27 @@ export class DashboardComponent implements OnInit {
       // console.log('users here', users);
       return (this.recommedations = users);
     });
-    this.fireStoreCollectionsService
-      .getAllHashtags()
-      .subscribe((hashtags) => {
-        console.warn("hastags right heereee",hashtags)
-        this.hashtags = hashtags});
+
+    // this.currentUserProfileDetails$ = this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+    //   // console.log('users here', users);
+    //   return (users.filter(x=> x.docId == this.currentUserId));
+    // });
+    this.fireStoreCollectionsService.getAllHashtags().subscribe((hashtags) => {
+      console.warn('hastags right heereee', hashtags);
+      this.hashtags = hashtags;
+    });
 
     this.fireStoreCollectionsService.getAllPoststags().subscribe((posts) => {
       // Sort the posts by dateAdded in descending order (most recent first)
-      console.warn("All posts here",posts)
+      console.warn('All posts here', posts);
       this.originalAllPosts = posts
-      .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
-      .sort((a, b) => {
-        const dateA = new Date(a.datePosted).getTime();
-        const dateB = new Date(b.datePosted).getTime();
-        return dateB - dateA;
-      });
-      this.AllPosts = this.originalAllPosts
+        .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
+        .sort((a, b) => {
+          const dateA = new Date(a.datePosted).getTime();
+          const dateB = new Date(b.datePosted).getTime();
+          return dateB - dateA;
+        });
+      this.AllPosts = this.originalAllPosts;
     });
 
     fetch(
@@ -105,8 +117,8 @@ export class DashboardComponent implements OnInit {
     )
       .then((response) => response.json())
       .then((json) => {
-        this.OriginalNewsArticles = json.articles
-        this.NewsArticles =  this.OriginalNewsArticles;
+        this.OriginalNewsArticles = json.articles;
+        this.NewsArticles = this.OriginalNewsArticles;
       })
       .catch((error) => {
         // console.error(error);
@@ -117,15 +129,14 @@ export class DashboardComponent implements OnInit {
       return (this.friends = users);
     });
     // this.fetchCurrentUserFriends();
-    this.UserFriends = this.fetchCurrentUserFriends("");
+    this.UserFriends = this.fetchCurrentUserFriends('');
   }
   fetchAllStories() {
-
- this.fireStoreCollectionsService.getAllStories().subscribe(
+    this.fireStoreCollectionsService.getAllStories().subscribe(
       (stories: UserStories[]) => {
         // Update your component property with the fetched stories
-        console.warn("this is all the stories",stories)
-        this.ListOfStories = stories
+        console.warn('this is all the stories', stories);
+        this.ListOfStories = stories;
       },
       (error) => {
         // Handle errors here, e.g., display an error message to the user or log the error
@@ -149,26 +160,26 @@ export class DashboardComponent implements OnInit {
     // console.log("friends",filteredUsers);
     return filteredUsers;
   }
-  fetchCurrentUserFriends(searchTerm: string = ""): IUsersInterface[] {
+  fetchCurrentUserFriends(searchTerm: string = ''): IUsersInterface[] {
     const friendDocIds = this.currentUser!.friends;
     let filteredUsers = this.recommedations!.filter((user) =>
       friendDocIds.includes(user.docId)
     );
-  
+
     // Apply additional filtering based on the search term
-    if (searchTerm.trim() !== "") {
+    if (searchTerm.trim() !== '') {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       filteredUsers = filteredUsers.filter(
         (user) =>
           user.username.toLowerCase().includes(lowerCaseSearchTerm) ||
           user.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
-    }else{
-     filteredUsers = this.recommedations!.filter((user) =>
-      friendDocIds.includes(user.docId)
-    );
+    } else {
+      filteredUsers = this.recommedations!.filter((user) =>
+        friendDocIds.includes(user.docId)
+      );
     }
-  
+
     return filteredUsers;
   }
 
@@ -178,15 +189,15 @@ export class DashboardComponent implements OnInit {
     this.selectedTabTitle = selectedTabTitle;
     switch (selectedTabTitle) {
       case this.CHATS:
-        this.searchPlaceholder = "Search chats..."
+        this.searchPlaceholder = 'Search chats...';
         break;
       case this.POSTS:
-        this.searchPlaceholder = "Search posts..."
+        this.searchPlaceholder = 'Search posts...';
         break;
       case this.NEWS:
-        this.searchPlaceholder = "Search news..."
+        this.searchPlaceholder = 'Search news...';
         break;
-    
+
       default:
         break;
     }
@@ -239,10 +250,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-
   search(val: string) {
     const searchText = val.toLowerCase();
-    
+
     switch (this.selectedTabTitle) {
       case this.CHATS:
         // Filter currentUser!.friends based on search text
@@ -257,15 +267,19 @@ export class DashboardComponent implements OnInit {
           this.AllPosts = this.originalAllPosts;
           return;
         }
-      
+
         // Filter posts based on the search term
         const filteredPosts = this.originalAllPosts?.filter((post) => {
           const trimmedTitle = post.title.toLowerCase().trim();
-      
+
           // Only filter when there is a non-empty search query
-          return trimmedSearchText.length > 0 && (trimmedTitle.includes(trimmedSearchText) || trimmedTitle == trimmedSearchText);
+          return (
+            trimmedSearchText.length > 0 &&
+            (trimmedTitle.includes(trimmedSearchText) ||
+              trimmedTitle == trimmedSearchText)
+          );
         });
-      
+
         this.AllPosts = filteredPosts;
         break;
       case this.NEWS:
@@ -277,15 +291,19 @@ export class DashboardComponent implements OnInit {
           this.NewsArticles = this.OriginalNewsArticles;
           return;
         }
-      
+
         // Filter posts based on the search term
         const filteredNews = this.originalAllPosts?.filter((article) => {
           const trimmedNewsTitle = article.title.toLowerCase().trim();
-      
+
           // Only filter when there is a non-empty search query
-          return SearchText.length > 0 && (trimmedNewsTitle.includes(SearchText) || trimmedNewsTitle == SearchText);
+          return (
+            SearchText.length > 0 &&
+            (trimmedNewsTitle.includes(SearchText) ||
+              trimmedNewsTitle == SearchText)
+          );
         });
-      
+
         this.NewsArticles = filteredNews;
         break;
       default:
@@ -301,7 +319,7 @@ export class DashboardComponent implements OnInit {
       });
   }
 
-  MessageUser(friend:IUsersInterface){
+  MessageUser(friend: IUsersInterface) {
     this.router.navigate(['/', 'messaging'], {
       queryParams: {
         friendData: JSON.stringify(friend),
@@ -309,7 +327,5 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  MoreUserDetails(user:IUsersInterface){
-
-  }
+  MoreUserDetails(user: IUsersInterface) {}
 }

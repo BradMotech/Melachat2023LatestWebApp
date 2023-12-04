@@ -24,7 +24,18 @@ export class LoginComponent {
   ]);
   PasswordContentFormControl: FormControl = new FormControl();
   phoneNumber: string = '';
+  selectedCountryCode: string = '27';
+  isDropdownOpen: boolean = false;
+  countryCodes: string[] = ['1', '44', '81', '27', '33']; // Add your desired country codes
 
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  selectCountryCode(code: string) {
+    this.selectedCountryCode = code;
+    this.isDropdownOpen = false;
+  }
   constructor(
     // private msalService: MsalService,
     public router: Router,

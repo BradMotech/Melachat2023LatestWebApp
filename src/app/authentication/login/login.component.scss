@@ -45,3 +45,56 @@ input.ng-invalid {
     padding-right: 22px;
 }
 }
+
+
+.text-gray-500 {
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity));
+    font-size: 13px;
+}
+
+.country-code-picker {
+    position: absolute;
+    inset-y: 0;
+    start: 0;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: #f7fafc;
+    border: 1px solid #edf2f7;
+    border-right: 0;
+    border-top-left-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+    cursor: pointer;
+  }
+  
+  .arrow-down {
+    margin-left: 0.5rem;
+  }
+  
+  .country-code-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    display: none;
+    border: 1px solid #edf2f7;
+    border-top: 0;
+    background-color: #fff;
+    border-bottom-right-radius: 0.375rem;
+    border-bottom-left-radius: 0.375rem;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    width: 100%;
+  }
+  
+  .country-code-dropdown div {
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .country-code-dropdown div:hover {
+    background-color: #edf2f7;
+  }
+  

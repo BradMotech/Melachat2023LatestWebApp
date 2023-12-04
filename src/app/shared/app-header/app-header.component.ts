@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { IUsersInterface } from '../Interfaces/IUsersInterface';
 import { UserState } from '../State/user.reducer';
 import { Store } from '@ngrx/store';
-import { selectCurrentUser } from '../State/user.selectors';
+import { selectCurrentUser, selectDocId } from '../State/user.selectors';
+import { FireStoreCollectionsServiceService } from '../Services/fire-store-collections-service.service';
 
 @Component({
   selector: 'app-app-header',
@@ -13,13 +14,26 @@ import { selectCurrentUser } from '../State/user.selectors';
 export class AppHeaderComponent implements OnInit {
   @Input() image: string = '';
   @Input() currentUserObject!: IUsersInterface;
+  @Input() currentUserId:string | null = ''
   isNavbarCollapsed: boolean = false;
   currentUser!: IUsersInterface | null;
-  constructor(private router: Router, private store: Store<UserState>) {}
+  currentUserDetails!: IUsersInterface | null;
+  currentUserProfileDetails$: any;
+  constructor(private router: Router, private store: Store<UserState>,private fireStoreCollectionsService:FireStoreCollectionsServiceService) {}
   ngOnInit(): void {
-    this.store.select(selectCurrentUser).subscribe((user) => {
-      this.currentUser = user;
-      console.log('Current user:', this.currentUser);
+    // this.store.select(selectCurrentUser).subscribe((user) => {
+    //   this.currentUser = user;
+    //   console.log('Current user:', this.currentUser);
+    // });
+    this.store.select(selectDocId).subscribe((id) => {
+      this.currentUserId = id;
+      console.log('Current user id:', this.currentUserId);
+    });
+
+    this.currentUserProfileDetails$ = this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+      // console.log('users here', users);
+      this.currentUserDetails = users.filter(x=> x.docId == this.currentUserId)[0]
+      return (users.filter(x=> x.docId == this.currentUserId));
     });
   }
 
@@ -30,23 +44,23 @@ export class AppHeaderComponent implements OnInit {
   navigate(url: string) {
     this.router.navigate([`${url}`], {
       queryParams: {
-        InterestedIn: this.currentUser!.InterestedIn,
-        availability: this.currentUser!.availability,
-        bio: this.currentUser!.bio,
-        blocked: this.currentUser!.blocked,
-        created: this.currentUser!.created,
-        dob: this.currentUser!.dob,
-        friends: this.currentUser!.friends,
-        image: this.currentUser!.image,
-        language: this.currentUser!.language,
-        location: this.currentUser!.location,
-        name: this.currentUser!.name,
-        notificationToken: this.currentUser!.notificationToken,
-        password: this.currentUser!.password,
-        phone: this.currentUser!.phone,
-        requests: this.currentUser!.requests,
-        suspended: this.currentUser!.suspended,
-        username: this.currentUser!.username,
+        InterestedIn: this.currentUserDetails!.InterestedIn,
+        availability: this.currentUserDetails!.availability,
+        bio: this.currentUserDetails!.bio,
+        blocked: this.currentUserDetails!.blocked,
+        created: this.currentUserDetails!.created,
+        dob: this.currentUserDetails!.dob,
+        friends: this.currentUserDetails!.friends,
+        image: this.currentUserDetails!.image,
+        language: this.currentUserDetails!.language,
+        location: this.currentUserDetails!.location,
+        name: this.currentUserDetails!.name,
+        notificationToken: this.currentUserDetails!.notificationToken,
+        password: this.currentUserDetails!.password,
+        phone: this.currentUserDetails!.phone,
+        requests: this.currentUserDetails!.requests,
+        suspended: this.currentUserDetails!.suspended,
+        username: this.currentUserDetails!.username,
       },
     });
   }
