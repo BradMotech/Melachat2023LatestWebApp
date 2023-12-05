@@ -215,6 +215,24 @@ export class AddStoryComponent implements OnInit {
       this.alertService.warning("Please enter some text to add a story")
     }
   }
+  uploadImageStory(){
+    const userStory = <UserStories>{
+      username: this.currentUser?.username,
+  profile: this.currentUser?.image,
+  user: this.currentUserId,
+  count: 0,
+  stories: [],
+    }
+    if (this.selectedImages) { 
+      this.fireStoreCollectionsService.uploadImageStory(userStory,this.selectedImages).subscribe((val)=>{
+        console.log(val);
+        this.alertService.success("Successfully uploaded your story")
+        this.router.navigate(['/home'])
+      })
+    }else{
+      this.alertService.warning("Please enter some text to add a story")
+    }
+  }
 
     // Function to trigger the file input when the "Upload image" button is clicked
     triggerImageInput(): void {

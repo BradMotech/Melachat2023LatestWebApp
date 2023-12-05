@@ -13,4 +13,5 @@ export class ChatListComponent {
 startChatting(friend:IUsersInterface){
   this.chatEmitter.emit(friend);
 }
+
 }

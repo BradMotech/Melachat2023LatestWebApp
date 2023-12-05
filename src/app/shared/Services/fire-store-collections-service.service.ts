@@ -823,6 +823,82 @@ console.log('friend found',userDoc)
         });
     });
   }
+  uploadImageStory(userStories: UserStories, images: string[]): Observable<void> {
+    const storiesCollection = collection(this.firestore, 'Stories');
+  
+    return new Observable<void>((observer) => {
+      const userQuery = query(storiesCollection, where('username', '==', userStories.username));
+  
+      getDocs(userQuery)
+        .then((querySnapshot) => {
+          if (querySnapshot.empty) {
+            // If the document doesn't exist, create a new one
+            addDoc(storiesCollection, {
+              username: userStories.username,
+              profile: userStories.profile,
+              user: userStories.user,
+              count: userStories.count,
+              stories: [
+                {
+                  id: 1,
+                  url: '',
+                  type: 'image',
+                  duration: 6,
+                  isReadMore: false,
+                  storyImage: images[0],
+                  background: '#000000',
+                  storyData: {
+                    uploadedAt: moment().format('DD-MM-YYYY HH:mm:ss'),
+                    viewedBy: [],
+                  },
+                },
+              ],
+            })
+              .then(() => {
+                observer.next();
+                observer.complete();
+              })
+              .catch((error) => {
+                observer.error(error);
+                observer.complete();
+              });
+          } else {
+            // If the document exists, update it by adding the new story
+            const existingDoc = querySnapshot.docs[0];
+            const existingStories = existingDoc.data()['stories'] || [];
+            const newStory = {
+              id: existingStories.length + 1,
+              url: '',
+              type: 'image',
+              duration: 6,
+              isReadMore: false,
+              storyImage: images[0],
+              background: '#000000',
+              storyData: {
+                uploadedAt: moment().format('DD-MM-YYYY HH:mm:ss'),
+                viewedBy: [],
+              },
+            };
+  
+            updateDoc(existingDoc.ref, {
+              stories: arrayUnion(newStory),
+            })
+              .then(() => {
+                observer.next();
+                observer.complete();
+              })
+              .catch((error) => {
+                observer.error(error);
+                observer.complete();
+              });
+          }
+        })
+        .catch((error) => {
+          observer.error(error);
+          observer.complete();
+        });
+    });
+  }
 
   getAllStories(): Observable<UserStories[]> {
     const storiesCollection = collection(this.firestore, 'Stories');

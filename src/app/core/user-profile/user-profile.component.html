@@ -14,7 +14,7 @@
                        border-2 border-pink-600 p-1" src="{{currentUser?.image}}" alt="profile" style="color:white">
                         <img *ngIf="editUser" class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
                        border-2 border-pink-600 p-1" src="{{selectedImageString ? selectedImageString : 'https://t4.ftcdn.net/jpg/05/42/36/11/360_F_542361185_VFRJWpR2FH5OiAEVveWO7oZnfSccZfD3.jpg'}}" alt="profile"  style="color:white">
-                        <input  #imageInput type="file" accept="image/*" multiple style="display: none"
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" #imageInput type="file" accept="image/*" multiple style="display: none"
                             (change)="onImageSelected($event)">
                         <svg  *ngIf="editUser" (click)="triggerImageInput()" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -31,7 +31,7 @@
                                 class="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0 text-white">
                                 {{currentUser?.name}}
                             </h2>
-                            <input [formControl]="UserNameFormControl" style="margin:6px;color:black" *ngIf="editUser" placeholder="Enter your name here" />
+                            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" [formControl]="UserNameFormControl" style="margin:6px;color:black" *ngIf="editUser" placeholder="Enter your name here" />
 
                             <!-- badge -->
 
@@ -41,10 +41,11 @@
                           sm:inline-block block text-white melachat-background-color">Edit Profile</a>
                             <a *ngIf="editUser" (click)="saveUserDetails()" class="bg-blue-500 px-2 py-1 
                           text-white font-semibold text-sm rounded block text-center 
-                          sm:inline-block block text-white melachat-background-color">Save Profile</a>
+                          sm:inline-block block text-white melachat-background-color button-save">Save Profile</a>
                             <a *ngIf="editUser" (click)="close()" class="bg-blue-500 px-2 py-1 
                           text-white font-semibold text-sm rounded block text-center 
-                          sm:inline-block block text-white" style="background-color: transparent;cursor:pointer"><svg class="h-6 w-6 text-white"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <line x1="18" y1="6" x2="6" y2="18" />  <line x1="6" y1="6" x2="18" y2="18" /></svg></a>
+                          sm:inline-block block text-white button-discard">Discard</a>
+                            
                         </div>
 
                         <!-- post, following, followers list for medium screens -->
@@ -67,7 +68,7 @@
                         <!-- user meta form medium screens -->
                         <div class="hidden md:block">
                             <span class="text-white" *ngIf="!editUser">{{currentUser?.bio}}</span>
-                            <input [formControl]="UserBioFormControl" class="text-white" style="margin:6px;color:black" *ngIf="editUser"
+                            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" [formControl]="UserBioFormControl" style="margin:6px;color:black" *ngIf="editUser"
                                 placeholder="Enter your bio here" />
                             <p class="text-white">Joined on {{currentUser?.created}}</p>
                         </div>
@@ -79,7 +80,7 @@
                         <!-- <h1 class="font-semibold">Mr Travlerrr...</h1> -->
                         <span *ngIf="!editUser" class="text-white">{{currentUser?.bio}}</span>
 
-                        <input [formControl]="UserBioFormControl" style="margin:6px" *ngIf="editUser" placeholder="Enter your bio here" />
+                        <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" [formControl]="UserBioFormControl" style="margin:6px" *ngIf="editUser" placeholder="Enter your bio here" />
 
                     </div>
 

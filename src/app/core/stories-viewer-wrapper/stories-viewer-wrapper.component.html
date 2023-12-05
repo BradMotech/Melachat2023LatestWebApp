@@ -19,12 +19,12 @@
 
         @for (item of userStories; track $index) {
             @if (userStories[currentStoryIndex]) {
-                <div class="progress-container">    
+                <!-- <div class="progress-container">    
                     <div class="progress2 progress-moved">
                       <div class="progress-bar2" >
                       </div>                       
                     </div> 
-                </div>
+                </div> -->
             }
                 }
      </div>
@@ -33,7 +33,7 @@
 </div>
 }@else{
 <div class="stories-container">
-    <img [src]="userStories[currentStoryIndex]" alt="Story" class="story-image" />
+    <img [src]="userStories[currentStoryIndex].storyImage" alt="Story" class="story-image" />
 </div>
 }
 <!-- } -->

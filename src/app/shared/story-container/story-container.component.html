@@ -5,7 +5,7 @@
                 <ng-container *ngIf="addStory">
                     <div class="status-card"  (click)="ViewUserStories(CurrentUserStories[0])">
                         <div class="profile-pic"><img
-                                src="{{CurrentUserStories[0].profile}}"
+                                src="{{currentUser?.image}}"
                                 alt=""></div>
                         <p class="username">Your story</p>
                         <div style="position: relative;
