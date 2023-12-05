@@ -64,6 +64,7 @@ export class DashboardComponent implements OnInit {
   currentUserProfileDetails$: any;
   friendRequestUserId!: string;
   friendRequestUserNumber!: string;
+  currentUserFriendRequests: string[] = [];
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -81,6 +82,7 @@ export class DashboardComponent implements OnInit {
     this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
       // console.log('users here', users);
       this.currentUser = users.filter(x=> x.docId == this.currentUserId)[0];
+      this.currentUserFriendRequests = this.currentUser.requests.filter(x => x !== this.currentUser?.docId)
       return (users.filter(x=> x.docId == this.currentUserId));
     });
 

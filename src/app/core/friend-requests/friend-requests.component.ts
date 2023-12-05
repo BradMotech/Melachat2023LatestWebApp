@@ -26,9 +26,15 @@ export class FriendRequestsComponent {
 
   trendCount: number = 0;
   ngOnInit(): void {
-    this.store.select(selectCurrentUser).subscribe((user) => {
-      this.currentUser = user;
-      console.warn(this.currentUser?.requests)
+    // this.store.select(selectCurrentUser).subscribe((user) => {
+    //   this.currentUser = user;
+    //   console.warn(this.currentUser?.requests)
+    // });
+
+    this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+      // console.log('users here', users);
+      this.currentUser = users.filter(x=> x.docId == this.currentUserId)[0];
+      return (users.filter(x=> x.docId == this.currentUserId));
     });
 
     this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
@@ -36,7 +42,7 @@ export class FriendRequestsComponent {
         this.allUsers = users.filter((userValue) =>{
 
 console.warn("yeah",this.currentUser)
-          return this.currentUser?.requests.includes(userValue.docId)
+          return this.currentUser?.requests.includes(userValue.docId) && userValue.docId !== this.currentUser.docId
         }
         );
         console.warn("filtered users",this.allUsers,this.currentUser?.requests)
