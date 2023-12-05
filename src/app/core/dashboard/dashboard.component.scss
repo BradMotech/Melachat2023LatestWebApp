@@ -116,4 +116,13 @@ span{
         }
       }
 
-      
+      :host ::ng-deep .toast-container {
+        pointer-events: none;
+        position: fixed;
+        z-index: 99999999999999999999
+    }
+    
+    :host ::ng-deep  .toast-top-right {
+        top: 120px;
+        right: 12px;
+    }

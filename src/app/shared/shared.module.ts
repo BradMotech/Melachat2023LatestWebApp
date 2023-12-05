@@ -48,7 +48,11 @@ import { GalleryItemComponent } from './gallery-item/gallery-item.component';
     TimestampToDatePipe,
     GalleryItemComponent,
   ],
-  imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule, ToastrModule.forRoot()],
+  imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule, ToastrModule.forRoot({timeOut: 3000,
+    positionClass: 'toast-top-right',
+    preventDuplicates: true,
+    closeButton: true,
+    toastClass: 'custom-toast',})],
   exports: [
     AppHeaderComponent,
     StoryContainerComponent,

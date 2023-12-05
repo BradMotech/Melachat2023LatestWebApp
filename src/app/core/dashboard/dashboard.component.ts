@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { IHashTags } from 'src/app/shared/Interfaces/IHashTags';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
+import { AlertService } from 'src/app/shared/Services/alert.service';
 import {
   FireStoreCollectionsServiceService,
   UserStories,
@@ -61,11 +62,14 @@ export class DashboardComponent implements OnInit {
   OriginalUserFriends: IUsersInterface[] = [];
   UserFriends: IUsersInterface[] = [];
   currentUserProfileDetails$: any;
+  friendRequestUserId!: string;
+  friendRequestUserNumber!: string;
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private router: Router,
-    private store: Store<UserState>
+    private store: Store<UserState>,
+    private alertService: AlertService
   ) {}
   ngOnInit(): void {
     this.fetchAllStories();
@@ -328,4 +332,26 @@ export class DashboardComponent implements OnInit {
   }
 
   MoreUserDetails(user: IUsersInterface) {}
+
+  addNewFriendRequest(userId: string, userNumber: string) {
+    this.friendRequestUserId = userId;
+    this.friendRequestUserNumber = userNumber;
+    this.fireStoreCollectionsService
+      .addFriend(this.currentUserId as string, userNumber)
+      .subscribe((val) => {
+        // alert(val);
+      });
+    this.fireStoreCollectionsService
+      .addFriend(userId, userNumber)
+      .subscribe((val) => {
+        // alert(val);
+      });
+  }
+  
+  confirmFriendRequest(){
+    this.addNewFriendRequest(this.friendRequestUserId,this.friendRequestUserNumber);
+    this.alertService.success(
+      'Friend requested successully sent to ' + this.friendRequestUserNumber
+    );
+  }
 }

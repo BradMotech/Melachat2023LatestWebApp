@@ -54,7 +54,7 @@
 
 <div class="recommendations-row" *ngIf="recommedations && showRecommendations">
     <ng-container *ngFor="let item of recommedations">
-        <app-new-friend-card (MessageUserEmitter)="MessageUser($event)" (moreDetailsEmitter)="MoreUserDetails($event)" class="app-new-friend-card" [users]="item"
+        <app-new-friend-card (MessageUserEmitter)="MessageUser($event)" (moreDetailsEmitter)="MoreUserDetails($event);addNewFriendRequest($event.docId,$event.phone)" class="app-new-friend-card" [users]="item"
         (moreDetailsEmitter)="openModal($event)">{{item.name}}</app-new-friend-card>
     </ng-container>
 </div>
@@ -165,5 +165,5 @@
         </div>
     </div>
     <app-floating-button (AddPostEmitter)="AddPost()"></app-floating-button>
-    <app-dialog #dialog *ngIf="openModalFlag" (onCancel)="closeModal($event)"></app-dialog>
+    <app-dialog #dialog *ngIf="openModalFlag" (onCancel)="closeModal($event)" (onConfirm)="confirmFriendRequest()"></app-dialog>
 </div>

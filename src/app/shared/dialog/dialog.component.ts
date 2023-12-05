@@ -11,11 +11,12 @@ export class DialogComponent {
   @Input() checkMarkIcon!: boolean;
   @Input() object!: unknown;
   @Output() onCancel = new EventEmitter<boolean>();
+  @Output() onConfirm = new EventEmitter<any>();
 
   Cancel(cancel: boolean) {
     this.onCancel.emit(cancel);
   }
   AddFriendConfirm() {
-    throw new Error('Method not implemented.');
+   this.onConfirm.emit()
   }
 }
