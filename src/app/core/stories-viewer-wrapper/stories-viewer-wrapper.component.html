@@ -1,0 +1,39 @@
+<div class="header-section">
+
+    <div class="back" style="cursor: pointer;" (click)="navigateBack()">
+        <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+    </div>
+    <div class="flex-shrink-0 user-details">
+        <h1 class="text-sm font-medium text-gray-900 truncate dark:text-white user-name">{{userStory.username}}</h1>
+        <img class="w-16 h-16 rounded-full" src="{{userStory.profile}}" alt="Neil image">
+    </div>
+</div>
+<!-- @for (item of userStories; track $index) { -->
+
+@if (userStories[currentStoryIndex].type == 'text') {
+<div [style.background-color]="userStories[currentStoryIndex].background" class="text-container">
+     <!-- progress bar -->
+     <div style="top: 0;margin-top: 52px;display: flex;position: absolute;">
+
+        @for (item of userStories; track $index) {
+            @if (userStories[currentStoryIndex]) {
+                <div class="progress-container">    
+                    <div class="progress2 progress-moved">
+                      <div class="progress-bar2" >
+                      </div>                       
+                    </div> 
+                </div>
+            }
+                }
+     </div>
+    <!-- progress bar -->
+    <p class="centered-text">{{userStories[currentStoryIndex].storytext}}</p>
+</div>
+}@else{
+<div class="stories-container">
+    <img [src]="userStories[currentStoryIndex]" alt="Story" class="story-image" />
+</div>
+}
+<!-- } -->

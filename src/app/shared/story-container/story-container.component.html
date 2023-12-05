@@ -3,9 +3,9 @@
         <div class="left-col">
             <div class="status-wrapper">
                 <ng-container *ngIf="addStory">
-                    <div class="status-card">
+                    <div class="status-card"  (click)="ViewUserStories(CurrentUserStories[0])">
                         <div class="profile-pic"><img
-                                src="{{currentUser?.image}}"
+                                src="{{CurrentUserStories[0].profile}}"
                                 alt=""></div>
                         <p class="username">Your story</p>
                         <div style="position: relative;
@@ -24,7 +24,7 @@
                 </ng-container>
                 <ng-container *ngIf="stories">
                     <ng-container *ngFor="let item of stories">
-                        <div class="status-card" style="margin-top:11px">
+                        <div class="status-card" style="margin-top:11px" (click)="ViewUserStories(item)">
                             <div class="profile-pic"><img src="{{item.profile}}" alt=""></div>
                             <p class="username">{{item.username}}</p>
                         </div>

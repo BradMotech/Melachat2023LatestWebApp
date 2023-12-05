@@ -15,8 +15,10 @@ export class StoryContainerComponent implements OnInit {
   @Input() userImage: string = '';
   @Input() stories: UserStories[] = [];
   @Output() addStoryEmiiter = new EventEmitter<unknown>();
+  @Output() viewStoriesEmitter = new EventEmitter<UserStories>();
   currentUser!: IUsersInterface | null;
   currentUserId: string = "";
+  @Input() CurrentUserStories: UserStories[] = [];
   currentUserStories: UserStories[] = [];
   constructor(private store: Store<UserState>,private fireStoreCollectionsService:FireStoreCollectionsServiceService) {}
 
@@ -45,5 +47,9 @@ export class StoryContainerComponent implements OnInit {
 
   addStoryFunction() {
     this.addStoryEmiiter.emit();
+  }
+
+  ViewUserStories(item:UserStories){
+this.viewStoriesEmitter.emit(item)
   }
 }

@@ -65,6 +65,7 @@ export class DashboardComponent implements OnInit {
   friendRequestUserId!: string;
   friendRequestUserNumber!: string;
   currentUserFriendRequests: string[] = [];
+  CurrentUserStories: UserStories[] = [];
 
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
@@ -142,7 +143,8 @@ export class DashboardComponent implements OnInit {
       (stories: UserStories[]) => {
         // Update your component property with the fetched stories
         console.warn('this is all the stories', stories);
-        this.ListOfStories = stories;
+        this.ListOfStories = stories.filter(x=>x.user != this.currentUserId);
+        this.CurrentUserStories = stories.filter(x => x.user == this.currentUserId)
       },
       (error) => {
         // Handle errors here, e.g., display an error message to the user or log the error
@@ -355,5 +357,13 @@ export class DashboardComponent implements OnInit {
     this.alertService.success(
       'Friend requested successully sent to ' + this.friendRequestUserNumber
     );
+  }
+
+  ViewStories(data:UserStories){
+    this.router.navigate(['/', 'view-stories'], {
+      queryParams: {
+        storiesData: JSON.stringify(data),
+      },
+    });
   }
 }

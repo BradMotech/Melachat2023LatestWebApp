@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { CustomFile } from 'src/app/authentication/choose-image/choose-image.component';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
+import { AlertService } from 'src/app/shared/Services/alert.service';
 import { FireStoreCollectionsServiceService, UserStories } from 'src/app/shared/Services/fire-store-collections-service.service';
 import { UserState } from 'src/app/shared/State/user.reducer';
 import {
@@ -86,7 +87,7 @@ export class AddStoryComponent implements OnInit {
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private store: Store<UserState>,
-    private router: Router,private renderer: Renderer2
+    private router: Router,private renderer: Renderer2,private alertService: AlertService
   ) {}
   ngOnInit(): void {
     this.store.select(selectCurrentUser).subscribe((user) => {
@@ -101,6 +102,7 @@ export class AddStoryComponent implements OnInit {
 
     this.TextStoryFormControl.valueChanges.subscribe((val)=>{
       this.storyTextValue = val
+      console.warn(this.storyTextValue,val)
     })
   }
   switchBackgroundColorPalette(): void {
@@ -203,9 +205,15 @@ export class AddStoryComponent implements OnInit {
   count: 0,
   stories: [],
     }
-    this.fireStoreCollectionsService.uploadTextStory(userStory,this.storyTextValue,this.backgroundColor).subscribe((val)=>{
-      console.log(val)
-    })
+    if (this.storyTextValue !=='') { 
+      this.fireStoreCollectionsService.uploadTextStory(userStory,this.storyTextValue,this.backgroundColor).subscribe((val)=>{
+        console.log(val);
+        this.alertService.success("Successfully uploaded your story")
+        this.router.navigate(['/home'])
+      })
+    }else{
+      this.alertService.warning("Please enter some text to add a story")
+    }
   }
 
     // Function to trigger the file input when the "Upload image" button is clicked

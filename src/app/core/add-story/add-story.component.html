@@ -9,7 +9,9 @@
         </div>
         <div class="flex-shrink-0 user-details">
             <svg *ngIf="showImageBackground" style="margin-right:12px;cursor:pointer" (click)="triggerImageInput()" class="h-8 w-8 text-white"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />  <circle cx="12" cy="13" r="3" /></svg>
-            <h1 (click)="uploadTextStory()" class="text-sm font-medium text-gray-900 truncate dark:text-white user-name" style="cursor: pointer;">Upload story</h1>
+            <button (click)="uploadTextStory()" class="text-sm font-medium text-gray-900 truncate dark:text-white user-name" style="cursor: pointer;background: white;
+            padding: 4px;
+            border-radius: 12px;margin-right:5px;color:black">Upload story</button>
             <h1 class="text-sm font-medium text-gray-900 truncate dark:text-white user-name">{{currentUser?.name}}</h1>
             <img class="w-16 h-16 rounded-full" src="{{currentUser?.image}}" alt="Neil image">
         </div>
@@ -19,20 +21,20 @@
         <input #imageInput type="file" accept="image/*" multiple style="display: none"
                             (change)="onImageSelected($event)">
         <div class="main-container">
-            <div
+            <input
             *ngIf="!showImageBackground"
               id="editable-div"
               [ngClass]="{ 'cursor-blink': showCursor }"
               contenteditable
               [formControl]="TextStoryFormControl"
-              style="color: white; width: 100%; padding: 8px; min-height: 40px; white-space: pre-wrap;max-width: 60vw;font-size: 29px;outline: none;min-width: 200px"
-              placeholder="Please enter your name."
+              style="color: white; width: 100%; padding: 8px; min-height: 40px; white-space: pre-wrap;max-width: 60vw;font-size: 29px;outline: none;min-width: 200px;background-color:transparent"
+              placeholder="Start typing here."
               (input)="onInput($event)"
              
-            ></div>
-            <div  *ngIf="!showImageBackground" id="hint" style="color: #ffffff76; position: absolute; pointer-events: none;">
+           />
+            <!-- <div  *ngIf="!showImageBackground && storyTextValue === ''" id="hint" style="color: #ffffff76; position: absolute; pointer-events: none;">
                 Start typing here.
-              </div>
+              </div> -->
 
               <div *ngIf="showImageBackground" class="addImageHere" style="color: #ffffff76; position: absolute; pointer-events: none;align-items: center;display: flex;justify-content: center;flex-direction: column;">
                 <h1>Click camera on the top right to add photo</h1>

@@ -47,11 +47,8 @@ export interface Story {
     uploadedAt: string;
     viewedBy: string[];
   };
-  // Additional properties for 'image' type
-  // url?: string;
-  // Additional properties for 'text' type
-  // storytext?: string;
-  // background?: string;
+  storytext:string;
+  background?: string;
 }
 
 // Interface for a user's stories
@@ -714,34 +711,111 @@ console.log('friend found',userDoc)
     }
   }
 
+  // uploadTextStory(userStories: UserStories, text: string, bcolor: string): Observable<void> {
+  //   const storiesCollection = collection(this.firestore, 'Stories');
+  
+  //   return new Observable<void>((observer) => {
+  //     addDoc(storiesCollection, {
+  //       username: userStories.username,
+  //       profile: userStories.profile,
+  //       user: userStories.user,
+  //       count: userStories.count,
+  //       stories: [
+  //         {
+  //           id: 1,
+  //           url: '',
+  //           type: 'text',
+  //           duration: 6,
+  //           isReadMore: false,
+  //           storytext: text,
+  //           background: bcolor,
+  //           storyData: {
+  //             uploadedAt: moment().format('DD-MM-YYYY HH:mm:ss'),
+  //             viewedBy: [],
+  //           },
+  //         },
+  //       ],
+  //     })
+  //       .then(() => {
+  //         observer.next();
+  //         observer.complete();
+  //       })
+  //       .catch((error) => {
+  //         observer.error(error);
+  //         observer.complete();
+  //       });
+  //   });
+  // }
+
   uploadTextStory(userStories: UserStories, text: string, bcolor: string): Observable<void> {
     const storiesCollection = collection(this.firestore, 'Stories');
   
     return new Observable<void>((observer) => {
-      addDoc(storiesCollection, {
-        username: userStories.username,
-        profile: userStories.profile,
-        user: userStories.user,
-        count: userStories.count,
-        stories: [
-          {
-            id: 1,
-            url: '',
-            type: 'text',
-            duration: 6,
-            isReadMore: false,
-            storytext: text,
-            background: bcolor,
-            storyData: {
-              uploadedAt: moment().format('DD-MM-YYYY HH:mm:ss'),
-              viewedBy: [],
-            },
-          },
-        ],
-      })
-        .then(() => {
-          observer.next();
-          observer.complete();
+      const userQuery = query(storiesCollection, where('username', '==', userStories.username));
+  
+      getDocs(userQuery)
+        .then((querySnapshot) => {
+          if (querySnapshot.empty) {
+            // If the document doesn't exist, create a new one
+            addDoc(storiesCollection, {
+              username: userStories.username,
+              profile: userStories.profile,
+              user: userStories.user,
+              count: userStories.count,
+              stories: [
+                {
+                  id: 1,
+                  url: '',
+                  type: 'text',
+                  duration: 6,
+                  isReadMore: false,
+                  storytext: text,
+                  background: bcolor,
+                  storyData: {
+                    uploadedAt: moment().format('DD-MM-YYYY HH:mm:ss'),
+                    viewedBy: [],
+                  },
+                },
+              ],
+            })
+              .then(() => {
+                observer.next();
+                observer.complete();
+              })
+              .catch((error) => {
+                observer.error(error);
+                observer.complete();
+              });
+          } else {
+            // If the document exists, update it by adding the new story
+            const existingDoc = querySnapshot.docs[0];
+            const existingStories = existingDoc.data()['stories'] || [];
+            const newStory = {
+              id: existingStories.length + 1,
+              url: '',
+              type: 'text',
+              duration: 6,
+              isReadMore: false,
+              storytext: text,
+              background: bcolor,
+              storyData: {
+                uploadedAt: moment().format('DD-MM-YYYY HH:mm:ss'),
+                viewedBy: [],
+              },
+            };
+  
+            updateDoc(existingDoc.ref, {
+              stories: arrayUnion(newStory),
+            })
+              .then(() => {
+                observer.next();
+                observer.complete();
+              })
+              .catch((error) => {
+                observer.error(error);
+                observer.complete();
+              });
+          }
         })
         .catch((error) => {
           observer.error(error);

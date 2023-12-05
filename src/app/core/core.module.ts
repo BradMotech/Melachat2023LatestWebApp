@@ -14,6 +14,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FriendRequestsComponent } from './friend-requests/friend-requests.component';
 import { AllPostsFullScreenComponent } from './all-posts-full-screen/all-posts-full-screen.component';
+import { StoriesViewerWrapperComponent } from './stories-viewer-wrapper/stories-viewer-wrapper.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -28,7 +29,9 @@ const routes: Routes = [
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'friend-requests', component: FriendRequestsComponent },
   { path: 'all-posts', component: AllPostsFullScreenComponent },
+  { path: 'view-stories', component: StoriesViewerWrapperComponent },
 ];
+
 
 
 @NgModule({
@@ -43,10 +46,10 @@ const routes: Routes = [
     NotificationComponent,
     UserProfileComponent,
     FriendRequestsComponent,
-    AllPostsFullScreenComponent
+    AllPostsFullScreenComponent,
   ],
   imports: [
-    CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule
+    CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule,
   ],
   providers:[DatePipe]
 })
