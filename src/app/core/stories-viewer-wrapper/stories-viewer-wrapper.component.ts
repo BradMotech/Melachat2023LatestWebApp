@@ -32,7 +32,7 @@ export class StoriesViewerWrapperComponent {
   startSlideShow() {
     setInterval(() => {
       this.showNextImage();
-    }, 7000); // Change this value to adjust the time interval (in milliseconds)
+    }, 4000); // Change this value to adjust the time interval (in milliseconds)
   }
 
   showNextImage() {

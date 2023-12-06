@@ -101,10 +101,17 @@ export class AddStoryComponent implements OnInit {
     });
 
     this.TextStoryFormControl.valueChanges.subscribe((val)=>{
-      this.storyTextValue = val
+      // this.storyTextValue = val
       console.warn(this.storyTextValue,val)
     })
+
   }
+
+  // onInput(event: any) {
+  //   const newValue = this.editableDiv.nativeElement.innerText;
+  //   this.TextStoryFormControl.setValue(newValue);
+  // }
+
   switchBackgroundColorPalette(): void {
     // Increment the background color index
     this.backgroundColorIndex =
@@ -117,6 +124,7 @@ export class AddStoryComponent implements OnInit {
   onInput(event: any): void {
     const editableDiv = document.getElementById('editable-div');
     const hintDiv = document.getElementById('hint');
+    this.storyTextValue = editableDiv?.textContent?.trim() as string
 
     if (editableDiv && hintDiv) {
       editableDiv.style.height = 'auto';
