@@ -424,4 +424,12 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+  
+  userProfileNavigation(friend: IUsersInterface) {
+    this.router.navigate(['friend-profile'], {
+      queryParams: {
+        friendData: JSON.stringify(friend),
+      },
+    });
+  }
 }

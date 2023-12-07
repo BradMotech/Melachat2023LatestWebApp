@@ -9,7 +9,9 @@ import { IUsersInterface } from '../Interfaces/IUsersInterface';
 export class NewFriendCardComponent {
   @Input() users!:IUsersInterface;
   @Output() moreDetailsEmitter = new EventEmitter<IUsersInterface>();
+  @Output() viewUserEmitter = new EventEmitter<IUsersInterface>();
   @Output() MessageUserEmitter = new EventEmitter<IUsersInterface>();
+  showUserMenu: boolean = false;
 
 
   moreDetails(details: IUsersInterface) {
@@ -18,5 +20,12 @@ export class NewFriendCardComponent {
 
   message(user: IUsersInterface) {
   this.MessageUserEmitter.emit(user)
+  }
+  userDetails(user: IUsersInterface) {
+  this.viewUserEmitter.emit(user)
+  }
+
+  openMenu(user:IUsersInterface){
+    this.showUserMenu = true
   }
 }
