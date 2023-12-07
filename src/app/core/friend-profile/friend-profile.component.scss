@@ -121,6 +121,19 @@
   }
     }
   }
+
+
+  .friend-item{
+    background-color: #3b3b3b2b!important;
+    margin-bottom:3px;
+    border-radius:6px;
+    padding:16px;
+}
+.md\:grid-cols-4 {
+    width: 100%;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
   
   @media (min-width: 200px) and (max-width:450px) {
     .get-started[_ngcontent-ng-c2728441069] {

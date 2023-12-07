@@ -41,15 +41,18 @@ export class FriendProfileComponent implements OnInit{
   selectedTabIndex: number = 0;
   showGallerViewerFlag:boolean = false;
   userprofilePicture: string = '';
+  recommedations: IUsersInterface[] = [];
+  UserFriends: IUsersInterface[] = [];
   constructor( private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private store: Store<UserState>,private router: Router, private alertService: AlertService){
   }
   ngOnInit(): void {
 
     this.router.routerState.root.queryParams.subscribe((params: any) => {
-      console.log('here we gooooooo',params.friendData)
+      console.log('here we gooooooo',JSON.parse(params.usersList))
       if (params) {
         this.currentUser = JSON.parse(params.friendData)
+        this.recommedations = JSON.parse(params.usersList)
       }})
     // this.store.select(selectCurrentUser).subscribe((user) => {
     //   this.currentUser = user;
@@ -85,6 +88,33 @@ export class FriendProfileComponent implements OnInit{
           return dateB - dateA;
         });
     });
+
+    this.UserFriends = this.fetchCurrentUserFriends('');
+  //  alert(this.recommedations)
+  }
+
+  fetchCurrentUserFriends(searchTerm: string = ''): IUsersInterface[] {
+
+    const friendDocIds = this.currentUser!.friends;
+    let filteredUsers = this.recommedations!.filter((user) =>
+      friendDocIds.includes(user.docId)
+    );
+
+    // Apply additional filtering based on the search term
+    if (searchTerm.trim() !== '') {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+      filteredUsers = filteredUsers.filter(
+        (user) =>
+          user.username.toLowerCase().includes(lowerCaseSearchTerm) ||
+          user.name.toLowerCase().includes(lowerCaseSearchTerm)
+      );
+    } else {
+      filteredUsers = this.recommedations!.filter((user) =>
+        friendDocIds.includes(user.docId)
+      );
+    }
+
+    return filteredUsers;
   }
 
   EditUser(){
@@ -177,5 +207,13 @@ export class FriendProfileComponent implements OnInit{
    this.showGallerViewerFlag = true;
    this.userprofilePicture = this.currentUser?.image as string;
 
+  }
+
+  userProfileNavigation(friend: IUsersInterface) {
+    this.router.navigate(['friend-profile'], {
+      queryParams: {
+        friendData: JSON.stringify(friend),
+      },
+    });
   }
 }

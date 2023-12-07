@@ -85,6 +85,7 @@ export class AddFriendComponent {
     this.router.navigate(['friend-profile'], {
       queryParams: {
         friendData: JSON.stringify(friend),
+        usersList:JSON.stringify(this.recommedations)
       },
     });
   }
