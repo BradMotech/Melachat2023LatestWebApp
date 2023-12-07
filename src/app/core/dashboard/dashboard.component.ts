@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { IHashTags } from 'src/app/shared/Interfaces/IHashTags';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
 import { AlertService } from 'src/app/shared/Services/alert.service';
 import {
+  ChatMessage,
   FireStoreCollectionsServiceService,
   UserStories,
 } from 'src/app/shared/Services/fire-store-collections-service.service';
@@ -82,7 +83,12 @@ export class DashboardComponent implements OnInit {
     // });
     this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
       // console.log('users here', users);
+      return (this.recommedations = users);
+    });
+    this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+      // console.log('users here', users);
       this.currentUser = users.filter(x=> x.docId == this.currentUserId)[0];
+      this.getFriendLastMessage()
       this.currentUserFriendRequests = this.currentUser.requests.filter(x => x !== this.currentUser?.docId)
       return (users.filter(x=> x.docId == this.currentUserId));
     });
@@ -92,10 +98,6 @@ export class DashboardComponent implements OnInit {
       console.log('Current user id:', this.currentUserId);
     });
 
-    this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
-      // console.log('users here', users);
-      return (this.recommedations = users);
-    });
 
     // this.currentUserProfileDetails$ = this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
     //   // console.log('users here', users);
@@ -158,6 +160,61 @@ export class DashboardComponent implements OnInit {
     // })
   }
 
+  getFriendLastMessage(){
+    // debugger
+    const friendDocIds = this.currentUser!.friends;
+    let filteredUsers = this.recommedations!.filter((user) =>
+    friendDocIds.includes(user.docId)
+    );
+    this.UserFriends = filteredUsers;
+    // debugger
+    if(this.UserFriends!.length){
+      
+      this.UserFriends?.forEach(currentUserFriend => {
+        console.log("hey there")
+      this.getMessages(currentUserFriend);
+
+      })
+    }
+  
+    
+     
+  }
+
+  getMessages(currentUserFriend: IUsersInterface) {
+    this.fireStoreCollectionsService.getAllMessages().pipe(
+      map((data: ChatMessage[]) => {
+        console.log(currentUserFriend);
+        // Update your local variable or state
+        // this.AllMessages = data;
+        // Filter and return the messages
+        return this.filterMessages(data, this.currentUserId as string, currentUserFriend.docId as string);
+      })
+    ).subscribe(messages => {
+      console.log("hey there", messages);
+  
+      // Update UserFriends based on messages
+      this.UserFriends = this.UserFriends!.map(friend => {
+
+        const friendMessages = messages.filter(msg => {
+          console.log("friend and msg ids : ",friend.docId + " msg id : "+ msg.replyTo)
+          return  msg.user._id=== friend.docId});
+        const lastMessage = friendMessages.length > 0 ? friendMessages[friendMessages.length - 1].text : '';
+        return {
+          ...friend,
+          messages: lastMessage
+        };
+      });
+  
+      console.log("friend data here", this.UserFriends);
+    });
+  }
+  
+  filterMessages(messagesList: ChatMessage[], userId: string, sentToId: string): ChatMessage[] {
+    console.warn("messages here ",messagesList.filter(message => message.user._id === this.currentUserId && message.sentTo === sentToId))
+    return messagesList.filter(message => message.user._id === this.currentUserId && message.sentTo === sentToId || message.user._id === sentToId && message.sentTo === this.currentUserId);
+  }
+
   fetchCurrentUserFriendsDefault(): IUsersInterface[] {
     const friendDocIds = this.currentUser!.friends;
     // console.warn(friendDocIds)
@@ -168,6 +225,7 @@ export class DashboardComponent implements OnInit {
     // console.log("friends",filteredUsers);
     return filteredUsers;
   }
+  
   fetchCurrentUserFriends(searchTerm: string = ''): IUsersInterface[] {
     const friendDocIds = this.currentUser!.friends;
     let filteredUsers = this.recommedations!.filter((user) =>

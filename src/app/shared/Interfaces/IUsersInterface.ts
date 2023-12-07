@@ -19,4 +19,5 @@ export interface IUsersInterface {
     docId:string;
     unread:string,
     melachatFor:string,
+    messages:string
   }
