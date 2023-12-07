@@ -27,7 +27,11 @@
 
   .hashtag {
     color: #16afec;
-    cursor: pointer;
+  }
+  .url {
+    color: #165aec;
+    text-decoration: underline;
+    cursor: pointer; 
   }
 
   span.post-icon-text{

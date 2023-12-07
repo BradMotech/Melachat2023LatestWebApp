@@ -5,12 +5,12 @@
             <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
                 style="color:white">
                 Add Friends on <span class="text-blue-600 dark:text-blue-500">Mela</span> Chat.</h1>
-            <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 browse-friends-p">Filter friends
+            <!-- <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 browse-friends-p">Filter friends
                 by category below to
                 get started
-            </p>
+            </p> -->
 
-            <span
+            <!-- <span
                 class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Male
                 friends</span>
             <span
@@ -18,7 +18,7 @@
                 Friends</span>
             <span
                 class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-400 border border-gray-500">Most
-                Popular</span>
+                Popular</span> -->
         </div>
         <div class="get-started">
             <h5 class="text-xl font-bold dark:text-white" style="color:white">Search for any friends on melachat below
@@ -74,7 +74,7 @@
                              </p>
                           </div>
                           <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                            <button (click)="addNewFriend(item.docId,item.phone)" style="background-color:#16afec" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <button (click)="addNewFriend(item.docId,item.phone);$event.stopPropagation()" style="background-color:#16afec" type="button" class="px-3 py-2 text-xs font-medium text-center inline-flex items-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 <svg class="h-3 w-3 text-white"  viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <circle cx="9" cy="7" r="4" />  <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />  <path d="M16 11h6m-3 -3v6" /></svg>                               
                                 Add friend
                                 </button>

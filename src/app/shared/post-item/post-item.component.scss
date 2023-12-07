@@ -28,6 +28,11 @@
 .hashtag {
   color: #16afec;
 }
+.url {
+  color: #165aec;
+  text-decoration: underline;
+  cursor: pointer; 
+}
 .promote-post{
   display: flex;
 }

@@ -202,10 +202,14 @@ export class PostDetailsComponent implements OnInit {
   }
 
   likePost(post: IPosts) {
+    this.filledHeart = true
     this.firebaseService
       .addUserIdToLikedBy(post.docId, this.currentUserId as string)
       .subscribe((val) => {
         // console.warn( post.docId + this.currentUserId)
+        setTimeout(() => {
+          this.filledHeart = false
+        }, 500);
       });
   }
 
@@ -232,4 +236,15 @@ export class PostDetailsComponent implements OnInit {
   report(comment: { id: string; username: any }) {
     // alert('favourited');
   }
+
+  isURL(word: string): boolean {
+    return word.startsWith('http://') || word.startsWith('https://');
+  }
+
+  isHashtag(word: string): boolean {
+    return word.startsWith('#') && !word.includes('#', 1); // Check if the word starts with '#' and doesn't contain another '#' after the first character
+  }
+  openUrl(url:string){
+    window.open(url)
+      }
 }

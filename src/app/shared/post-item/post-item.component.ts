@@ -85,12 +85,21 @@ export class PostItemComponent implements OnInit {
 
     return paragraphs;
   }
+  
   isHashtag(word: string): boolean {
     return word.startsWith('#') && !word.includes('#', 1); // Check if the word starts with '#' and doesn't contain another '#' after the first character
+  }
+
+  isURL(word: string): boolean {
+    return word.startsWith('http://') || word.startsWith('https://');
   }
 
   navigateToTrending(hashtag:string){
     // this.router.navigate(['trending'])
     this.HashTagNavigationEmmitter.emit(hashtag)
+  }
+
+  openUrl(url:string){
+window.open(url)
   }
 }
