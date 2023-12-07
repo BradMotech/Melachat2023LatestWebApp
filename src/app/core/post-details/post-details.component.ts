@@ -30,8 +30,9 @@ export class PostDetailsComponent implements OnInit {
   currentUserId!: string | null;
   currentUser!: IUsersInterface | null;
   postComments!: { id: string; username: any }[];
-  likesArray!: { id: string; username: string; }[];
-  viewsArray!: { id: string; username: string; }[];
+  likesArray!: { id: string; username: string }[];
+  viewsArray!: { id: string; username: string }[];
+  filledHeart: boolean = false;
 
   constructor(
     private router: Router,
@@ -52,8 +53,11 @@ export class PostDetailsComponent implements OnInit {
 
     this.router.routerState.root.queryParams.subscribe((params: any) => {
       // console.warn(params.comments);
-      console.warn("here we gooooooo"+params.docId,this.currentUserId as string)
-  
+      console.warn(
+        'here we gooooooo' + params.docId,
+        this.currentUserId as string
+      );
+
       if (params) {
         this.Post = {
           title: params.title,
@@ -79,6 +83,7 @@ export class PostDetailsComponent implements OnInit {
             ([id, comment]) => ({
               id,
               username: comment,
+
               // Add other properties as needed...
             })
           );
@@ -100,7 +105,7 @@ export class PostDetailsComponent implements OnInit {
           this.postComments = commentsArray;
           this.likesArray = likesArray;
           this.viewsArray = viewsArray;
-          console.warn('found post comments', likesArray);
+          console.log('found post comments', this.postComments);
         });
       }
     });
@@ -138,7 +143,7 @@ export class PostDetailsComponent implements OnInit {
         var post = <IComment>{
           username: this.currentUser?.username as string,
           userImage: this.currentUser?.image as string,
-          userId:this.currentUser?.docId,
+          userId: this.currentUser?.docId,
           postedAt: new Date().toLocaleString('en-GB', { timeZone: 'UTC' }),
           comment: this.postText,
         };
@@ -192,13 +197,39 @@ export class PostDetailsComponent implements OnInit {
     return paragraphs;
   }
 
-  navigateToTrending(hashtag:string){
-    this.router.navigate(['trending'])
+  navigateToTrending(hashtag: string) {
+    this.router.navigate(['trending']);
   }
 
-  likePost(post: IPosts){
-    this.firebaseService.addUserIdToLikedBy(post.docId,this.currentUserId as string).subscribe((val)=>{
-      // console.warn( post.docId + this.currentUserId)
-    })
-    }
+  likePost(post: IPosts) {
+    this.firebaseService
+      .addUserIdToLikedBy(post.docId, this.currentUserId as string)
+      .subscribe((val) => {
+        // console.warn( post.docId + this.currentUserId)
+      });
+  }
+
+  favourite(comment: { id: string; username: any }) {
+    this.filledHeart = true;
+
+    // alert("favourited")removeCommentFromPost
+    this.firebaseService
+      .favoriteComment(
+        this.Post.docId,
+        comment.id,
+        this.currentUserId as string,
+        comment
+      )
+      .subscribe((x) => {
+        setTimeout(() => {
+          this.filledHeart = false;
+        }, 1000);
+      });
+  }
+  commentOn(comment: { id: string; username: any }) {
+    // alert('favourited');
+  }
+  report(comment: { id: string; username: any }) {
+    // alert('favourited');
+  }
 }

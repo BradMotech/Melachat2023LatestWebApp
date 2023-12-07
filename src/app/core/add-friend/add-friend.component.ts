@@ -80,4 +80,12 @@ export class AddFriendComponent {
   
     this.recommedations = filteredRecommendations;
   }
+
+  userProfileNavigation(friend: IUsersInterface) {
+    this.router.navigate(['friend-profile'], {
+      queryParams: {
+        friendData: JSON.stringify(friend),
+      },
+    });
+  }
 }

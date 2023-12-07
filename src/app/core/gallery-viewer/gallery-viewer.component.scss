@@ -1,0 +1,25 @@
+/* gallery.component.css */
+.gallery {
+    position: relative;
+    max-width: 100%;
+  }
+  
+  img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+  }
+  
+  button {
+    padding: 10px;
+    cursor: pointer;
+  }
+  

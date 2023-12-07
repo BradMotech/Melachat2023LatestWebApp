@@ -411,6 +411,32 @@ export class FireStoreCollectionsServiceService {
       })
     );
   }
+
+  removeCommentFromPost(postId: string, commentId: string): Observable<void> {
+    const postDoc = doc(this.firestore, 'Posts', postId);
+
+    return from(getDoc(postDoc)).pipe(
+      switchMap((postSnapshot) => {
+        if (postSnapshot.exists()) {
+          const post = postSnapshot.data() as IPosts;
+          const currentComments = post.comments || [];
+          const updatedComments = currentComments.filter((comment:any) => comment.commentId !== commentId);
+
+          return from(updateDoc(postDoc, { comments: updatedComments })).pipe(
+            map(() => undefined),
+            catchError((error) => {
+              throw error;
+            })
+          );
+        } else {
+          throw new Error('Post not found');
+        }
+      }),
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
   
   addFriend(userId: string, friendNumber: string): Observable<void> {
     console.log('user id ',userId);
@@ -988,4 +1014,48 @@ console.log('friend found',userDoc)
       );
     });
   }
+
+  favoriteComment(postId: string, commentId: string, userId: string, commentFromUser: any): Observable<void> {
+    const postDoc = doc(this.firestore, 'Posts', postId);
+  
+    return from(getDoc(postDoc)).pipe(
+      switchMap((postSnapshot) => {
+        if (postSnapshot.exists()) {
+          const post = postSnapshot.data() as IPosts;
+          const currentComments = post.comments || [];
+          const updatedComments = currentComments.map((comment: any) => {
+            console.log(comment, commentFromUser);
+            if (comment.comment === commentFromUser.username.comment) {
+              // Check if userId exists in likes array
+              const existingIndex = (comment.likes || []).indexOf(userId);
+              
+              if (existingIndex !== -1) {
+                // If userId exists, remove it from likes array
+                const updatedLikes = [...comment.likes.slice(0, existingIndex), ...comment.likes.slice(existingIndex + 1)];
+                return { ...comment, likes: updatedLikes, commentId: commentId };
+              } else {
+                // If userId doesn't exist, add it to likes array
+                const updatedLikes = [...(comment.likes || []), userId];
+                return { ...comment, likes: updatedLikes, commentId: commentId };
+              }
+            }
+            return comment;
+          });
+  
+          return from(updateDoc(postDoc, { comments: updatedComments })).pipe(
+            map(() => undefined),
+            catchError((error) => {
+              throw error;
+            })
+          );
+        } else {
+          throw new Error('Post not found');
+        }
+      }),
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+  
 }

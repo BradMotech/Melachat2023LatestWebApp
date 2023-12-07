@@ -15,6 +15,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { FriendRequestsComponent } from './friend-requests/friend-requests.component';
 import { AllPostsFullScreenComponent } from './all-posts-full-screen/all-posts-full-screen.component';
 import { StoriesViewerWrapperComponent } from './stories-viewer-wrapper/stories-viewer-wrapper.component';
+import { FriendProfileComponent } from './friend-profile/friend-profile.component';
+import { GalleryViewerComponent } from './gallery-viewer/gallery-viewer.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -30,6 +32,7 @@ const routes: Routes = [
   { path: 'friend-requests', component: FriendRequestsComponent },
   { path: 'all-posts', component: AllPostsFullScreenComponent },
   { path: 'view-stories', component: StoriesViewerWrapperComponent },
+  { path: 'friend-profile', component: FriendProfileComponent },
 ];
 
 
@@ -47,6 +50,8 @@ const routes: Routes = [
     UserProfileComponent,
     FriendRequestsComponent,
     AllPostsFullScreenComponent,
+    FriendProfileComponent,
+    GalleryViewerComponent
   ],
   imports: [
     CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule,

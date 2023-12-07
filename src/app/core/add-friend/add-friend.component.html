@@ -55,7 +55,7 @@
         <div class="get-started" *ngIf="recommedations">
             <ng-container *ngFor="let item of recommedations">
                 <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700" style="width:100%;min-width: 100%;">
-                    <li class="pb-3 sm:pb-4 friend-item" style="background-color: white;border-radius:4px;margin-bottom:2px;padding:16px">
+                    <li (click)="userProfileNavigation(item)" class="pb-3 sm:pb-4 friend-item" style="background-color: white;border-radius:4px;margin-bottom:2px;padding:16px;cursor: pointer;">
                        <div class="flex items-center space-x-4 rtl:space-x-reverse">
                           <div class="flex-shrink-0">
                              <img *ngIf="item.image"  class="w-8 h-8 rounded-full" src="{{item.image}}" alt="Neil image">
