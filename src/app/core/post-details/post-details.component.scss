@@ -39,3 +39,11 @@
     width: 100%;
     color: grey;
 }
+
+@media (min-width: 200px) and (max-width:450px){
+article{
+  border-bottom: 13px;
+  border-color: #2e2c2c;
+  margin-top: 37px;
+  padding:10px
+}}
