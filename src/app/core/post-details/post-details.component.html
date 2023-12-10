@@ -9,7 +9,8 @@
             <div
                 class="child-max-w-sm  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <ng-container *ngIf="Post.postImage">
-                    <app-images-grid [images]="Post.postImage"></app-images-grid>
+                    <app-images-grid (previewImagesEmitter)="showImages(Post.postImage)"
+                        [images]="Post.postImage"></app-images-grid>
                 </ng-container>
                 <div class="p-5">
                     <div>
@@ -32,12 +33,13 @@
                                     {{ word + ' ' }}
                                 </span> -->
                                 <span *ngFor="let word of paragraph.split(' ')"
-              [ngClass]="{'hashtag': isHashtag(word), 'url': isURL(word)}">
-              <ng-container *ngIf="isURL(word); else nonUrl">
-                <a (click)="openUrl(word);$event.stopPropagation()" class="url">{{ word + ' ' }}</a>
-              </ng-container>
-              <ng-template #nonUrl>{{ word + ' ' }}</ng-template>
-            </span>
+                                    [ngClass]="{'hashtag': isHashtag(word), 'url': isURL(word)}">
+                                    <ng-container *ngIf="isURL(word); else nonUrl">
+                                        <a (click)="openUrl(word);$event.stopPropagation()" class="url">{{ word + ' '
+                                            }}</a>
+                                    </ng-container>
+                                    <ng-template #nonUrl>{{ word + ' ' }}</ng-template>
+                                </span>
                             </p>
                         </div>
                     </div>
@@ -45,23 +47,24 @@
                         <button (click)="likePost(Post)" type="button"
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-blue-500 dark:focus:text-white">
 
-                            <svg *ngIf="!filledHeart" class="h-6 w-6 mr-2 text-red-500" width="24" height="24" viewBox="0 0 24 24"
-                                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                                stroke-linejoin="round">
+                            <svg *ngIf="!filledHeart" class="h-6 w-6 mr-2 text-red-500" width="24" height="24"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" />
                                 <path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" />
                             </svg>
-                            <svg *ngIf="filledHeart" fill="#ff5c5c" width="24px" height="24px" class="h-6 w-6 mr-2 text-red-500"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="#ff5c5c">
-                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                        </g>
-                                        <g id="SVGRepo_iconCarrier">
-                                            <path
-                                                d="M14 20.408c-.492.308-.903.546-1.192.709-.153.086-.308.17-.463.252h-.002a.75.75 0 01-.686 0 16.709 16.709 0 01-.465-.252 31.147 31.147 0 01-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31.146 31.146 0 0114 20.408z">
-                                            </path>
-                                        </g>
-                                    </svg>
+                            <svg *ngIf="filledHeart" fill="#ff5c5c" width="24px" height="24px"
+                                class="h-6 w-6 mr-2 text-red-500" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                stroke="#ff5c5c">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                </g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M14 20.408c-.492.308-.903.546-1.192.709-.153.086-.308.17-.463.252h-.002a.75.75 0 01-.686 0 16.709 16.709 0 01-.465-.252 31.147 31.147 0 01-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31.146 31.146 0 0114 20.408z">
+                                    </path>
+                                </g>
+                            </svg>
                             <span class="post-icon-text">{{likesArray.length}} likes</span>
                         </button>
                         <button type="button"
@@ -173,10 +176,9 @@
                                 <!-- <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">19 people found this helpful</p> -->
                                 <div class="flex items-center mt-3">
                                     <p *ngIf="comment.username.likes.length">{{comment.username.likes.length}}</p>
-                                    <svg (click)="favourite(comment)"
-                                        class="h-6 w-6 mr-2 text-red-500" width="24" height="24" viewBox="0 0 24 24"
-                                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                                        stroke-linejoin="round">
+                                    <svg (click)="favourite(comment)" class="h-6 w-6 mr-2 text-red-500" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" />
                                         <path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" />
                                     </svg>

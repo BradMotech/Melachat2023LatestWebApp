@@ -216,4 +216,15 @@ export class FriendProfileComponent implements OnInit{
       },
     });
   }
+
+
+  showImages(images: string | undefined) {
+
+    this.router.navigate(['/', 'image-viewer'], {
+      queryParams: {
+        images: JSON.stringify([images]),
+      },
+    });
+   
+  }
 }

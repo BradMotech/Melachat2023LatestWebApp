@@ -33,6 +33,7 @@ const routes: Routes = [
   { path: 'all-posts', component: AllPostsFullScreenComponent },
   { path: 'view-stories', component: StoriesViewerWrapperComponent },
   { path: 'friend-profile', component: FriendProfileComponent },
+  { path: 'image-viewer', component: GalleryViewerComponent },
 ];
 
 

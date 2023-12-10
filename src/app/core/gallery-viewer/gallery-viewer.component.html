@@ -1,7 +1,40 @@
 <div class="gallery">
-    <img [src]="images[currentIndex]" alt="Gallery Image">
-    <div class="controls">
-      <button (click)="showPrevious()">Previous</button>
-      <button (click)="showNext()">Next</button>
+  <!-- <div class="header-section">
+
+    <div class="back" style="cursor: pointer;" (click)="navigateBack()">
+      <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+
     </div>
+  </div> -->
+  <img [src]="images[currentIndex]" alt="Gallery Image">
+  <div class="controls"  *ngIf="images.length > 1">
+    <button (click)="showPrevious()"><svg width="90px" height="90px" viewBox="-3.36 -3.36 30.72 30.72" fill="none"
+        xmlns="http://www.w3.org/2000/svg" stroke="#ffffff">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"
+          transform="translate(3.6000000000000014,3.6000000000000014), scale(0.7)">
+          <rect x="-3.36" y="-3.36" width="30.72" height="30.72" rx="15.36" fill="#7ed0ec" strokewidth="0"></rect>
+        </g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+          stroke-width="0.048"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path d="M15 6L9 12L15 18" stroke="#" stroke-width="0.72" stroke-linecap="round" stroke-linejoin="round">
+          </path>
+        </g>
+      </svg></button>
+    <button (click)="showNext()"><svg width="90px" height="90px" viewBox="-3.36 -3.36 30.72 30.72" fill="none"
+        xmlns="http://www.w3.org/2000/svg" stroke="#ffffff" transform="matrix(-1, 0, 0, 1, 0, 0)">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"
+          transform="translate(3.6000000000000014,3.6000000000000014), scale(0.7)">
+          <rect x="-3.36" y="-3.36" width="30.72" height="30.72" rx="15.36" fill="#7ed0ec" strokewidth="0"></rect>
+        </g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+          stroke-width="0.048"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path d="M15 6L9 12L15 18" stroke="#" stroke-width="0.72" stroke-linecap="round" stroke-linejoin="round">
+          </path>
+        </g>
+      </svg></button>
   </div>
+</div>

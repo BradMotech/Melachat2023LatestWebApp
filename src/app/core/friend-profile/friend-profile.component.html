@@ -9,9 +9,9 @@
 
                 <header class="flex flex-wrap items-center p-4 md:py-8">
 
-                    <div class="md:w-3/12 md:ml-16" (click)="showGallerViewer(currentUser?.image)">
+                    <div class="md:w-3/12 md:ml-16" (click)="showImages(currentUser?.image)">
                         <!-- profile image -->
-                        <img (click)="showGallerViewer(currentUser?.image)" class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
+                        <img (click)="showImages(currentUser?.image)" class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
                        border-2 border-pink-600 p-1" src="{{currentUser?.image}}" alt="profile" style="color:white">
                     </div>
 

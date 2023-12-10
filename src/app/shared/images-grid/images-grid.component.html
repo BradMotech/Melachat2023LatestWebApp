@@ -3,7 +3,7 @@
     <div *ngIf="images.length > 1">
         <div class="grid grid-cols-2 gap-2" style="padding:10px">
             <div  *ngFor="let item of images">
-                <img class="h-auto w-full image-container rounded-lg"  src="{{item}}" alt="">
+                <img (click)="previewImages(images)" class="h-auto w-full image-container rounded-lg"  src="{{item}}" alt="">
             </div>
         </div>
     </div>
@@ -12,19 +12,19 @@
         <img class="h-auto w-full object-fit-contain rounded-lg"src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQ0CEr4I-GsXfHWXW880eSpiq9Q2ovkXKBvSSRocbQa4s8EogSz" alt="" style="height:200px;object-fit: contain;"/>
      </div> -->
     <div *ngIf="images.length == 1">
-        <img *ngIf="images" class="h-auto w-full object-fit-contain rounded-lg"src="{{images}}" alt="" style="height:200px;object-fit: cover;"/>
+        <img (click)="previewImages(images)" *ngIf="images" class="h-auto w-full object-fit-contain rounded-lg"src="{{images}}" alt="" style="height:200px;object-fit: cover;"/>
     </div>
 </ng-container>
 <ng-container *ngIf="addPost">
     <div *ngIf="images.length > 1">
         <div class="grid grid-cols-2 gap-2" style="padding:10px">
             <div  *ngFor="let item of images">
-                <img class="h-auto max-w-full rounded-lg image-container"  style="height:220px;width:100%" src="{{item}}" alt="">
+                <img (click)="previewImages(item)" class="h-auto max-w-full rounded-lg image-container"  style="height:220px;width:100%" src="{{item}}" alt="">
             </div>
         </div>
     </div>
     
     <div *ngIf="images.length == 1">
-        <img class="rounded-t-lg image-container" src="{{images}}" alt="" style="height:220px;width:100%"/>
+        <img (click)="previewImages(images)" class="rounded-t-lg image-container" src="{{images}}" alt="" style="height:220px;width:100%"/>
     </div>
 </ng-container>
