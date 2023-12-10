@@ -124,9 +124,10 @@
   }
 
   .footer-section{
-    position: sticky;
-    bottom:0;
-    padding:12px
+    position: absolute;
+    bottom: 0;
+    padding: 12px;
+    width: 100%;
   }
 
   .button-container{
