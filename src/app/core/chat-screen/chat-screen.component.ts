@@ -115,11 +115,19 @@ export class ChatScreenComponent implements OnInit {
       }
     }, 100);
   }
-
   filterMessages(messagesList: ChatMessage[], userId: string, sentToId: string): ChatMessage[] {
-    console.warn(messagesList.filter(message => message.user._id === this.currentUserId && message.sentTo === sentToId))
-    return messagesList.filter(message => message.user._id === this.currentUserId && message.sentTo === sentToId || message.user._id === sentToId && message.sentTo === this.currentUserId);
+    const filteredMessages = messagesList.filter(message => 
+      (message.user._id === this.currentUserId && message.sentTo === sentToId) ||
+      (message.user._id === sentToId && message.sentTo === this.currentUserId)
+    );
+  
+    // Sort messages by timestamp (assuming createdAt is the timestamp property)
+    return filteredMessages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
   }
+  // filterMessages(messagesList: ChatMessage[], userId: string, sentToId: string): ChatMessage[] {
+  //   console.warn(messagesList.filter(message => message.user._id === this.currentUserId && message.sentTo === sentToId))
+  //   return messagesList.filter(message => message.user._id === this.currentUserId && message.sentTo === sentToId || message.user._id === sentToId && message.sentTo === this.currentUserId);
+  // }
   
   sendMessage() {
     const messageData = <ChatMessage>{
@@ -143,18 +151,29 @@ export class ChatScreenComponent implements OnInit {
       images:this.selectedImages.length ? this.selectedImages : []
     };
 
+    // this.firebaseService.sendMessage(messageData)
+    //   .then(() => {
+    //     console.log('Message sent successfully',messageData);
+    //     this.scrollToBottom()
+    //     // this.messages.push(messageData);
+    //     // this.fetchMessages()
+    //     this.MessageTextFormControl.setValue('');
+    //     this.selectedImages = []
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error sending message:', error);
+    //   });
     this.firebaseService.sendMessage(messageData)
-      .then(() => {
-        console.log('Message sent successfully',messageData);
-        this.scrollToBottom()
-        // this.messages.push(messageData);
-        // this.fetchMessages()
-        this.MessageTextFormControl.setValue('');
-        this.selectedImages = []
-      })
-      .catch((error) => {
-        console.error('Error sending message:', error);
-      });
+    .then(() => {
+      console.log('Message sent successfully', messageData);
+      // this.messages.push(messageData); // Add the new message to the local array
+      this.MessageTextFormControl.setValue('');
+      this.selectedImages = [];
+      this.scrollToBottom();
+    })
+    .catch((error) => {
+      console.error('Error sending message:', error);
+    });
   }
 
   triggerImageInput(): void {

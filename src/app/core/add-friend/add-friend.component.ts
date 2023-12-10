@@ -26,18 +26,18 @@ export class AddFriendComponent {
     private alertService: AlertService
   ) {}
   ngOnInit(): void {
-    this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
-      console.log('users here', users);
-      this.originalRecommendations = users.filter(
-        (userValue) => userValue.username && userValue.name
-      )
-      return (this.recommedations = this.originalRecommendations);
-    });
-
     this.store.select(selectDocId).subscribe((id) => {
       this.currentUserId = id;
       console.log('Current user id:', this.currentUserId);
     });
+    this.fireStoreCollectionsService.getAllUsers().subscribe((users) => {
+      console.log('users here', users);
+      this.originalRecommendations = users.filter(
+        (userValue) => userValue.username && userValue.name && userValue.docId !== this.currentUserId
+      )
+      return (this.recommedations = this.originalRecommendations);
+    });
+
   }
 
   openModal($event: IUsersInterface) {
