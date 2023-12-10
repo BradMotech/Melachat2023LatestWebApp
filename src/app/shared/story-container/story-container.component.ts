@@ -40,7 +40,7 @@ export class StoryContainerComponent implements OnInit {
     // this.getCurrentUserStories();
   }
   // getCurrentUserStories() {
-  //   const currentUserId = 'your_current_user_id'; // replace with the actual current user id
+  //   const currentUserId = this.currentUserId ; // replace with the actual current user id
   //   this.currentUserStories = this.stories.filter(story => story.user === this.currentUserId);
   //   console.log("CurrentUserStories:", this.currentUserStories);
   // }
@@ -50,6 +50,7 @@ export class StoryContainerComponent implements OnInit {
   }
 
   ViewUserStories(item:UserStories){
+    console.log(item)
 this.viewStoriesEmitter.emit(item)
   }
 }

@@ -89,4 +89,17 @@ export class AddFriendComponent {
       },
     });
   }
+
+  hidePhoneNumber(phone: string): string {
+    if (phone.length !== 12) {
+      // If the phone number is not in the expected format, return it as is
+      return phone;
+    }
+
+    // Replace characters from the 5th to the 10th position with '*'
+    const obscuredPhoneNumber =
+      phone.substring(0, 4) + '******' + phone.substring(10);
+
+    return obscuredPhoneNumber;
+  }
 }

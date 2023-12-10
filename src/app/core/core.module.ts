@@ -52,7 +52,8 @@ const routes: Routes = [
     FriendRequestsComponent,
     AllPostsFullScreenComponent,
     FriendProfileComponent,
-    GalleryViewerComponent
+    GalleryViewerComponent,
+    StoriesViewerWrapperComponent
   ],
   imports: [
     CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule,

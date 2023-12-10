@@ -70,7 +70,10 @@
                                {{item.name}}
                              </p>
                              <p class="text-sm text-gray-500 truncate dark:text-gray-400">
-                               {{item.phone}}
+                               {{hidePhoneNumber(item.phone)}}
+                             </p>
+                             <p *ngIf="item.created !== '' || item.created != undefined" class="text-sm text-gray-500 truncate dark:text-gray-400">
+                               joined : {{item.created | date}}
                              </p>
                           </div>
                           <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">

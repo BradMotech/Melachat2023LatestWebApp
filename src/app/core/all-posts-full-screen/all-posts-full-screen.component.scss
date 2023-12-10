@@ -99,3 +99,12 @@ span{
 .textarea #editor {
     height: 80px;
 }
+
+@media (min-width: 200px) and (max-width:450px) {
+    .news-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    .get-started{
+        padding: 6px;
+    }
+  }

@@ -9,7 +9,7 @@
         </div>
         <div class="flex-shrink-0 user-details">
             <h1 class="text-sm font-medium text-gray-900 truncate dark:text-white user-name">{{friendData?.name}}</h1>
-            <img class="w-16 h-16 rounded-full" src="{{friendData?.image}}" alt="Neil image">
+            <img (click)="userProfileNavigation(friendData)" class="w-16 h-16 rounded-full" src="{{friendData?.image}}" alt="Neil image">
         </div>
     </div>
 
@@ -33,13 +33,13 @@
                             <div *ngIf="message.images.length > 1">
                                 <div class="grid grid-cols-2 gap-2" style="padding:10px">
                                     <div  *ngFor="let item of message.images">
-                                        <img class="h-auto max-w-full rounded-lg"  style="height:120px;width:100%;object-fit:cover;" src="{{item}}" alt="">
+                                        <img (click)="showImages(message.images)" class="h-auto max-w-full rounded-lg"  style="height:120px;width:100%;object-fit:cover;" src="{{item}}" alt="">
                                     </div>
                                 </div>
                             </div>
                             
                             <div *ngIf="message.images.length == 1" >
-                                <img class="rounded-t-lg" src="{{message.images}}" alt="" style="height:120px;width:100%;object-fit: fill;"/>
+                                <img (click)="showImages(message.images)" class="rounded-t-lg" src="{{message.images}}" alt="" style="height:120px;width:100%;object-fit: fill;"/>
                             </div>
                         </ng-container>
                     </ng-container>
@@ -48,13 +48,13 @@
                             <div *ngIf="message.images.length > 1">
                                 <div class="grid grid-cols-2 gap-2" style="padding:10px">
                                     <div  *ngFor="let item of message.images">
-                                        <img class="h-auto max-w-full rounded-lg"  style="height:120px;width:100%;object-fit:cover;" src="{{item}}" alt="">
+                                        <img (click)="showImages(message.images)" class="h-auto max-w-full rounded-lg"  style="height:120px;width:100%;object-fit:cover;" src="{{item}}" alt="">
                                     </div>
                                 </div>
                             </div>
                             
                             <div *ngIf="message.images.length == 1" >
-                                <img class="rounded-t-lg" src="{{message.images}}" alt="" style="height:120px;width:100%;object-fit: fill;"/>
+                                <img (click)="showImages(message.images)" class="rounded-t-lg" src="{{message.images}}" alt="" style="height:120px;width:100%;object-fit: fill;"/>
                             </div>
                         </ng-container>
                     </ng-container>
@@ -67,7 +67,7 @@
     </div>
     <div class="footer-chat-input">
         <ng-container *ngIf="selectedImages.length">
-            <app-images-grid [addPost]="true" [images]="selectedImages"></app-images-grid>
+            <app-images-grid (previewImagesEmitter)="showImages(selectedImages)" [addPost]="true" [images]="selectedImages"></app-images-grid>
         </ng-container>
         <form>
             <label for="chat" class="sr-only">Your message</label>

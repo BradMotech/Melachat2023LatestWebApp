@@ -1,3 +1,11 @@
+.container-wrap{
+  background-color: #000000;
+  height: auto;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+}
+
 .header-section{
     position: absolute;
     top: 0;
@@ -101,3 +109,26 @@
   $red: #ff2d55;
   
   
+  .controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+  }
+  
+  button {
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .footer-section{
+    position: sticky;
+    bottom:0;
+    padding:12px
+  }
+
+  .button-container{
+    height:100vh
+  }

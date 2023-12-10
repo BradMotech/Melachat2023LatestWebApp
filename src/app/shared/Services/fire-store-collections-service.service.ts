@@ -774,13 +774,15 @@ console.log('friend found',userDoc)
   // }
 
   uploadTextStory(userStories: UserStories, text: string, bcolor: string): Observable<void> {
+    
     const storiesCollection = collection(this.firestore, 'Stories');
   
     return new Observable<void>((observer) => {
       const userQuery = query(storiesCollection, where('username', '==', userStories.username));
   
+      console.log(storiesCollection)
       getDocs(userQuery)
-        .then((querySnapshot) => {
+      .then((querySnapshot) => {
           if (querySnapshot.empty) {
             // If the document doesn't exist, create a new one
             addDoc(storiesCollection, {
@@ -1058,4 +1060,38 @@ console.log('friend found',userDoc)
     );
   }
   
+  
+  deleteOldStories(): void {
+    const storiesCollection = collection(this.firestore, 'Stories');
+    const storiesQuery = query(storiesCollection);
+
+    onSnapshot(storiesQuery, (querySnapshot) => {
+      querySnapshot.forEach(async (doc) => {
+        const data = doc.data();
+        console.log("stories here ",data)
+        const stories: Story[] = data['stories'];
+
+        // Filter out stories older than 24 hours
+        const filteredStories = stories.filter((story) => this.isStoryWithin24Hours(story));
+
+        if (filteredStories.length > 0) {
+          // Update the document with the filtered stories
+          await updateDoc(doc.ref, { stories: filteredStories });
+        } else {
+          // If stories array is empty, delete the entire document
+          await deleteDoc(doc.ref);
+        }
+      });
+    });
+  }
+
+  // Helper function to check if a story is within 24 hours
+  isStoryWithin24Hours(story: Story): boolean {
+    const currentTime = new Date().getTime();
+    const storyTime = new Date(story.storyData.uploadedAt).getTime();
+    const twentyFourHoursInMs = 24 * 60 * 60 * 1000;
+
+    return currentTime - storyTime <= twentyFourHoursInMs;
+  }
 }
+

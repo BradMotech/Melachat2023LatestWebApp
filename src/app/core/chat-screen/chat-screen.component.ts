@@ -29,6 +29,8 @@ export class ChatScreenComponent implements OnInit {
   messages$!: Observable<ChatMessage[]>;
   selectedImages: any[] = [];
   imagesConvertedToFirebaseUrl: any;
+  recommedations: IUsersInterface[] = [];
+  originalRecommendations: IUsersInterface[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +41,13 @@ export class ChatScreenComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
+    this.firebaseService.getAllUsers().subscribe((users) => {
+      console.log('users here', users);
+      this.originalRecommendations = users.filter(
+        (userValue) => userValue.username && userValue.name && userValue.docId !== this.currentUserId
+      )
+      return (this.recommedations = this.originalRecommendations);
+    });
     this.MessageTextFormControl.valueChanges.subscribe((val:string)=>{
       this.messageText = val
     })
@@ -226,5 +234,24 @@ export class ChatScreenComponent implements OnInit {
       processFiles();
       this.selectedImages = this.imagesConvertedToFirebaseUrl
     }
+  }
+
+  showImages(images: string[]) {
+
+    this.router.navigate(['/', 'image-viewer'], {
+      queryParams: {
+        images: JSON.stringify(images),
+      },
+    });
+   
+  }
+
+  userProfileNavigation(friend: IUsersInterface | undefined) {
+    this.router.navigate(['friend-profile'], {
+      queryParams: {
+        friendData: JSON.stringify(friend),
+        usersList:JSON.stringify(this.recommedations)
+      },
+    });
   }
 }

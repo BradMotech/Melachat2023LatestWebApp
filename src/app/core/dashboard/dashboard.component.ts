@@ -75,7 +75,8 @@ export class DashboardComponent implements OnInit {
     private alertService: AlertService
   ) {}
   ngOnInit(): void {
-    this.fetchAllStories();
+    // this.fireStoreCollectionsService.deleteOldStories()
+    this.fetchAllStories();  
     // this.store.select(selectCurrentUser).subscribe((user) => {
     //   this.currentUser = user;
     //   console.log('Current user:', this.currentUser);
@@ -418,6 +419,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ViewStories(data:UserStories){
+    console.log(data)
     this.router.navigate(['/', 'view-stories'], {
       queryParams: {
         storiesData: JSON.stringify(data),
