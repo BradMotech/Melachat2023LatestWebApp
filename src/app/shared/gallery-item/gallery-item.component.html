@@ -3,7 +3,7 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     <div class="grid gap-4" *ngFor="let item of images">
         <div>
-            <img class="h-auto max-w-full rounded-lg" src="{{item}}" alt="">
+            <img (click)="showImages(images)" class="h-auto max-w-full rounded-lg" src="{{item}}" alt="">
         </div>
     </div>
 </div>
