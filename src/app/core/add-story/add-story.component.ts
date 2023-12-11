@@ -90,6 +90,7 @@ export class AddStoryComponent implements OnInit {
     private router: Router,private renderer: Renderer2,private alertService: AlertService
   ) {}
   ngOnInit(): void {
+    this.shuffleBackgroundColorPalette();   
     this.store.select(selectCurrentUser).subscribe((user) => {
       this.currentUser = user;
       console.log('Current user:', this.currentUser);
@@ -111,7 +112,13 @@ export class AddStoryComponent implements OnInit {
   //   const newValue = this.editableDiv.nativeElement.innerText;
   //   this.TextStoryFormControl.setValue(newValue);
   // }
+  shuffleBackgroundColorPalette(): void {
+    // Generate a random index
+    const randomIndex = Math.floor(Math.random() * this.backgroundColors.length *Math.random());
 
+    // Update the backgroundColor property
+    this.backgroundColor = this.backgroundColors[randomIndex];
+  }
   switchBackgroundColorPalette(): void {
     // Increment the background color index
     this.backgroundColorIndex =
