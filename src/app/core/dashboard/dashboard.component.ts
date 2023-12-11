@@ -448,4 +448,8 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
+
+  navigateToPromoteItem(){
+    this.router.navigate(['promote-item']);
+  }
 }

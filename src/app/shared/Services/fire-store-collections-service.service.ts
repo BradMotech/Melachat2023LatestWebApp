@@ -362,6 +362,23 @@ export class FireStoreCollectionsServiceService {
         });
     });
   }
+  promoteItem(postData: IPosts): Observable<void> {
+    const postsCollection = collection(this.firestore, 'Promoted');
+    return new Observable<void>((observer) => {
+      addDoc(postsCollection, {
+        ...postData,
+        datePosted: new Date().toLocaleString('en-GB', { timeZone: 'UTC' }), // You might want to use serverTimestamp for accurate date
+      })
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch((error) => {
+          observer.error(error);
+          observer.complete();
+        });
+    });
+  }
 
   deletePost(postId: string): Observable<void> {
     const postDoc = doc(this.firestore, 'Posts', postId);
