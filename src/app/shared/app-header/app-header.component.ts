@@ -64,4 +64,11 @@ export class AppHeaderComponent implements OnInit {
       },
     });
   }
+
+  truncateText(text: any, maxLength: number): string {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+    return text;
+  }
 }

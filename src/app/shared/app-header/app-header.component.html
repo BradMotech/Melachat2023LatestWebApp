@@ -5,7 +5,7 @@
       <div class="flex justify-between items-center">
         <a href="#" class="font-bold text-xl text-indigo-600"><img src="../../../assets/icon.png" class="brand-img"
             alt=""></a>
-            <p style="margin-left:12px;color:#707070"> &#64;{{currentUserDetails?.username}}</p>
+            <p style="margin-left:12px;color:#707070">  &#64;{{ truncateText(currentUserDetails?.username, 7) }}</p>
         <!-- <button class="border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden" (click)="toggleNavbar()">
           <i class="fas fa-bars"></i>
         </button> -->
