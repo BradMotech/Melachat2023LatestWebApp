@@ -69,8 +69,10 @@
         </ul>
     </div>
     <div *ngIf="ads.length" class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <div *ngFor="let ad of ads" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <app-promo-item (ViewPost)="viewPromoDetails(ad)" [Post]="ad"></app-promo-item>
+        <div class="promo-list"  #promoList>
+            <div  *ngFor="let ad of ads">
+                <app-promo-item (ViewPost)="viewPromoDetails(ad)" [Post]="ad"></app-promo-item>
+            </div>
         </div>
     </div>
 </div>

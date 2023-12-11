@@ -1,0 +1,172 @@
+<p>view-ads-details works!</p>
+<div class="main-container">
+    <app-app-header></app-app-header>
+    <div style="margin-top: 100px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;">
+
+        <div class="grid gap-4" style="padding:12px">
+            <div
+                class="child-max-w-sm  bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <ng-container *ngIf="Post.postImage">
+                    <app-images-grid (previewImagesEmitter)="showImages(Post.postImage)"
+                        [images]="Post.postImage"></app-images-grid>
+                </ng-container>
+                <div class="p-5">
+                    <div>
+                        <img class="w-10 h-10 rounded-full" src="{{Post.userImage}}" alt="Default avatar">
+                        <p>&#64;{{Post.username}}</p>
+                        <p>{{Post.datePosted}}</p>
+                        <a href="#">
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                {{Post.title}}
+                            </h5>
+                        </a>
+                    </div>
+                    <!-- <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">{{Post.post}}</p> -->
+                    <div *ngIf="Post && Post.post"
+                        class="mb-3 font-normal text-gray-700 dark:text-gray-400 limit-lines">
+                        <div *ngFor="let paragraph of getParagraphs(Post.post, 1300)" class="paragraph">
+                            <p>
+                                <!-- <span *ngFor="let word of paragraph.split(' ')"
+                                    [ngClass]="{'hashtag': word.startsWith('#')}">
+                                    {{ word + ' ' }}
+                                </span> -->
+                                <span *ngFor="let word of paragraph.split(' ')"
+                                    [ngClass]="{'hashtag': isHashtag(word), 'url': isURL(word)}">
+                                    <ng-container *ngIf="isURL(word); else nonUrl">
+                                        <a (click)="openUrl(word);$event.stopPropagation()" class="url">{{ word + ' '
+                                            }}</a>
+                                    </ng-container>
+                                    <ng-template #nonUrl>{{ word + ' ' }}</ng-template>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                
+                    <!-- comment here -->
+
+                    <form>
+                        <div
+                            class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+                            <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+                                <label for="comment" class="sr-only">Your comment</label>
+                                <textarea [formControl]="PostContentFormControl" id="comment" rows="4"
+                                    class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                                    placeholder="Write a comment..." required></textarea>
+                            </div>
+                            <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
+                                <button (click)="AddComment()"
+                                    class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800 melachat-background-color"
+                                    style="background-color: #16afec;">
+                                    Post comment
+                                </button>
+                                <div style="visibility: hidden;"
+                                    class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
+                                    <button (click)="AddComment()" type="button"
+                                        class="inline-flex justify-center items-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="none" viewBox="0 0 12 20">
+                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                                                d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6" />
+                                        </svg>
+                                        <span class="sr-only">Attach file</span>
+                                    </button>
+                                    <button type="button"
+                                        class="inline-flex justify-center items-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 16 20">
+                                            <path
+                                                d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                                        </svg>
+                                        <span class="sr-only">Set location</span>
+                                    </button>
+                                    <button type="button"
+                                        class="inline-flex justify-center items-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+                                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 18">
+                                            <path
+                                                d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z" />
+                                        </svg>
+                                        <span class="sr-only">Upload image</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <p style="margin-bottom:32px" class="ms-auto text-xs text-gray-500 dark:text-gray-400">Remember,
+                        contributions to this topic
+                        should follow our <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">Community
+                            Guidelines</a>.</p>
+
+                    <!-- comment here -->
+                    <ng-container *ngFor="let comment of postComments">
+                        <article class="article">
+                            <div class="flex items-center mb-4">
+                                <img class="w-10 h-10 me-4 rounded-full" src="{{comment.username['userImage']}}" alt="">
+                                <div class="font-medium dark:text-white">
+                                    <p>{{comment.username['username'] }} <span
+                                            class="block text-sm text-gray-500 dark:text-gray-400">&#64;{{comment.username['username']
+                                            }}</span></p>
+                                </div>
+                            </div>
+
+                            <footer class="mb-5 text-sm text-gray-500 dark:text-gray-400">
+                                <p>Commented on <time datetime="2017-03-03 19:00">{{comment.username['postedAt']
+                                        }}</time></p>
+                            </footer>
+                            <!-- <p class="mb-2 text-gray-500 dark:text-gray-400">{{comment.username['comment']}}.</p> -->
+                            <div *ngIf="Post && Post.post" class="mb-2 text-gray-500 dark:text-gray-400">
+                                <div *ngFor="let paragraph of getParagraphs(comment.username['comment'], 1300)"
+                                    class="paragraph">
+                                    <p>
+                                        <span (click)="navigateToTrending(word)"
+                                            *ngFor="let word of paragraph.split(' ')"
+                                            [ngClass]="{'hashtag': word.startsWith('#')}">
+                                            {{ word + ' ' }}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- <a href="#" class="block mb-5 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Read more</a> -->
+                            <aside>
+                                <!-- <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">19 people found this helpful</p> -->
+                                <div class="flex items-center mt-3">
+                                    <p *ngIf="comment.username.likes.length">{{comment.username.likes.length}}</p>
+                                    <svg (click)="favourite(comment)" class="h-6 w-6 mr-2 text-red-500" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 20l-7 -7a4 4 0 0 1 6.5 -6a.9 .9 0 0 0 1 0a4 4 0 0 1 6.5 6l-7 7" />
+                                    </svg>
+                                    <!-- <svg *ngIf="filledHeart" fill="#ff5c5c" width="24px" height="24px" class="h-6 w-6 mr-2 text-red-500"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke="#ff5c5c">
+                                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                                        </g>
+                                        <g id="SVGRepo_iconCarrier">
+                                            <path
+                                                d="M14 20.408c-.492.308-.903.546-1.192.709-.153.086-.308.17-.463.252h-.002a.75.75 0 01-.686 0 16.709 16.709 0 01-.465-.252 31.147 31.147 0 01-4.803-3.34C3.8 15.572 1 12.331 1 8.513 1 5.052 3.829 2.5 6.736 2.5 9.03 2.5 10.881 3.726 12 5.605 13.12 3.726 14.97 2.5 17.264 2.5 20.17 2.5 23 5.052 23 8.514c0 3.818-2.801 7.06-5.389 9.262A31.146 31.146 0 0114 20.408z">
+                                            </path>
+                                        </g>
+                                    </svg> -->
+                                    <!-- <svg (click)="commentOn(comment)" class="h-6 w-6 text-gray-500" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                    </svg> -->
+
+                                    <!-- <a (click)="report(comment)" href="#"
+                                        class="ps-4 text-sm font-medium text-blue-600 hover:underline dark:text-blue-500 border-gray-200 ms-4 border-s md:mb-0 dark:border-gray-600">Report</a> -->
+                                </div>
+                            </aside>
+                        </article>
+                        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+                    </ng-container>
+                    <!-- Comments -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { IPosts } from '../Interfaces/IPosts';
 import { Router } from '@angular/router';
 
@@ -12,13 +12,19 @@ export interface headerAds{
   styleUrls: ['./promoted-tabs.component.scss'],
 })
 
-export class PromotedTabsComponent {
+export class PromotedTabsComponent implements AfterViewInit{
   @Input() ads:IPosts[] = []
   selectedTabTitle: string = '';
   @Input() tabsHeader:headerAds[] = [];
-
+  @ViewChild('promoList') promoList!: ElementRef;
+  currentIndex = 0;
   constructor(private router:Router){
     
+  }
+
+  ngAfterViewInit() {
+    // Call the autoScroll function every 2 seconds
+    setInterval(() => this.autoScroll(), 4000);
   }
 
   selectedTab(tabTitle: string) {
@@ -26,7 +32,7 @@ export class PromotedTabsComponent {
   }
 
   viewPromoDetails(post:IPosts){
-    this.router.navigate(['post-details'],{queryParams:{
+    this.router.navigate(['view-ads-details'],{queryParams:{
       title:post.title,
       comments:post.comments,
       datePosted:post.datePosted,
@@ -43,4 +49,22 @@ export class PromotedTabsComponent {
       docId:post.docId,
     }})
   }
+
+  autoScroll() {
+    // Get the native element of the promoList
+    const promoListElement: HTMLElement = this.promoList.nativeElement;
+
+    // Calculate the next index
+    this.currentIndex = (this.currentIndex + 1) % this.ads.length;
+
+    // Calculate the scrollLeft value based on the item width and index
+    const scrollLeftValue = promoListElement.clientWidth * this.currentIndex;
+
+    // Use smooth scroll for a nicer effect
+    promoListElement.scrollTo({
+      left: scrollLeftValue,
+      behavior: 'smooth'
+    });
+  }
+
 }

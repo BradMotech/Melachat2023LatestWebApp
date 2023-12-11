@@ -136,6 +136,9 @@ ul#default-tab {
   align-items: center;
   align-content: center;
 }
+}
 
-
+.promo-list{
+    display: flex;
+    overflow-x: auto;
 }

@@ -18,6 +18,7 @@ import { StoriesViewerWrapperComponent } from './stories-viewer-wrapper/stories-
 import { FriendProfileComponent } from './friend-profile/friend-profile.component';
 import { GalleryViewerComponent } from './gallery-viewer/gallery-viewer.component';
 import { PromoteItemMainComponent } from './promote-item-main/promote-item-main.component';
+import { ViewAdsDetailsComponent } from './view-ads-details/view-ads-details.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'friend-profile', component: FriendProfileComponent },
   { path: 'image-viewer', component: GalleryViewerComponent },
   { path: 'promote-item', component: PromoteItemMainComponent },
+  { path: 'view-ads-details', component: ViewAdsDetailsComponent },
 ];
 
 
@@ -56,7 +58,8 @@ const routes: Routes = [
     FriendProfileComponent,
     GalleryViewerComponent,
     StoriesViewerWrapperComponent,
-    PromoteItemMainComponent
+    PromoteItemMainComponent,
+    ViewAdsDetailsComponent
   ],
   imports: [
     CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule,

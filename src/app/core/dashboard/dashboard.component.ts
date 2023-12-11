@@ -72,7 +72,7 @@ export class DashboardComponent implements OnInit {
   CurrentUserStories: UserStories[] = [];
   hideAds: boolean = false;
   showAds: boolean = false
-  adsHeaders:headerAds[] = [{name:"Clothing",svg:""},{name:"Alcohol",svg:""}]
+  adsHeaders:headerAds[] = [{name:"Candles",svg:""},{name:"Clothes",svg:""}]
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private router: Router,
