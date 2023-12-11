@@ -63,7 +63,6 @@ export class PostListComponent implements OnInit{
       viewedBy:post.viewedBy,
       docId:post.docId,
     }})
-
   }
 
   likePost(post: IPosts){

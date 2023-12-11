@@ -34,7 +34,9 @@ export class DashboardComponent implements OnInit {
   ModalData!: IUsersInterface;
   openModalFlag!: boolean;
   AllPosts: IPosts[] = [];
+  AllPromos: IPosts[] = [];
   originalAllPosts: IPosts[] = [];
+  originalAllPromos: IPosts[] = [];
   friends!: IUsersInterface[] | undefined;
   ListOfStories!: UserStories[];
   NewsArticles: any[] = [];
@@ -123,6 +125,19 @@ export class DashboardComponent implements OnInit {
           return dateB - dateA;
         });
       this.AllPosts = this.originalAllPosts;
+    });
+
+    this.fireStoreCollectionsService.getAllPromostags().subscribe((posts) => {
+      // Sort the posts by dateAdded in descending order (most recent first)
+      console.warn('All posts here', posts);
+      this.originalAllPromos = posts
+        .filter((v) => v.post !== '' && v.username !== '' && v.title != '')
+        .sort((a, b) => {
+          const dateA = new Date(a.datePosted).getTime();
+          const dateB = new Date(b.datePosted).getTime();
+          return dateB - dateA;
+        });
+      this.AllPromos = this.originalAllPromos;
     });
 
     fetch(

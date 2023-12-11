@@ -27,6 +27,7 @@ import { AlertService } from './Services/alert.service';
 import { StoriesViewerComponent } from './stories-viewer/stories-viewer.component';
 import { GalleryItemComponent } from './gallery-item/gallery-item.component';
 import { PromotedTabsComponent } from './promoted-tabs/promoted-tabs.component';
+import { PromoItemComponent } from './promo-item/promo-item.component';
 
 @NgModule({
   declarations: [
@@ -50,8 +51,8 @@ import { PromotedTabsComponent } from './promoted-tabs/promoted-tabs.component';
     TimestampToDatePipe,
     GalleryItemComponent,
     StoriesViewerComponent,
-    PromotedTabsComponent
-    
+    PromotedTabsComponent,
+    PromoItemComponent
   ],
   imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule, ToastrModule.forRoot({timeOut: 3000,
     positionClass: 'toast-top-right',
@@ -73,7 +74,7 @@ import { PromotedTabsComponent } from './promoted-tabs/promoted-tabs.component';
     FloatingButtonComponent,
     DialogComponent,
     ImagesGridComponent,
-   NoPostsFoundComponent,TimestampToDatePipe,GalleryItemComponent,StoriesViewerComponent,PromotedTabsComponent
+   NoPostsFoundComponent,TimestampToDatePipe,GalleryItemComponent,StoriesViewerComponent,PromotedTabsComponent,PromoItemComponent
   ],
   providers:[AlertService]
 })

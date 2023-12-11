@@ -246,6 +246,27 @@ export class FireStoreCollectionsServiceService {
       return () => unsubscribe();
     });
   }
+  getAllPromostags(): Observable<IPosts[]> {
+    const postsCollection = collection(this.firestore, 'Promoted');
+  
+    return new Observable<IPosts[]>((observer) => {
+      const unsubscribe = onSnapshot(postsCollection, (querySnapshot) => {
+        const posts: IPosts[] = [];
+        querySnapshot.forEach((doc) => {
+          const post = doc.data() as IPosts;
+          post.docId = doc.id; // Add the docId property
+          posts.push(post);
+        });
+        this.analyzeAndUploadTrendingHashtags(posts);
+        observer.next(posts);
+      }, (error) => {
+        observer.error(error);
+      });
+  
+      // Return an unsubscribe function to clean up the subscription when it's no longer needed
+      return () => unsubscribe();
+    });
+  }
 
   private async analyzeAndUploadTrendingHashtags(posts: IPosts[]): Promise<void> {
     const hashtagCountMap: Map<string, number> = new Map();

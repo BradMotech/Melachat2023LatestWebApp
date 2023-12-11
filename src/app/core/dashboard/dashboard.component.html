@@ -36,7 +36,7 @@
             <circle cx="12" cy="12" r="3" />
         </svg>
     </div>
-            <app-promoted-tabs [tabsHeader]="adsHeaders" *ngIf="showAds"></app-promoted-tabs>
+            <app-promoted-tabs [ads]="AllPromos" [tabsHeader]="adsHeaders" *ngIf="showAds"></app-promoted-tabs>
             <span (click)="browseFriends()"
             class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Browse
             Friends</span>
