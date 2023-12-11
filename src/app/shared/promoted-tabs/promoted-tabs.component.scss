@@ -13,5 +13,12 @@ ul#default-tab {
 }
 
 .default-tab-content{
-    height:180px
+    height:auto;
+    margin-bottom:22px
+}
+.what-can-be{
+    padding:10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
 }

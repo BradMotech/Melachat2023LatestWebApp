@@ -8,18 +8,65 @@
                 justify-content: center;
                 flex-direction: row;
                 align-items: center;">
-                        <svg *ngIf="item.svg" class="w-4 h-4 inline-block ml-2" [innerHTML]="item.svg"></svg>
-                    <span>{{item.name}}</span></div>
+                    <svg *ngIf="item.svg" class="w-4 h-4 inline-block ml-2" [innerHTML]="item.svg"></svg>
+                    <span>{{item.name}}</span>
+                </div>
             </button>
         </li>
 
     </ul>
 </div>
 <div id="default-tab-content" class="default-tab-content">
-    <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile"
-        role="tabpanel" aria-labelledby="profile-tab">
+    <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
         <p class="text-sm text-gray-500 dark:text-gray-400">
-            Explore our featured ads in this section. Discover exciting offers and promotions brought to you by our sponsors. The content in this <strong class="font-medium text-gray-800 dark:text-white">tab</strong> is designed to showcase the latest products and services. Click on different tabs to explore diverse advertisements. Your support allows us to continue providing you with valuable content.
-          </p>
+            Explore our featured ads in this section. Discover exciting offers and promotions brought to you by our
+            sponsors. The content in this <strong class="font-medium text-gray-800 dark:text-white">tab</strong> is
+            designed to showcase the latest products and services. Click on different tabs to explore diverse
+            advertisements. Your support allows us to continue providing you with valuable content.
+
+        </p>
+        <h2 class="what-can-be"> 
+            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path opacity="0.1" fill-rule="evenodd" clip-rule="evenodd"
+                        d="M5 5H19C20.1046 5 21 5.89543 21 7V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5ZM10.75 13.25V15C10.75 15.1381 10.8619 15.25 11 15.25C11.1381 15.25 11.25 15.1381 11.25 15V11C11.25 9.75736 10.2426 8.75 9 8.75C7.75736 8.75 6.75 9.75736 6.75 11V15C6.75 15.1381 6.86193 15.25 7 15.25C7.13807 15.25 7.25 15.1381 7.25 15V13.25H10.75ZM17.25 9C17.25 8.86193 17.1381 8.75 17 8.75C16.8619 8.75 16.75 8.86193 16.75 9V11.75H15.5C14.9322 11.75 14.4879 11.9654 14.1882 12.3027C13.8925 12.6353 13.75 13.0717 13.75 13.5C13.75 13.9283 13.8925 14.3647 14.1881 14.6973C14.4879 15.0346 14.9322 15.25 15.5 15.25H17C17.1381 15.25 17.25 15.1381 17.25 15V12.0033L17.25 12L17.25 11.9967V9Z"
+                        fill="green"></path>
+                    <path
+                        d="M5 5H19C20.1046 5 21 5.89543 21 7V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5Z"
+                        stroke="green" stroke-width="0.40800000000000003" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    <path d="M7 15V11C7 9.89543 7.89543 9 9 9V9C10.1046 9 11 9.89543 11 11V15" stroke="green"
+                        stroke-width="0.40800000000000003" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M17 9V15" stroke="green" stroke-width="0.40800000000000003" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    <path d="M17 12H15.5C13.5 12 13.5 15 15.5 15H17" stroke="green" stroke-width="0.40800000000000003"
+                        stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M7 13H11" stroke="green" stroke-width="0.40800000000000003" stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                </g>
+            </svg>
+            <span>What can be promoted</span></h2>
+        <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+            <li class="flex items-center">
+                <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                </svg>
+                Clothing,food,e-commerce products with website links
+            </li>
+            <li class="flex items-center">
+                <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="green" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                </svg>
+                Or you can promote your posts for a wider reach
+            </li>
+        </ul>
     </div>
+
 </div>
