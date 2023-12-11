@@ -26,6 +26,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { AlertService } from './Services/alert.service';
 import { StoriesViewerComponent } from './stories-viewer/stories-viewer.component';
 import { GalleryItemComponent } from './gallery-item/gallery-item.component';
+import { PromotedTabsComponent } from './promoted-tabs/promoted-tabs.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { GalleryItemComponent } from './gallery-item/gallery-item.component';
     TimestampToDatePipe,
     GalleryItemComponent,
     StoriesViewerComponent,
+    PromotedTabsComponent
     
   ],
   imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule, ToastrModule.forRoot({timeOut: 3000,
@@ -71,7 +73,7 @@ import { GalleryItemComponent } from './gallery-item/gallery-item.component';
     FloatingButtonComponent,
     DialogComponent,
     ImagesGridComponent,
-   NoPostsFoundComponent,TimestampToDatePipe,GalleryItemComponent,StoriesViewerComponent
+   NoPostsFoundComponent,TimestampToDatePipe,GalleryItemComponent,StoriesViewerComponent,PromotedTabsComponent
   ],
   providers:[AlertService]
 })

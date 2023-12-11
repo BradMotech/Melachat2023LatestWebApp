@@ -17,6 +17,7 @@ import {
   selectDocId,
 } from 'src/app/shared/State/user.selectors';
 import { DialogComponent } from 'src/app/shared/dialog/dialog.component';
+import { headerAds } from 'src/app/shared/promoted-tabs/promoted-tabs.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -67,7 +68,9 @@ export class DashboardComponent implements OnInit {
   friendRequestUserNumber!: string;
   currentUserFriendRequests: string[] = [];
   CurrentUserStories: UserStories[] = [];
-
+  hideAds: boolean = false;
+  showAds: boolean = false
+  adsHeaders:headerAds[] = [{name:"Clothing",svg:""},{name:"Alcohol",svg:""}]
   constructor(
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private router: Router,
@@ -314,6 +317,16 @@ export class DashboardComponent implements OnInit {
     } else {
       this.showRecommendations = false;
       this.hide = false;
+    }
+  }
+
+  toggleAdsVisibility(visibility: string) {
+    if (visibility == 'show') {
+      this.showAds = true;
+      this.hideAds = true;
+    } else {
+      this.showAds = false;
+      this.hideAds = false;
     }
   }
 

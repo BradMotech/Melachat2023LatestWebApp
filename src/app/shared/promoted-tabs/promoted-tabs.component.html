@@ -1,0 +1,25 @@
+<div class="mb-4 border-b border-gray-200 dark:border-gray-700 ">
+    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
+        data-tabs-toggle="#default-tab-content" role="tablist" *ngFor="let item of tabsHeader">
+        <li (click)="selectedTab('firstTab')" class="me-2" role="presentation">
+            <button (click)="selectedTab('firstTab')" class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab"
+                data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                <div style="display: flex;
+                justify-content: center;
+                flex-direction: row;
+                align-items: center;">
+                        <svg *ngIf="item.svg" class="w-4 h-4 inline-block ml-2" [innerHTML]="item.svg"></svg>
+                    <span>{{item.name}}</span></div>
+            </button>
+        </li>
+
+    </ul>
+</div>
+<div id="default-tab-content" class="default-tab-content">
+    <div class="p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile"
+        role="tabpanel" aria-labelledby="profile-tab">
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+            Explore our featured ads in this section. Discover exciting offers and promotions brought to you by our sponsors. The content in this <strong class="font-medium text-gray-800 dark:text-white">tab</strong> is designed to showcase the latest products and services. Click on different tabs to explore diverse advertisements. Your support allows us to continue providing you with valuable content.
+          </p>
+    </div>
+</div>

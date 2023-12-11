@@ -102,7 +102,7 @@ export class PostDetailsComponent implements OnInit {
             })
           );
 
-          this.postComments = commentsArray;
+          this.postComments = commentsArray
           this.likesArray = likesArray;
           this.viewsArray = viewsArray;
           console.log('found post comments', this.postComments);

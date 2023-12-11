@@ -15,7 +15,23 @@
                 and posts below to
                 get started
             </p>
+
+            <div style="display: flex;flex-direction: row;">
+                <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.1" fill-rule="evenodd" clip-rule="evenodd" d="M5 5H19C20.1046 5 21 5.89543 21 7V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5ZM10.75 13.25V15C10.75 15.1381 10.8619 15.25 11 15.25C11.1381 15.25 11.25 15.1381 11.25 15V11C11.25 9.75736 10.2426 8.75 9 8.75C7.75736 8.75 6.75 9.75736 6.75 11V15C6.75 15.1381 6.86193 15.25 7 15.25C7.13807 15.25 7.25 15.1381 7.25 15V13.25H10.75ZM17.25 9C17.25 8.86193 17.1381 8.75 17 8.75C16.8619 8.75 16.75 8.86193 16.75 9V11.75H15.5C14.9322 11.75 14.4879 11.9654 14.1882 12.3027C13.8925 12.6353 13.75 13.0717 13.75 13.5C13.75 13.9283 13.8925 14.3647 14.1881 14.6973C14.4879 15.0346 14.9322 15.25 15.5 15.25H17C17.1381 15.25 17.25 15.1381 17.25 15V12.0033L17.25 12L17.25 11.9967V9Z" fill="#FFD700"></path> <path d="M5 5H19C20.1046 5 21 5.89543 21 7V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V7C3 5.89543 3.89543 5 5 5Z" stroke="#FFD700" stroke-width="0.40800000000000003" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 15V11C7 9.89543 7.89543 9 9 9V9C10.1046 9 11 9.89543 11 11V15" stroke="#FFD700" stroke-width="0.40800000000000003" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M17 9V15" stroke="#FFD700" stroke-width="0.40800000000000003" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M17 12H15.5C13.5 12 13.5 15 15.5 15H17" stroke="#FFD700" stroke-width="0.40800000000000003" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 13H11" stroke="#FFD700" stroke-width="0.40800000000000003" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg><h5 class="text-xl font-bold dark:text-white" style="padding-bottom:12px;color:white">Ads
+                </h5>
+                <svg *ngIf="hideAds" (click)="toggleAdsVisibility('hide')" style="margin-left:12px;cursor:pointer" class="h-8 w-8 text-gray-500" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+            </svg>
             
+            <svg *ngIf="!hideAds" (click)="toggleAdsVisibility('show')" style="margin-left:12px;cursor:pointer" class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+        </svg>
+    </div>
+            <app-promoted-tabs [tabsHeader]="adsHeaders" *ngIf="showAds"></app-promoted-tabs>
             <span (click)="browseFriends()"
             class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400">Browse
             Friends</span>
