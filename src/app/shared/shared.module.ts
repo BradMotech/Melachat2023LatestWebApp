@@ -28,6 +28,8 @@ import { StoriesViewerComponent } from './stories-viewer/stories-viewer.componen
 import { GalleryItemComponent } from './gallery-item/gallery-item.component';
 import { PromotedTabsComponent } from './promoted-tabs/promoted-tabs.component';
 import { PromoItemComponent } from './promo-item/promo-item.component';
+import { AngularFireMessaging, AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -54,11 +56,12 @@ import { PromoItemComponent } from './promo-item/promo-item.component';
     PromotedTabsComponent,
     PromoItemComponent
   ],
-  imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule, ToastrModule.forRoot({timeOut: 3000,
+  imports: [CommonModule,ReactiveFormsModule,StoreModule.forFeature('user', userReducer),StorageModule,ToastrModule.forRoot({timeOut: 3000,
     positionClass: 'toast-top-right',
     preventDuplicates: true,
     closeButton: true,
-    toastClass: 'custom-toast',})],
+    toastClass: 'custom-toast',}),HttpClientModule
+  ],
   exports: [
     AppHeaderComponent,
     StoryContainerComponent,

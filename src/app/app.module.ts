@@ -16,7 +16,8 @@ import { StoreModule } from '@ngrx/store';
 import { userReducer } from './shared/State/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { NotifierModule, NotifierOptions } from 'angular-notifier'; // Add this line
+import { AngularFireMessaging, AngularFireMessagingModule } from '@angular/fire/compat/messaging';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -72,9 +73,7 @@ const customNotifierOptions: NotifierOptions = {
     provideFirestore(() => getFirestore()), 
     provideStorage(() => getStorage()), 
     FormsModule,ReactiveFormsModule, StoreModule.forRoot({}, {}),
-    
     StoreModule.forFeature('user', userReducer),
-    
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     
     EffectsModule.forRoot([]),

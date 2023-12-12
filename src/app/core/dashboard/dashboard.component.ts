@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { NavigationExtras, Route, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, switchMap, tap } from 'rxjs';
 import { IHashTags } from 'src/app/shared/Interfaces/IHashTags';
 import { IPosts } from 'src/app/shared/Interfaces/IPosts';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
@@ -77,7 +78,8 @@ export class DashboardComponent implements OnInit {
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
     private router: Router,
     private store: Store<UserState>,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private afMessaging:AngularFireMessaging
   ) {}
   ngOnInit(): void {
     // this.fireStoreCollectionsService.deleteOldStories()
@@ -101,6 +103,7 @@ export class DashboardComponent implements OnInit {
 
     this.store.select(selectDocId).subscribe((id) => {
       this.currentUserId = id;
+      this.requestPermissionAndToken()
       console.log('Current user id:', this.currentUserId);
     });
 
@@ -465,6 +468,31 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToPromoteItem(){
-    this.router.navigate(['promote-item']);
+    this.router.navigate(['promote-item']); 
+  }
+
+  requestPermissionAndToken(): void {
+    this.afMessaging.requestPermission
+      .pipe(
+        switchMap(() => this.afMessaging.getToken),
+        tap((token) => {
+          // Handle the obtained token (e.g., send it to your server)
+          console.log('FCM Token:', token);
+          this.userNotificationTokenUpdate(token)
+        }),
+        catchError((error) => {
+          console.error('Error requesting permission or token:', error);
+          return [];
+        })
+      )
+      .subscribe();
+  }
+
+  userNotificationTokenUpdate(token: string | null) {
+    this.fireStoreCollectionsService.updateCurrentUserNotificationToken(token,this.currentUserId as string)
+  }
+
+  sendPushNotifications(user:IUsersInterface,title:string,body:string){
+    this.fireStoreCollectionsService.sendPushNotification(user,title,body)
   }
 }

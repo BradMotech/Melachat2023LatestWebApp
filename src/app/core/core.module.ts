@@ -19,6 +19,9 @@ import { FriendProfileComponent } from './friend-profile/friend-profile.componen
 import { GalleryViewerComponent } from './gallery-viewer/gallery-viewer.component';
 import { PromoteItemMainComponent } from './promote-item-main/promote-item-main.component';
 import { ViewAdsDetailsComponent } from './view-ads-details/view-ads-details.component';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { environment } from 'src/environments/environment.prod';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -62,7 +65,8 @@ const routes: Routes = [
     ViewAdsDetailsComponent
   ],
   imports: [
-    CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule,
+    CommonModule,RouterModule.forChild(routes), SharedModule, FormsModule,ReactiveFormsModule, AngularFireModule.initializeApp(environment.firebase),
+    AngularFireMessagingModule
   ],
   providers:[DatePipe]
 })

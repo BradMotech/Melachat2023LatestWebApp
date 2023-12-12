@@ -18,7 +18,7 @@ import {
 import * as moment from 'moment';
 import { Router } from '@angular/router';
 import * as CryptoJS from 'crypto-js';
-
+import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -45,10 +45,11 @@ export class RegisterComponent implements OnInit {
   password: string ='';
   confirmPassword: string ='';
 
-  constructor( private firestore: Firestore,public router: Router,){
+  constructor( private firestore: Firestore,public router: Router){
 
   }
   ngOnInit(): void {
+    // this.requestToken()
    this.BioFormControl.valueChanges.subscribe(value =>{
    this.bio = value
    });
@@ -153,4 +154,6 @@ export class RegisterComponent implements OnInit {
   GoToLogin(){
     this.router.navigate(['authentication/login']);
   }
+
+
 }

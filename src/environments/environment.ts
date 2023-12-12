@@ -4,15 +4,13 @@
 
 export const environment = {
   firebase: {
-    projectId: 'e-health-3eda1',
-    appId: '1:544211878229:web:7851d2d4dbc7e6374eafdc',
-    databaseURL: 'https://e-health-3eda1-default-rtdb.firebaseio.com',
-    storageBucket: 'e-health-3eda1.appspot.com',
-    locationId: 'us-central',
-    apiKey: 'AIzaSyDtxZple_3xBBV5UG5nFKtnAKkOE1QlAis',
-    authDomain: 'e-health-3eda1.firebaseapp.com',
-    messagingSenderId: '544211878229',
-    measurementId: 'G-WK94J3CD3K',
+    apiKey: 'AIzaSyAMec3qntywWcXqXj-O3sIrT5OiDNRsfUg',
+    authDomain: 'the-thetaapp.firebaseapp.com',
+    projectId: 'the-thetaapp',
+    storageBucket: 'the-thetaapp.appspot.com',
+    messagingSenderId: '917638422527',
+    appId: '1:917638422527:web:cd08747ca0db6bfe7b11ca',
+    measurementId: 'G-23R8MDEZT7',
   },
   production: false
 };

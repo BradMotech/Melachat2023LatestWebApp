@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Observer, catchError, finalize, forkJoin, from, map, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Observer, catchError, finalize, forkJoin, from, map, mergeMap, switchMap, take, throwError } from 'rxjs';
 import { IUsersInterface } from '../Interfaces/IUsersInterface';
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationExtras } from '@angular/router';
@@ -24,6 +24,7 @@ import {
   onSnapshot,
   runTransaction,
   deleteDoc,
+  setDoc,
 } from '@angular/fire/firestore';
 
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
@@ -36,6 +37,8 @@ import { setDocId } from '../State/user.actions';
 import { StorageModule, getDownloadURL, ref, uploadString } from '@angular/fire/storage';
 import * as moment from 'moment';
 import { Storage } from '@angular/fire/storage';
+import { AngularFireMessaging } from '@angular/fire/compat/messaging';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export interface Story {
   id: number;
@@ -87,8 +90,12 @@ export class FireStoreCollectionsServiceService {
     private firestore: Firestore,
     public userAuth: Auth,
     private store: Store<UserState>,
-    private readonly storage: Storage
+    private readonly storage: Storage,
+    private http: HttpClient,
+    private afMessaging:AngularFireMessaging
   ) {}
+
+  private fcmServerKey = 'AAAA1aeDH_8:APA91bGG9QfPr97fUSj7lobZzgFjTh7ffm1-_B81FfSQy0_AomRJ1rG3JYGyXgBBmtLgkrjQIne6_IntxpEAvAMOssFbJ5lv9x103c-9RpqJUJomKAptFupZ5WVy3fSmxCQdoadoS9Mo'; // Replace with your FCM server key
 
   private currentUserSubject = new BehaviorSubject<IUsersInterface | null>(
     null
@@ -134,15 +141,8 @@ export class FireStoreCollectionsServiceService {
 
               // Check if users password matches
               // Uncomment the following lines when you decide to use them
-
-              // if (userData['password'] && userData['password'].ciphertext && userData['password'].key) {
                 let originalText = '';
-              // try {
-                // let bytes = CryptoJS.AES.decrypt(
-                //   (userData as IUsersInterface).password['cipherText'],
-                //   (userData as IUsersInterface).password['key']
-                // ).toString();
-
+              
                 // Rest of the decryption logic
                 let bytes = CryptoJS.AES.decrypt(
                   userPasswordCipher['ciphertext'].toString(),
@@ -160,10 +160,6 @@ export class FireStoreCollectionsServiceService {
                 // Handle invalid password
                 reject('Invalid password');
               }
-              // } else {
-              //   console.error('Invalid password data:', userData['password']);
-              //   // Handle the error appropriately
-              // }
             });
 
             // If you reached here, it means the password check logic was not triggered
@@ -1131,5 +1127,72 @@ console.log('friend found',userDoc)
 
     return currentTime - storyTime <= twentyFourHoursInMs;
   }
+
+  updateCurrentUserNotificationToken(token: string | null, currentUserId: string): void {
+    if (!token || !currentUserId) {
+      // Ensure both token and currentUserId are provided
+      console.error('Invalid token or currentUserId');
+      return;
+    }
+
+    const userDocRef = doc(this.firestore, 'Users', currentUserId);
+
+    // Fetch the current user data
+    onSnapshot(userDocRef, (userDoc) => {
+      if (userDoc.exists()) {
+        const userData = userDoc.data() as IUsersInterface;
+
+        // Update the notificationToken if it doesn't exist
+        if (!userData.notificationToken) {
+          setDoc(userDocRef, { notificationToken: token }, { merge: true });
+        }
+      } else {
+        console.error('User not found');
+      }
+    });
+  }
+
+  // Method to send push notification
+  sendPushNotification(user: IUsersInterface, title: string, body: string): void {
+    if (!user || !user.notificationToken) {
+      console.error('Invalid user or user has no notification token');
+      return;
+    }
+
+    const payload = {
+      to: user.notificationToken,
+      notification: {
+        title: title,
+        body: body,
+        click_action: '/', // Adjust as needed
+        icon: 'icon.png', // Adjust as needed
+      },
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `key=${this.fcmServerKey}`,
+    });
+
+    this.http
+      .post('https://fcm.googleapis.com/fcm/send', payload, { headers: headers })
+      .subscribe(
+        (response) => {
+          console.log('Push notification sent successfully:', response);
+        },
+        (error) => {
+          console.error('Error sending push notification:', error);
+        }
+      );
+  }
+
+  // Method to subscribe to messaging and handle incoming messages
+  subscribeToMessaging(): void {
+    this.afMessaging.messages.subscribe((message) => {
+      console.log('Received FCM message:', message);
+      // Handle the incoming message as needed
+    });
+  }
+  
 }
 

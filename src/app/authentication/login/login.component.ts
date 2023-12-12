@@ -1,7 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { AngularFireMessaging } from '@angular/fire/compat/messaging';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { catchError, switchMap, tap } from 'rxjs';
 import { IUsersInterface } from 'src/app/shared/Interfaces/IUsersInterface';
 import { AlertService } from 'src/app/shared/Services/alert.service';
 import { FireStoreCollectionsServiceService } from 'src/app/shared/Services/fire-store-collections-service.service';
@@ -40,11 +42,12 @@ export class LoginComponent {
     // private msalService: MsalService,
     public router: Router,
     private fireStoreCollectionsService: FireStoreCollectionsServiceService,
-    private store: Store<UserState>,private alertService: AlertService
+    private store: Store<UserState>,private alertService: AlertService, private afMessaging:AngularFireMessaging
   ) {}
 
 
   ngOnInit(): void {
+  // this.requestPermissionAndToken()
     this.PhoneContentFormControl.valueChanges.subscribe((val) => {
       this.phoneNumber = val as string;
     });
@@ -138,4 +141,20 @@ export class LoginComponent {
       // Swal.fire('Yikes!', 'Something went wrong!', 'error')
     }, 6000);
   }
+
+  // requestPermissionAndToken(): void {
+  //   this.afMessaging.requestPermission
+  //     .pipe(
+  //       switchMap(() => this.afMessaging.getToken),
+  //       tap((token) => {
+  //         // Handle the obtained token (e.g., send it to your server)
+  //         console.log('FCM Token:', token);
+  //       }),
+  //       catchError((error) => {
+  //         console.error('Error requesting permission or token:', error);
+  //         return [];
+  //       })
+  //     )
+  //     .subscribe();
+  // }
 }

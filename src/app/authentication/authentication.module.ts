@@ -9,6 +9,10 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChooseImageComponent } from './choose-image/choose-image.component';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment.prod';
+import { AngularFireMessagingModule } from '@angular/fire/compat/messaging';
+import { HttpClientModule } from '@angular/common/http';
 
 
 const routes: Routes = [
@@ -62,6 +66,9 @@ const customNotifierOptions: NotifierOptions = {
 };
 @NgModule({
     declarations: [LoginComponent, WelcomeComponent, RegisterComponent, ChooseTypeOfUserComponent, ChooseImageComponent],
-    imports: [CommonModule, RouterModule.forChild(routes), SharedModule,ReactiveFormsModule,  NotifierModule.withConfig(customNotifierOptions)]
+    imports: [CommonModule, RouterModule.forChild(routes), SharedModule,ReactiveFormsModule,  NotifierModule.withConfig(customNotifierOptions),
+      AngularFireModule.initializeApp(environment.firebase),
+      AngularFireMessagingModule,HttpClientModule],
+    providers:[]
 })
 export class AuthenticationModule { }

@@ -178,6 +178,7 @@ export class ChatScreenComponent implements OnInit {
       this.MessageTextFormControl.setValue('');
       this.selectedImages = [];
       this.scrollToBottom();
+      this.sendPushNotifications(this.friendData as IUsersInterface,this.currentUser?.username as string,this.messageText)
     })
     .catch((error) => {
       console.error('Error sending message:', error);
@@ -253,5 +254,9 @@ export class ChatScreenComponent implements OnInit {
         usersList:JSON.stringify(this.recommedations)
       },
     });
+  }
+
+  sendPushNotifications(user:IUsersInterface,title:string,body:string){
+    this.firebaseService.sendPushNotification(user,title,body)
   }
 }
