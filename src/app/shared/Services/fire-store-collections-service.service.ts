@@ -1143,9 +1143,9 @@ console.log('friend found',userDoc)
         const userData = userDoc.data() as IUsersInterface;
 
         // Update the notificationToken if it doesn't exist
-        if (!userData.notificationToken) {
+        // if (!userData.notificationToken) {
           setDoc(userDocRef, { notificationToken: token }, { merge: true });
-        }
+        // }
       } else {
         console.error('User not found');
       }
@@ -1154,6 +1154,7 @@ console.log('friend found',userDoc)
 
   // Method to send push notification
   sendPushNotification(user: IUsersInterface, title: string, body: string): void {
+    debugger
     if (!user || !user.notificationToken) {
       console.error('Invalid user or user has no notification token');
       return;
